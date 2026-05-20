@@ -4,7 +4,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import DashboardShell from "@/pages/DashboardShell";
-import ChangePasswordPage from "@/pages/ChangePasswordPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,19 +14,11 @@ const queryClient = new QueryClient({
   },
 });
 
-const DEFAULT_USER = {
-  id: 1,
-  username: "admin",
-  role: "admin",
-  displayName: "المدير",
-};
-
 function AppRoutes() {
   return (
     <Switch>
-      <Route path="/change-password" component={() => <ChangePasswordPage user={DEFAULT_USER} />} />
-      <Route path="/" component={() => <DashboardShell user={DEFAULT_USER} onLogout={() => {}} />} />
-      <Route path="/:page" component={({ params }) => <DashboardShell user={DEFAULT_USER} activePage={params.page} onLogout={() => {}} />} />
+      <Route path="/" component={() => <DashboardShell />} />
+      <Route path="/:page" component={({ params }) => <DashboardShell activePage={params.page} />} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -22,7 +22,6 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
   const [, navigate] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [printing, setPrinting] = useState(false);
-  const [pdfLoading, setPdfLoading] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const queryClient = useQueryClient();
 
@@ -59,244 +58,20 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
     setTimeout(() => setPrinting(false), 2000);
   }, []);
 
-  const handleWordDownload = useCallback(async () => {
-    if (!currentPage || !iframeRef.current) return;
-
-    const HIDE_CSS = `
-      .settings,.settings-grid,.controls-bar,.controls-inner,.formula,
-      .breakdown,.bar,
-      .s-box:has(#ticket),.s-box:has(#transport),.s-box:has(#profit),
-      .s-box:has(#pct),.s-box:has(#rate),
-      .ctrl-label,.ctrl-input,.divider,.calc-btn,
-      .no-print,.admin-note,.note-internal,
-      [data-print="hide"],.controls-inner .currency-toggle { display:none!important; }
-    `;
-
-    const iframeDoc = iframeRef.current.contentDocument;
-    let hideEl: HTMLStyleElement | null = null;
-
-    try {
-      if (!iframeDoc) throw new Error("Cannot access dashboard");
-
-      hideEl = iframeDoc.createElement("style");
-      hideEl.id = "aljude-word-hide";
-      hideEl.textContent = HIDE_CSS;
-      iframeDoc.head.appendChild(hideEl);
-
-      const [
-        { default: html2canvas },
-        { Document, Paragraph, ImageRun, TextRun, AlignmentType, HeadingLevel, Packer },
-        { saveAs },
-        logoRes,
-      ] = await Promise.all([
-        import("html2canvas"),
-        import("docx"),
-        import("file-saver"),
-        fetch("/api/logo", { credentials: "include" }).catch(() => null),
-      ]);
-
-      // Capture full dashboard
-      const body = iframeDoc.body;
-      const canvas = await html2canvas(body, {
-        useCORS: true,
-        allowTaint: true,
-        scale: 1.5,
-        windowWidth: Math.max(body.scrollWidth, 1200),
-        windowHeight: body.scrollHeight,
-        scrollX: 0,
-        scrollY: 0,
-        width: body.scrollWidth,
-        height: body.scrollHeight,
-      });
-      const dashImgBlob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("canvas blob failed"))), "image/jpeg", 0.92);
-      });
-      const dashImgBuf = await dashImgBlob.arrayBuffer();
-
-      // A4 at 96 dpi: 794 × 1123 px — we use EMU (914400 EMU = 1 inch, A4 usable width ≈ 6.27 inch)
-      const A4_WIDTH_EMU = 5748_300; // ~6.27 inches in EMU
-      const aspectRatio = canvas.height / canvas.width;
-      const dashImgHeight = Math.round(A4_WIDTH_EMU * aspectRatio);
-
-      const children: InstanceType<typeof Paragraph>[] = [];
-
-      // ── Logo header ──
-      if (logoRes?.ok) {
-        const logoBuf = await logoRes.arrayBuffer();
-        children.push(
-          new Paragraph({
-            alignment: AlignmentType.CENTER,
-            spacing: { after: 200 },
-            children: [
-              new ImageRun({
-                data: logoBuf,
-                transformation: { width: 120, height: 120 },
-                type: "jpg",
-              }),
-            ],
-          })
-        );
-      }
-
-      // ── Company name ──
-      children.push(
-        new Paragraph({
-          heading: HeadingLevel.HEADING_1,
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 100 },
-          children: [new TextRun({ text: "الجود للسياحة والسفر", bold: true, size: 40, color: "1e3a5f" })],
-        }),
-        new Paragraph({
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 300 },
-          children: [new TextRun({ text: "AL JUDE Travel & Tourism", size: 24, color: "6b7280" })],
-        }),
-
-        // ── Destination title ──
-        new Paragraph({
-          heading: HeadingLevel.HEADING_2,
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 400 },
-          children: [
-            new TextRun({ text: `${currentPage.titleAr}  —  ${currentPage.title}`, bold: true, size: 32, color: "1e3a5f" }),
-          ],
-        }),
-
-        // ── Dashboard image ──
-        new Paragraph({
-          alignment: AlignmentType.CENTER,
-          spacing: { after: 500 },
-          children: [
-            new ImageRun({
-              data: dashImgBuf,
-              transformation: { width: Math.round(A4_WIDTH_EMU / 9525), height: Math.round(dashImgHeight / 9525) },
-              type: "jpg",
-            }),
-          ],
-        }),
-
-        // ── Editable notes section ──
-        new Paragraph({
-          heading: HeadingLevel.HEADING_3,
-          spacing: { before: 400, after: 200 },
-          children: [new TextRun({ text: "ملاحظات الموظف / Employee Notes", bold: true, size: 28, color: "374151" })],
-        }),
-        new Paragraph({
-          spacing: { after: 200 },
-          children: [new TextRun({ text: "يمكنك تعديل هذا القسم وإضافة ملاحظاتك هنا..." , color: "9ca3af", italics: true })],
-        }),
-        new Paragraph({ children: [new TextRun("")] }),
-        new Paragraph({ children: [new TextRun("")] }),
-        new Paragraph({ children: [new TextRun("")] }),
-
-        // ── Footer ──
-        new Paragraph({
-          alignment: AlignmentType.CENTER,
-          spacing: { before: 600 },
-          children: [
-            new TextRun({
-              text: `وثيقة داخلية — الجود للسياحة والسفر — ${new Date().toLocaleDateString("ar-SA")}`,
-              size: 18,
-              color: "9ca3af",
-              italics: true,
-            }),
-          ],
-        }),
-      );
-
-      const doc = new Document({
-        sections: [
-          {
-            properties: {
-              page: {
-                margin: { top: 720, bottom: 720, left: 900, right: 900 },
-              },
-            },
-            children,
-          },
-        ],
-      });
-
-      const blob = await Packer.toBlob(doc);
-      saveAs(blob, `${currentPage.titleAr} - الجود للسياحة والسفر.docx`);
-    } catch (err) {
-      console.error("Word download failed:", err);
-      alert("تعذّر إنشاء ملف Word. يرجى المحاولة مرة أخرى.");
-    } finally {
-      if (hideEl) hideEl.remove();
-    }
+  const handleWordDownload = useCallback(() => {
+    if (!currentPage) return;
+    const a = document.createElement("a");
+    a.href = `/api/pages/${currentPage.slug}/word`;
+    a.download = `${currentPage.titleAr} - الجود للسياحة والسفر.doc`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }, [currentPage]);
 
-  const handlePdfDownload = useCallback(async () => {
-    if (!currentPage || !iframeRef.current) return;
-    setPdfLoading(true);
-
-    const HIDE_CSS = `
-      .settings,.settings-grid,.controls-bar,.controls-inner,.formula,
-      .breakdown,.bar,
-      .s-box:has(#ticket),.s-box:has(#transport),.s-box:has(#profit),
-      .s-box:has(#pct),.s-box:has(#rate),
-      .ctrl-label,.ctrl-input,.divider,.calc-btn,
-      .no-print,.admin-note,.note-internal,
-      [data-print="hide"],.controls-inner .currency-toggle { display:none!important; }
-    `;
-
-    const iframeDoc = iframeRef.current.contentDocument;
-    let hideEl: HTMLStyleElement | null = null;
-
-    try {
-      if (!iframeDoc) throw new Error("Cannot access dashboard content");
-
-      hideEl = iframeDoc.createElement("style");
-      hideEl.id = "aljude-pdf-hide";
-      hideEl.textContent = HIDE_CSS;
-      iframeDoc.head.appendChild(hideEl);
-
-      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
-        import("html2canvas"),
-        import("jspdf"),
-      ]);
-
-      const body = iframeDoc.body;
-      const fullHeight = body.scrollHeight;
-      const fullWidth = body.scrollWidth;
-
-      const canvas = await html2canvas(body, {
-        useCORS: true,
-        allowTaint: true,
-        scale: 1.5,
-        windowWidth: Math.max(fullWidth, 1200),
-        windowHeight: fullHeight,
-        scrollX: 0,
-        scrollY: 0,
-        width: fullWidth,
-        height: fullHeight,
-      });
-
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-      const imgData = canvas.toDataURL("image/jpeg", 0.93);
-      const imgTotalH = (canvas.height * pageW) / canvas.width;
-
-      let remainingH = imgTotalH;
-      let pageIdx = 0;
-      while (remainingH > 0) {
-        if (pageIdx > 0) pdf.addPage();
-        const srcY = pageIdx * pageH;
-        pdf.addImage(imgData, "JPEG", 0, -srcY, pageW, imgTotalH);
-        remainingH -= pageH;
-        pageIdx++;
-      }
-
-      pdf.save(`${currentPage.titleAr} - الجود للسياحة والسفر.pdf`);
-    } catch (err) {
-      console.error("PDF generation failed:", err);
-      alert("تعذّر إنشاء ملف PDF. يرجى المحاولة مرة أخرى.");
-    } finally {
-      if (hideEl) hideEl.remove();
-      setPdfLoading(false);
-    }
+  const handlePdfDownload = useCallback(() => {
+    if (!currentPage) return;
+    const url = `/api/pages/${currentPage.slug}?print=1`;
+    window.open(url, "_blank");
   }, [currentPage]);
 
   const handleWhatsApp = useCallback(() => {
@@ -545,40 +320,28 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
             {/* PDF download */}
             <button
               onClick={handlePdfDownload}
-              disabled={pdfLoading || !currentPage}
+              disabled={!currentPage}
               className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
-                background: pdfLoading || !currentPage
+                background: !currentPage
                   ? "rgba(220,38,38,0.2)"
                   : "linear-gradient(135deg, #dc2626, #b91c1c)",
                 color: "white",
                 fontFamily: "Cairo, Tajawal, Arial, sans-serif",
                 border: "1px solid rgba(239,68,68,0.3)",
-                boxShadow: pdfLoading || !currentPage ? "none" : "0 2px 10px rgba(220,38,38,0.3)",
-                cursor: pdfLoading || !currentPage ? "not-allowed" : "pointer",
-                opacity: pdfLoading || !currentPage ? 0.6 : 1,
-                minWidth: "110px",
+                boxShadow: !currentPage ? "none" : "0 2px 10px rgba(220,38,38,0.3)",
+                cursor: !currentPage ? "not-allowed" : "pointer",
+                opacity: !currentPage ? 0.6 : 1,
               }}
-              title="تحميل كملف PDF — البيانات الداخلية مخفية والشعار مضمّن"
+              title="تحميل كملف PDF — يفتح نافذة الطباعة لحفظ الملف"
             >
-              {pdfLoading ? (
-                <>
-                  <svg className="animate-spin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
-                  </svg>
-                  <span>جاري الإنشاء...</span>
-                </>
-              ) : (
-                <>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                    <polyline points="14,2 14,8 20,8"/>
-                    <line x1="12" y1="18" x2="12" y2="12"/>
-                    <polyline points="9,15 12,18 15,15"/>
-                  </svg>
-                  <span>تحميل PDF</span>
-                </>
-              )}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+                <line x1="12" y1="18" x2="12" y2="12"/>
+                <polyline points="9,15 12,18 15,15"/>
+              </svg>
+              <span>تحميل PDF</span>
             </button>
 
             {/* Word download */}

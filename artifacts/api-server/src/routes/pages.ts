@@ -347,6 +347,62 @@ function buildPageInject(logoSrc: string): string {
     });
   };
 
+  /* ── Settings persistence (localStorage save/restore) ── */
+  var _settingsRestored = false;
+  (function() {
+    var SLUG = location.pathname.split('/').filter(Boolean).pop() || 'page';
+    var KEY  = 'aljude_settings_v1_' + SLUG;
+
+    var SKIP_RE = /^(srch|searchInput|f-name|f-phone|f-dest|f-type|f-msg|cnt|grid|pgrid|cardsGrid|packagesGrid|notesGrid|hotelCount|hotelGrid|periodBadge|toursTableBody|tourPackagesGrid|transfersGrid|detailPanel|form-success|pill-active|pill-pax|pill-cur|adj-val)$/;
+
+    function getFields() {
+      return Array.from(document.querySelectorAll('input[id], select[id]'))
+        .filter(function(el) {
+          var t = (el.type || '').toLowerCase();
+          return t !== 'button' && t !== 'submit' && t !== 'hidden' && !SKIP_RE.test(el.id);
+        });
+    }
+
+    window.aljudeSaveSettings = function() {
+      var data = {};
+      getFields().forEach(function(el) {
+        data[el.id] = (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value;
+      });
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e) {}
+    };
+
+    window.aljudeRestoreSettings = function() {
+      var saved;
+      try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(e) { return; }
+      if (!saved) return;
+
+      getFields().forEach(function(el) {
+        if (!(el.id in saved)) return;
+        if (el.type === 'checkbox' || el.type === 'radio') { el.checked = !!saved[el.id]; }
+        else { el.value = saved[el.id]; }
+      });
+
+      /* trigger recalculation — try every known function name across all dashboards */
+      var fns = ['calculate','recalcAll','renderAll','render','renderCards','renderCard',
+                 'renderGrids','renderGrid','renderPackages','updateBottomBar',
+                 'renderOutTable','onPeriodChange','renderPax'];
+      fns.forEach(function(fn) { try { if (typeof window[fn]==='function') window[fn](); } catch(e){} });
+
+      /* fallback: fire change events so inline onchange/oninput handlers fire */
+      getFields().forEach(function(el) {
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+        el.dispatchEvent(new Event('input',  { bubbles: true }));
+      });
+    };
+
+    /* save on every user interaction */
+    document.addEventListener('change', window.aljudeSaveSettings, true);
+    document.addEventListener('input', function(e) {
+      var t = e.target && e.target.tagName;
+      if (t === 'INPUT' || t === 'SELECT') window.aljudeSaveSettings();
+    }, true);
+  })();
+
   /* ── Inject export toolbars into hotel/package cards ── */
   function injectCardToolbars() {
     var cards = document.querySelectorAll('.card, .hotel-card, .pkg-card, .dcard, [data-export-card]');
@@ -382,18 +438,22 @@ function buildPageInject(logoSrc: string): string {
   function runAll() {
     injectCardToolbars();
     injectGeorgiaToolbar();
+    if (!_settingsRestored) {
+      _settingsRestored = true;
+      window.aljudeRestoreSettings && window.aljudeRestoreSettings();
+    }
   }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(runAll, 600);
-      setTimeout(runAll, 1800);
-      setTimeout(runAll, 4000);
+      setTimeout(runAll, 800);
+      setTimeout(runAll, 2000);
+      setTimeout(runAll, 4500);
     });
   } else {
-    setTimeout(runAll, 600);
-    setTimeout(runAll, 1800);
-    setTimeout(runAll, 4000);
+    setTimeout(runAll, 800);
+    setTimeout(runAll, 2000);
+    setTimeout(runAll, 4500);
   }
 
   /* Observe DOM mutations for dynamically rendered cards */

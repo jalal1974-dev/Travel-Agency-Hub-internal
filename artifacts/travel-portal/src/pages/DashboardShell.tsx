@@ -85,57 +85,9 @@ export default function DashboardShell({ activePage }: DashboardShellProps) {
   }, [currentPage]);
 
   // ─── Full Page PDF ─────────────────────────────────────────────────────────────
-  const handlePdfDownload = useCallback(async () => {
+  const handlePdfDownload = useCallback(() => {
     if (!currentPage) return;
-    setExportLoading("pdf");
-    try {
-      const { default: html2canvas } = await import("html2canvas");
-      const { default: jsPDF } = await import("jspdf");
-      const iframe = iframeRef.current;
-      if (!iframe?.contentDocument) throw new Error("iframe not ready");
-      const doc = iframe.contentDocument;
-      const body = doc.body;
-
-      const style = doc.createElement("style");
-      style.id = "__export_hide__";
-      style.textContent = EXPORT_HIDE_CSS;
-      doc.head.appendChild(style);
-
-      const canvas = await html2canvas(body, {
-        useCORS: true,
-        allowTaint: true,
-        scale: 1.5,
-        windowWidth: 1280,
-        windowHeight: body.scrollHeight,
-        scrollX: 0,
-        scrollY: 0,
-        width: body.scrollWidth,
-        height: body.scrollHeight,
-        backgroundColor: "#0f172a",
-      });
-
-      doc.head.removeChild(style);
-
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-      const imgData = canvas.toDataURL("image/jpeg", 0.92);
-      const imgTotalH = (canvas.height * pageW) / canvas.width;
-      let remaining = imgTotalH;
-      let idx = 0;
-      while (remaining > 0) {
-        if (idx > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, -(idx * pageH), pageW, imgTotalH);
-        remaining -= pageH;
-        idx++;
-      }
-      pdf.save(`${currentPage.titleAr} - الجود للسياحة والسفر.pdf`);
-    } catch (err) {
-      console.error("PDF failed:", err);
-      alert("تعذّر إنشاء ملف PDF. يرجى المحاولة مرة أخرى.");
-    } finally {
-      setExportLoading(null);
-    }
+    window.open(`/api/pages/${currentPage.slug}?print=1`, "_blank");
   }, [currentPage]);
 
   // ─── Full Page PPTX ────────────────────────────────────────────────────────────

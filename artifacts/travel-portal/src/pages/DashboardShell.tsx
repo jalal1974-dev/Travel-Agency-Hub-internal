@@ -58,23 +58,170 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
   }, []);
 
   const handleWordDownload = useCallback(async () => {
-    if (!currentPage) return;
+    if (!currentPage || !iframeRef.current) return;
+
+    const HIDE_CSS = `
+      .settings,.settings-grid,.controls-bar,.controls-inner,.formula,
+      .breakdown,.bar,
+      .s-box:has(#ticket),.s-box:has(#transport),.s-box:has(#profit),
+      .s-box:has(#pct),.s-box:has(#rate),
+      .ctrl-label,.ctrl-input,.divider,.calc-btn,
+      .no-print,.admin-note,.note-internal,
+      [data-print="hide"],.controls-inner .currency-toggle { display:none!important; }
+    `;
+
+    const iframeDoc = iframeRef.current.contentDocument;
+    let hideEl: HTMLStyleElement | null = null;
+
     try {
-      const res = await fetch(`/api/pages/${currentPage.slug}/word`, {
-        credentials: "include",
+      if (!iframeDoc) throw new Error("Cannot access dashboard");
+
+      hideEl = iframeDoc.createElement("style");
+      hideEl.id = "aljude-word-hide";
+      hideEl.textContent = HIDE_CSS;
+      iframeDoc.head.appendChild(hideEl);
+
+      const [
+        { default: html2canvas },
+        { Document, Paragraph, ImageRun, TextRun, AlignmentType, HeadingLevel, Packer },
+        { saveAs },
+        logoRes,
+      ] = await Promise.all([
+        import("html2canvas"),
+        import("docx"),
+        import("file-saver"),
+        fetch("/api/logo", { credentials: "include" }).catch(() => null),
+      ]);
+
+      // Capture full dashboard
+      const body = iframeDoc.body;
+      const canvas = await html2canvas(body, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 1.5,
+        windowWidth: Math.max(body.scrollWidth, 1200),
+        windowHeight: body.scrollHeight,
+        scrollX: 0,
+        scrollY: 0,
+        width: body.scrollWidth,
+        height: body.scrollHeight,
       });
-      if (!res.ok) throw new Error("Not authenticated or server error");
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${currentPage.title} - الجود للسياحة والسفر.doc`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      const dashImgBlob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("canvas blob failed"))), "image/jpeg", 0.92);
+      });
+      const dashImgBuf = await dashImgBlob.arrayBuffer();
+
+      // A4 at 96 dpi: 794 × 1123 px — we use EMU (914400 EMU = 1 inch, A4 usable width ≈ 6.27 inch)
+      const A4_WIDTH_EMU = 5748_300; // ~6.27 inches in EMU
+      const aspectRatio = canvas.height / canvas.width;
+      const dashImgHeight = Math.round(A4_WIDTH_EMU * aspectRatio);
+
+      const children: InstanceType<typeof Paragraph>[] = [];
+
+      // ── Logo header ──
+      if (logoRes?.ok) {
+        const logoBuf = await logoRes.arrayBuffer();
+        children.push(
+          new Paragraph({
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 200 },
+            children: [
+              new ImageRun({
+                data: logoBuf,
+                transformation: { width: 120, height: 120 },
+                type: "jpg",
+              }),
+            ],
+          })
+        );
+      }
+
+      // ── Company name ──
+      children.push(
+        new Paragraph({
+          heading: HeadingLevel.HEADING_1,
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 100 },
+          children: [new TextRun({ text: "الجود للسياحة والسفر", bold: true, size: 40, color: "1e3a5f" })],
+        }),
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 300 },
+          children: [new TextRun({ text: "AL JUDE Travel & Tourism", size: 24, color: "6b7280" })],
+        }),
+
+        // ── Destination title ──
+        new Paragraph({
+          heading: HeadingLevel.HEADING_2,
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 400 },
+          children: [
+            new TextRun({ text: `${currentPage.titleAr}  —  ${currentPage.title}`, bold: true, size: 32, color: "1e3a5f" }),
+          ],
+        }),
+
+        // ── Dashboard image ──
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 500 },
+          children: [
+            new ImageRun({
+              data: dashImgBuf,
+              transformation: { width: Math.round(A4_WIDTH_EMU / 9525), height: Math.round(dashImgHeight / 9525) },
+              type: "jpg",
+            }),
+          ],
+        }),
+
+        // ── Editable notes section ──
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          spacing: { before: 400, after: 200 },
+          children: [new TextRun({ text: "ملاحظات الموظف / Employee Notes", bold: true, size: 28, color: "374151" })],
+        }),
+        new Paragraph({
+          spacing: { after: 200 },
+          children: [new TextRun({ text: "يمكنك تعديل هذا القسم وإضافة ملاحظاتك هنا..." , color: "9ca3af", italics: true })],
+        }),
+        new Paragraph({ children: [new TextRun("")] }),
+        new Paragraph({ children: [new TextRun("")] }),
+        new Paragraph({ children: [new TextRun("")] }),
+
+        // ── Footer ──
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 600 },
+          children: [
+            new TextRun({
+              text: `وثيقة داخلية — الجود للسياحة والسفر — ${new Date().toLocaleDateString("ar-SA")}`,
+              size: 18,
+              color: "9ca3af",
+              italics: true,
+            }),
+          ],
+        }),
+      );
+
+      const doc = new Document({
+        sections: [
+          {
+            properties: {
+              page: {
+                margin: { top: 720, bottom: 720, left: 900, right: 900 },
+              },
+            },
+            children,
+          },
+        ],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      saveAs(blob, `${currentPage.titleAr} - الجود للسياحة والسفر.docx`);
     } catch (err) {
       console.error("Word download failed:", err);
+      alert("تعذّر إنشاء ملف Word. يرجى المحاولة مرة أخرى.");
+    } finally {
+      if (hideEl) hideEl.remove();
     }
   }, [currentPage]);
 

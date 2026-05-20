@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malaysia Packages — DMC Pricing Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F7F5F0; --surface: #FFFFFF; --surface2: #F0EDE6;
+    --border: rgba(0,0,0,0.09); --border-med: rgba(0,0,0,0.15);
+    --text: #1A1814; --text-sec: #6B6760; --text-ter: #9E9B96;
+    --accent: #1D4E8F; --accent-light: #E8EFF8;
+    --honey: #B8620A; --honey-bg: #FDF3E7;
+    --family: #2E6B3E; --family-bg: #EBF5EE;
+    --gold: #C4920F; --gold-bg: #FDF7E4;
+    --radius: 14px; --radius-sm: 8px;
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+  body.ar { font-family: 'Cairo', sans-serif; direction: rtl; }
+
+  /* Header */
+  .header { background: var(--text); color: #fff; padding: 1.5rem 2.5rem; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .header-left h1 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; }
+  body.ar .header-left h1 { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.3rem; }
+  .header-left h1 em { font-style: italic; color: #C9B97A; }
+  body.ar .header-left h1 em { font-style: normal; }
+  .header-left p { font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .toggle-group { display: flex; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; overflow: hidden; }
+  .toggle-group button { padding: 5px 16px; font-size: 12px; font-family: inherit; border: none; cursor: pointer; background: transparent; color: rgba(255,255,255,0.6); transition: all 0.2s; }
+  .toggle-group button.active { background: rgba(255,255,255,0.15); color: #fff; font-weight: 600; }
+
+  /* Main */
+  .main { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* Summary */
+  .summary-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem 1.25rem; }
+  .stat-label { font-size: 10px; color: var(--text-ter); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  body.ar .stat-label { letter-spacing: 0; font-size: 11px; text-transform: none; }
+  .stat-val { font-size: 1.4rem; font-weight: 600; color: var(--text); }
+  .stat-sub { font-size: 11px; color: var(--text-ter); margin-top: 1px; }
+
+  /* Toolbar */
+  .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .toolbar-label { font-size: 11px; color: var(--text-ter); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 4px; }
+  body.ar .toolbar-label { letter-spacing: 0; text-transform: none; margin-right: 0; margin-left: 4px; font-size: 12px; }
+  .filter-btn { padding: 5px 14px; font-size: 12px; font-family: inherit; border: 1px solid var(--border-med); border-radius: 999px; background: var(--surface); color: var(--text-sec); cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--text); color: #fff; border-color: var(--text); font-weight: 600; }
+  .divider { width: 1px; height: 20px; background: var(--border-med); margin: 0 4px; }
+
+  /* Cards */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .pkg-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s; display: flex; flex-direction: column; }
+  .pkg-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .pkg-card.selected { border: 2px solid var(--accent); box-shadow: var(--shadow-lg); }
+  .card-top { padding: 1.25rem 1.25rem 1rem; border-bottom: 1px solid var(--border); }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+  .badge-honey { background: var(--honey-bg); color: var(--honey); }
+  .badge-family { background: var(--family-bg); color: var(--family); }
+  .badge-5star { background: var(--gold-bg); color: var(--gold); }
+  .badge-4star { background: var(--surface2); color: var(--text-sec); }
+  .badge-nights { background: var(--accent-light); color: var(--accent); }
+  .card-title { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.35; margin-bottom: 4px; }
+  .card-ref { font-size: 11px; color: var(--text-ter); }
+  .card-route { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .route-stop { padding: 2px 8px; background: var(--surface2); border-radius: 4px; font-size: 11px; color: var(--text-sec); }
+  .route-arrow { color: var(--text-ter); font-size: 12px; }
+  .card-price-row { display: flex; align-items: flex-end; justify-content: space-between; padding: 1rem 1.25rem; }
+  .price-label-sm { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-ter); font-weight: 500; margin-bottom: 2px; }
+  body.ar .price-label-sm { letter-spacing: 0; text-transform: none; font-size: 11px; }
+  .price-main { font-size: 1.75rem; font-weight: 600; color: var(--text); line-height: 1; }
+  .price-sub { font-size: 10px; color: var(--text-ter); margin-top: 3px; }
+  .expand-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--text-sec); font-size: 18px; transition: transform 0.25s, background 0.2s; flex-shrink: 0; }
+  .selected .expand-icon { background: var(--accent); color: #fff; transform: rotate(45deg); }
+
+  /* Expanded */
+  .card-expanded { display: none; border-top: 1px solid var(--border); animation: slideDown 0.2s ease; }
+  .selected .card-expanded { display: block; }
+  @keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+  .exp-section { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
+  .exp-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-ter); font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  body.ar .exp-section-label { letter-spacing: 0; text-transform: none; font-size: 11px; }
+  .exp-section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .hotel-rows { display: flex; flex-direction: column; gap: 6px; }
+  .hotel-row { display: flex; gap: 8px; font-size: 12px; align-items: flex-start; }
+  .hotel-nights-badge { background: var(--surface2); color: var(--text-sec); border-radius: 4px; padding: 1px 6px; font-size: 10px; font-weight: 500; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
+  .hotel-name { font-weight: 500; color: var(--text); font-size: 12px; }
+  .hotel-room { color: var(--text-ter); font-size: 11px; }
+  .incl-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .incl-tag { background: var(--surface2); color: var(--text-sec); font-size: 11px; padding: 3px 8px; border-radius: 4px; }
+  .gifts-line { font-size: 11px; color: var(--honey); margin-top: 8px; }
+  .pricing-grid { display: flex; flex-direction: column; gap: 8px; }
+  .pricing-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .pricing-row-label { font-size: 12px; color: var(--text-sec); display: flex; align-items: center; gap: 6px; flex: 1; }
+  .pricing-row-label svg { width: 14px; height: 14px; opacity: 0.5; flex-shrink: 0; }
+  .price-input { width: 120px; padding: 6px 10px; font-size: 13px; font-family: inherit; border: 1px solid var(--border-med); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); text-align: right; transition: border-color 0.15s; outline: none; }
+  body.ar .price-input { text-align: left; }
+  .price-input:focus { border-color: var(--accent); }
+  .price-input::placeholder { color: var(--text-ter); }
+  .base-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-sec); padding: 4px 0; }
+  .base-row-val { font-weight: 500; }
+  .total-section { padding: 1rem 1.25rem; background: linear-gradient(135deg, var(--accent) 0%, #0D3A72 100%); display: flex; align-items: center; justify-content: space-between; }
+  .total-label { font-size: 12px; color: rgba(255,255,255,0.7); }
+  .total-val { font-size: 1.5rem; font-weight: 600; color: #fff; }
+  .optional-notice { padding: 10px 1.25rem; background: var(--surface2); font-size: 11px; color: var(--text-ter); line-height: 1.7; display: flex; gap: 6px; }
+  .optional-notice svg { flex-shrink: 0; margin-top: 2px; }
+  .hint-bar { text-align: center; font-size: 12px; color: var(--text-ter); padding: 1rem 0; }
+
+  @media (max-width: 600px) {
+    .header { padding: 1.25rem; }
+    .main { padding: 1rem 1rem 3rem; }
+    .summary-bar { grid-template-columns: repeat(2, 1fr); }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <h1>🇲🇾 <span id="h-title">Malaysia — <em>Holiday Packages</em></span></h1>
+    <p id="h-sub">DMC pricing dashboard · Select a package to calculate your selling price</p>
+  </div>
+  <div class="header-right">
+    <div class="toggle-group">
+      <button id="btn-en" class="active" onclick="setLang('en',this)">EN</button>
+      <button id="btn-ar" onclick="setLang('ar',this)">ع</button>
+    </div>
+    <div class="toggle-group">
+      <button id="btn-jod" class="active" onclick="setCurrency('JOD',this)">JOD</button>
+      <button id="btn-usd" onclick="setCurrency('USD',this)">USD</button>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="summary-bar" id="summary-bar"></div>
+  <div class="toolbar" id="toolbar"></div>
+  <div class="cards-grid" id="cards"></div>
+  <div class="hint-bar" id="hint"></div>
+</main>
+
+<script>
+const JOD_USD = 1.41;
+let currency = 'JOD', lang = 'en', activeFilter = 'all', selectedId = null;
+const extras = {};
+
+const T = {
+  hTitle:      {en:'Malaysia — <em>Holiday Packages</em>', ar:'ماليزيا — <em>برامج سياحية</em>'},
+  hSub:        {en:'DMC pricing dashboard · Select a package to calculate your selling price', ar:'لوحة تسعير الموزع · اختر برنامجاً لحساب سعر البيع'},
+  statPkgs:    {en:'Total packages', ar:'إجمالي البرامج'},
+  statPkgSub:  {en:'5 honeymoon · 4 family', ar:'5 شهر عسل · 4 عائلي'},
+  statRange:   {en:'Price range', ar:'نطاق الأسعار'},
+  statDur:     {en:'Duration', ar:'المدة'},
+  statDurSub:  {en:'nights', ar:'ليالٍ'},
+  statHotel:   {en:'Hotel class', ar:'فئة الفنادق'},
+  statHotelSub:{en:'all packages', ar:'جميع البرامج'},
+  statFlight:  {en:'Intl. flights', ar:'الطيران الدولي'},
+  statFlightVal:{en:'Not incl.', ar:'غير مشمول'},
+  statFlightSub:{en:'add ticket cost below', ar:'أضف تكلفة التذكرة أدناه'},
+  filterLabel: {en:'Filter', ar:'تصفية'},
+  fAll:        {en:'All (9)', ar:'الكل (9)'},
+  fHoney:      {en:'Honeymoon', ar:'شهر العسل'},
+  fFamily:     {en:'Family', ar:'عائلي'},
+  f7:          {en:'7 nights', ar:'7 ليالٍ'},
+  f8:          {en:'8 nights', ar:'8 ليالٍ'},
+  f5:          {en:'5★', ar:'5 نجوم'},
+  f4:          {en:'4★', ar:'4 نجوم'},
+  bHoney:      {en:'Honeymoon', ar:'شهر عسل'},
+  bFamily:     {en:'Family', ar:'عائلي'},
+  ref:         {en:'Ref', ar:'رقم'},
+  dmc:         {en:'DMC base price / person', ar:'سعر الموزع الأساسي / شخص'},
+  inclSub:     {en:'incl. internal flights · hotels · transfers · taxes', ar:'يشمل الطيران الداخلي · الفنادق · النقل · الضرائب'},
+  sHotels:     {en:'Hotels', ar:'الفنادق'},
+  sIncl:       {en:'Package includes', ar:'البرنامج يشمل'},
+  sGifts:      {en:'Gifts & extras', ar:'هدايا وخدمات إضافية'},
+  sCalc:       {en:'Price calculator (JOD per person)', ar:'حاسبة الأسعار (دينار أردني للشخص)'},
+  baseLabel:   {en:'DMC base (incl. internal flights)', ar:'السعر الأساسي (يشمل الطيران الداخلي)'},
+  ticket:      {en:'International ticket cost', ar:'تكلفة تذكرة الطيران الدولي'},
+  profit:      {en:'Profit margin', ar:'هامش الربح'},
+  visa:        {en:'Visa cost (if applicable)', ar:'تكلفة التأشيرة (إن وجدت)'},
+  totalLabel:  {en:'Total selling price per person', ar:'إجمالي سعر البيع للشخص'},
+  optional:    {en:'All daily tours, excursions & activities are optional — arranged through DMC & paid separately. City tax (10 RM/room/night) paid directly at the hotel.',
+                ar:'جميع الجولات والأنشطة اليومية اختيارية — تُرتَّب عن طريق الموزع وتُدفع بشكل منفصل. ضريبة المدينة (10 رنجت/غرفة/ليلة) تُدفع في الفندق.'},
+  hint:        {en:'↑ Click any card to open the pricing calculator', ar:'↑ انقر على أي بطاقة لفتح حاسبة التسعير'},
+  nights:      {en:'N', ar:'ل'},
+  jodPP:       {en:'JOD per person', ar:'دينار أردني للشخص'},
+  usdPP:       {en:'USD per person', ar:'دولار أمريكي للشخص'},
+};
+function L(key) { return T[key] ? T[key][lang] : key; }
+
+const packages = [
+  { id:1, ref:'492993', stars:5, nights:8, type:'honeymoon',
+    title_en:'Selangor · Langkawi · KL — Deluxe Honeymoon',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — شهر عسل ديلوكس',
+    baseJOD:859,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Sun Way Resort Selangor', rm_en:'Deluxe', rm_ar:'ديلوكس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:4, hotel:'Westin Spa Langkawi',      rm_en:'Sea-view + Private pool villa (2N each)', rm_ar:'إطلالة بحرية + فيلا مسبح خاص (ليلتان لكل)'},
+      {en:'KL',      ar:'ك.لمبور', n:2, hotel:'Pullman KL City Centre',   rm_en:'Deluxe', rm_ar:'ديلوكس'},
+    ],
+    incl_en:['Hotels B&B','Internal flights','Private driver','Airport transfers','Taxes & service','SIM card','Flexible itinerary'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي','سائق خاص','نقل مطار','ضرائب وخدمة','شريحة اتصال','إمكانية تعديل البرنامج'],
+    gifts_en:'Floral welcome · Honeymoon room decoration · Floating breakfast at pool',
+    gifts_ar:'استقبال بالورود · تزيين غرفة شهر العسل · إفطار عائم في المسبح',
+  },
+  { id:2, ref:'492703', stars:5, nights:7, type:'honeymoon',
+    title_en:'Selangor · Langkawi · KL — Honeymoon 5★',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — شهر عسل 5 نجوم',
+    baseJOD:636,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Sun Way Lagoon Hotel',       rm_en:'Deluxe plus',     rm_ar:'ديلوكس بلس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:3, hotel:'The Ritz-Carlton Langkawi',  rm_en:'Studio sea-view', rm_ar:'استوديو مطل على البحر'},
+      {en:'KL',      ar:'ك.لمبور', n:2, hotel:'Imperial Lex KL',            rm_en:'Executive pool',  rm_ar:'Executive pool'},
+    ],
+    incl_en:['Hotels B&B','Internal flights','Private driver','Airport transfers','Taxes & service','SIM card','Flexible itinerary'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي','سائق خاص','نقل مطار','ضرائب وخدمة','شريحة اتصال','إمكانية تعديل البرنامج'],
+    gifts_en:'Floral welcome · Floating breakfast at pool',
+    gifts_ar:'استقبال بالورود · إفطار عائم في المسبح',
+  },
+  { id:3, ref:'492988', stars:5, nights:8, type:'honeymoon',
+    title_en:'Selangor · Langkawi · KL — Honeymoon Beach',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — شهر عسل شاطئي',
+    baseJOD:758,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Sun Way Resort Selangor',    rm_en:'Deluxe',          rm_ar:'ديلوكس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:3, hotel:'The Ritz-Carlton Langkawi',  rm_en:'Studio sea-view', rm_ar:'استوديو مطل على البحر'},
+      {en:'KL',      ar:'ك.لمبور', n:3, hotel:'Imperial Lex KL',            rm_en:'Executive pool',  rm_ar:'Executive pool'},
+    ],
+    incl_en:['Hotels B&B','Internal flights','Private driver','Airport transfers','Taxes & service','SIM card','Flexible itinerary'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي','سائق خاص','نقل مطار','ضرائب وخدمة','شريحة اتصال','إمكانية تعديل البرنامج'],
+    gifts_en:'Floral welcome · Honeymoon room decoration',
+    gifts_ar:'استقبال بالورود · تزيين غرفة شهر العسل',
+  },
+  { id:4, ref:'492965', stars:5, nights:7, type:'honeymoon',
+    title_en:'KL · Langkawi · KL — Honeymoon City Start',
+    title_ar:'كوالالمبور · لنكاوي · كوالالمبور — شهر عسل من العاصمة',
+    baseJOD:847,
+    hotels:[
+      {en:'KL',      ar:'ك.لمبور', n:1, hotel:'Stripes Hotel KL',           rm_en:'Deluxe plus',                       rm_ar:'ديلوكس بلس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:4, hotel:'Westin Spa Langkawi',        rm_en:'Sea-view (2N) + Pool villa (2N)',    rm_ar:'إطلالة بحرية (2ل) + فيلا مسبح خاص (2ل)'},
+      {en:'KL',      ar:'ك.لمبور', n:2, hotel:'Pullman KL City Centre',     rm_en:'Deluxe',                            rm_ar:'ديلوكس'},
+    ],
+    incl_en:['Hotels B&B','Internal flights','Private driver','Airport transfers','Taxes & service','SIM card','Floating breakfast'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي','سائق خاص','نقل مطار','ضرائب وخدمة','شريحة اتصال','إفطار عائم في المسبح'],
+    gifts_en:'Floral welcome · Floating breakfast · Romantic decoration + free cake at Westin',
+    gifts_ar:'استقبال بالورود · إفطار عائم · تزيين رومانسي + قطعة كيك مجانية في ويستن',
+  },
+  { id:5, ref:'492998', stars:4, nights:8, type:'honeymoon',
+    title_en:'Selangor · Langkawi · KL — Honeymoon 4★',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — شهر عسل 4 نجوم',
+    baseJOD:560,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Snow-Y Pyramid Hotel',           rm_en:'Deluxe',           rm_ar:'ديلوكس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:3, hotel:'Aloft Langkawi Pantai Tengah',   rm_en:'Sea-view room',    rm_ar:'غرفة مطلة على البحر'},
+      {en:'KL',      ar:'ك.لمبور', n:3, hotel:'Capri Bay Frazer Bukit Nanas',   rm_en:'Executive studio', rm_ar:'استوديو تنفيذي'},
+    ],
+    incl_en:['Hotels B&B','Internal flights','Private driver','Airport transfers','Taxes & service','SIM card','Flexible itinerary'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي','سائق خاص','نقل مطار','ضرائب وخدمة','شريحة اتصال','إمكانية تعديل البرنامج'],
+    gifts_en:'Floral welcome · Honeymoon room decoration',
+    gifts_ar:'استقبال بالورود · تزيين غرفة شهر العسل',
+  },
+  { id:6, ref:'492981', stars:4, nights:7, type:'honeymoon',
+    title_en:'Selangor · Langkawi · KL — Honeymoon Budget 4★',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — شهر عسل اقتصادي 4 نجوم',
+    baseJOD:503,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Snow-Y Pyramid Hotel',           rm_en:'Deluxe',           rm_ar:'ديلوكس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:3, hotel:'Aloft Langkawi Pantai Tengah',   rm_en:'Sea-view room',    rm_ar:'غرفة مطلة على البحر'},
+      {en:'KL',      ar:'ك.لمبور', n:2, hotel:'Capri Bay Frazer Bukit Nanas',   rm_en:'Executive studio', rm_ar:'استوديو تنفيذي'},
+    ],
+    incl_en:['Hotels B&B','Internal flights','Private driver','Airport transfers','Taxes & service','SIM card'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي','سائق خاص','نقل مطار','ضرائب وخدمة','شريحة اتصال'],
+    gifts_en:'Floral welcome · Romantic room decoration at Capri',
+    gifts_ar:'استقبال بالورود · تزيين رومانسي في فندق كابري',
+  },
+  { id:7, ref:'492698', stars:5, nights:7, type:'family',
+    title_en:'Selangor · Langkawi · KL — Family 5★ (4 adults)',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — عائلي 5 نجوم (4 بالغين)',
+    baseJOD:450,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Snow-Y Pyramid Hotel',        rm_en:'2 deluxe rooms',          rm_ar:'غرفتان ديلوكس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:3, hotel:'The Ritz-Carlton Langkawi',   rm_en:'Premier 2-bed family suite', rm_ar:'جناح عائلي بغرفتي نوم'},
+      {en:'KL',      ar:'ك.لمبور', n:2, hotel:'Imperial Lex KL',             rm_en:'2-suite apartment',       rm_ar:'شقة بجناحين'},
+    ],
+    incl_en:['Hotels B&B','Internal flights (4 pax)','Private driver','Airport transfers','Taxes & service','SIM cards'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي (4 أشخاص)','سائق خاص','نقل مطار','ضرائب وخدمة','شرائح اتصال'],
+    gifts_en:'Floral welcome at arrival',
+    gifts_ar:'استقبال بالورود عند الوصول',
+  },
+  { id:8, ref:'492576', stars:5, nights:8, type:'family',
+    title_en:'Selangor · Langkawi · KL — Family 5★ Beach (4 adults)',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — عائلي شاطئي 5 نجوم (4 بالغين)',
+    baseJOD:562,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Sun Way Resort Selangor',    rm_en:'2 deluxe rooms',          rm_ar:'غرفتان ديلوكس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:3, hotel:'The Ritz-Carlton Langkawi',  rm_en:'Premier 2-bed family suite', rm_ar:'جناح عائلي بغرفتي نوم'},
+      {en:'KL',      ar:'ك.لمبور', n:3, hotel:'Pullman KL City Centre',     rm_en:'2-suite apartment',       rm_ar:'شقة بجناحين'},
+    ],
+    incl_en:['Hotels B&B','Internal flights (4 pax)','Private driver','Airport transfers','Taxes & service','SIM cards'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي (4 أشخاص)','سائق خاص','نقل مطار','ضرائب وخدمة','شرائح اتصال'],
+    gifts_en:'Floral welcome at arrival',
+    gifts_ar:'استقبال بالورود عند الوصول',
+  },
+  { id:9, ref:'492677', stars:4, nights:7, type:'family',
+    title_en:'Selangor · Langkawi · KL — Family 4★ (4 adults)',
+    title_ar:'سيلانجور · لنكاوي · كوالالمبور — عائلي 4 نجوم (4 بالغين)',
+    baseJOD:404,
+    hotels:[
+      {en:'Selangor',ar:'سيلانجور', n:2, hotel:'Snow-Y Pyramid Hotel',    rm_en:'2 deluxe plus rooms', rm_ar:'غرفتان ديلوكس بلس'},
+      {en:'Langkawi',ar:'لنكاوي',  n:3, hotel:'Phyto Bay Langkawi',      rm_en:'Premier sea-view',    rm_ar:'بريمير إطلالة بحرية'},
+      {en:'KL',      ar:'ك.لمبور', n:2, hotel:'Royal Signature Hotel',   rm_en:'Deluxe',              rm_ar:'ديلوكس'},
+    ],
+    incl_en:['Hotels B&B','Internal flights (4 pax)','Private driver','Airport transfers','Taxes & service','SIM cards'],
+    incl_ar:['فنادق مع إفطار','طيران داخلي (4 أشخاص)','سائق خاص','نقل مطار','ضرائب وخدمة','شرائح اتصال'],
+    gifts_en:'Floral welcome at arrival',
+    gifts_ar:'استقبال بالورود عند الوصول',
+  },
+];
+
+function fmt(v) {
+  v = parseFloat(v)||0;
+  return currency==='JOD'
+    ? v.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD'
+    : '$'+Math.round(v*JOD_USD).toLocaleString('en');
+}
+function getTotal(p) {
+  return p.baseJOD+(parseFloat(extras['t_'+p.id])||0)+(parseFloat(extras['p_'+p.id])||0)+(parseFloat(extras['v_'+p.id])||0);
+}
+function filtered() {
+  return packages.filter(p=>{
+    if(activeFilter==='honeymoon') return p.type==='honeymoon';
+    if(activeFilter==='family')    return p.type==='family';
+    if(activeFilter==='7nights')   return p.nights===7;
+    if(activeFilter==='8nights')   return p.nights===8;
+    if(activeFilter==='5star')     return p.stars===5;
+    if(activeFilter==='4star')     return p.stars===4;
+    return true;
+  });
+}
+
+function renderHeader() {
+  document.getElementById('h-title').innerHTML = L('hTitle');
+  document.getElementById('h-sub').textContent  = L('hSub');
+}
+
+function renderSummary() {
+  const ps = filtered(), prices = ps.map(p=>p.baseJOD);
+  const lo = Math.min(...prices)||0, hi = Math.max(...prices)||0;
+  const rangeStr = currency==='JOD' ? lo+'–'+hi : '$'+Math.round(lo*JOD_USD)+'–$'+Math.round(hi*JOD_USD);
+  document.getElementById('summary-bar').innerHTML = `
+    <div class="stat-card"><div class="stat-label">${L('statPkgs')}</div><div class="stat-val">9</div><div class="stat-sub">${L('statPkgSub')}</div></div>
+    <div class="stat-card"><div class="stat-label">${L('statRange')}</div><div class="stat-val">${rangeStr}</div><div class="stat-sub">${currency==='JOD'?L('jodPP'):L('usdPP')}</div></div>
+    <div class="stat-card"><div class="stat-label">${L('statDur')}</div><div class="stat-val">7–8</div><div class="stat-sub">${L('statDurSub')}</div></div>
+    <div class="stat-card"><div class="stat-label">${L('statHotel')}</div><div class="stat-val">4–5★</div><div class="stat-sub">${L('statHotelSub')}</div></div>
+    <div class="stat-card"><div class="stat-label">${L('statFlight')}</div><div class="stat-val">${L('statFlightVal')}</div><div class="stat-sub">${L('statFlightSub')}</div></div>`;
+}
+
+function renderToolbar() {
+  const filters=[
+    {k:'all',l:L('fAll')},{k:'honeymoon',l:L('fHoney')},{k:'family',l:L('fFamily')},null,
+    {k:'7nights',l:L('f7')},{k:'8nights',l:L('f8')},null,
+    {k:'5star',l:L('f5')},{k:'4star',l:L('f4')},
+  ];
+  document.getElementById('toolbar').innerHTML=
+    `<span class="toolbar-label">${L('filterLabel')}</span>`+
+    filters.map(f=>f===null?'<div class="divider"></div>'
+      :`<button class="filter-btn${activeFilter===f.k?' active':''}" onclick="setFilter('${f.k}')">${f.l}</button>`
+    ).join('');
+}
+
+function cardHTML(p) {
+  const sel = selectedId===p.id;
+  const title  = lang==='ar'?p.title_ar:p.title_en;
+  const arrow  = lang==='ar'?'←':'→';
+  const typeBadge = p.type==='honeymoon'
+    ?`<span class="badge badge-honey">♡ ${L('bHoney')}</span>`
+    :`<span class="badge badge-family">⌂ ${L('bFamily')}</span>`;
+  const starBadge = p.stars===5
+    ?`<span class="badge badge-5star">★ 5</span>`
+    :`<span class="badge badge-4star">★ 4</span>`;
+  const nightsBadge=`<span class="badge badge-nights">${p.nights} ${lang==='ar'?'ليالٍ':'nights'}</span>`;
+  const route = p.hotels.map(h=>`<span class="route-stop">${lang==='ar'?h.ar:h.en}</span>`).join(`<span class="route-arrow">${arrow}</span>`);
+  const hotelRows = p.hotels.map(h=>`
+    <div class="hotel-row">
+      <span class="hotel-nights-badge">${h.n}${L('nights')}</span>
+      <div class="hotel-info">
+        <div class="hotel-name">${h.hotel}</div>
+        <div class="hotel-room">${lang==='ar'?h.rm_ar:h.rm_en}</div>
+      </div>
+    </div>`).join('');
+  const incl = (lang==='ar'?p.incl_ar:p.incl_en).map(i=>`<span class="incl-tag">${i}</span>`).join('');
+  const gifts = lang==='ar'?p.gifts_ar:p.gifts_en;
+  const tv=extras['t_'+p.id]||'', pv=extras['p_'+p.id]||'', vv=extras['v_'+p.id]||'';
+
+  const expanded = sel?`
+    <div class="card-expanded">
+      <div class="exp-section">
+        <div class="exp-section-label">${L('sHotels')}</div>
+        <div class="hotel-rows">${hotelRows}</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-section-label">${L('sIncl')}</div>
+        <div class="incl-tags">${incl}</div>
+        <div class="gifts-line">🎁 ${gifts}</div>
+      </div>
+      <div class="exp-section">
+        <div class="exp-section-label">${L('sCalc')}</div>
+        <div class="pricing-grid">
+          <div class="base-row"><span>${L('baseLabel')}</span><span class="base-row-val">${fmt(p.baseJOD)}</span></div>
+          <div class="pricing-row">
+            <label class="pricing-row-label" for="t-${p.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 12 19.79 19.79 0 01.25 3.5 2 2 0 012.22 1H5.18a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15A16 16 0 0013 14.23l.62-.62a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              ${L('ticket')}
+            </label>
+            <input class="price-input" type="number" id="t-${p.id}" placeholder="0" min="0" value="${tv}" oninput="upd('t_${p.id}',this.value,${p.id})">
+          </div>
+          <div class="pricing-row">
+            <label class="pricing-row-label" for="p-${p.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              ${L('profit')}
+            </label>
+            <input class="price-input" type="number" id="p-${p.id}" placeholder="0" min="0" value="${pv}" oninput="upd('p_${p.id}',this.value,${p.id})">
+          </div>
+          <div class="pricing-row">
+            <label class="pricing-row-label" for="v-${p.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              ${L('visa')}
+            </label>
+            <input class="price-input" type="number" id="v-${p.id}" placeholder="0" min="0" value="${vv}" oninput="upd('v_${p.id}',this.value,${p.id})">
+          </div>
+        </div>
+      </div>
+      <div class="total-section">
+        <span class="total-label">${L('totalLabel')}</span>
+        <span class="total-val" id="total-${p.id}">${fmt(getTotal(p))}</span>
+      </div>
+      <div class="optional-notice">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        ${L('optional')}
+      </div>
+    </div>` : '';
+
+  return `
+    <div class="pkg-card${sel?' selected':''}" id="card-${p.id}" onclick="toggleCard(${p.id})">
+      <div class="card-top">
+        <div class="card-badges">${typeBadge}${starBadge}${nightsBadge}</div>
+        <div class="card-title">${title}</div>
+        <div class="card-ref">${L('ref')} ${p.ref}</div>
+        <div class="card-route">${route}</div>
+      </div>
+      <div class="card-price-row">
+        <div>
+          <div class="price-label-sm">${L('dmc')}</div>
+          <div class="price-main">${fmt(p.baseJOD)}</div>
+          <div class="price-sub">${L('inclSub')}</div>
+        </div>
+        <div class="expand-icon">+</div>
+      </div>
+      ${expanded}
+    </div>`;
+}
+
+function renderCards() {
+  const f = filtered();
+  document.getElementById('cards').innerHTML = f.length?f.map(cardHTML).join(''):'<div style="padding:2rem;color:var(--text-ter);font-size:14px">—</div>';
+  document.getElementById('hint').textContent = L('hint');
+  document.getElementById('hint').style.display = selectedId?'none':'block';
+}
+
+function renderAll() { renderHeader(); renderSummary(); renderToolbar(); renderCards(); }
+
+function toggleCard(id) { selectedId=(selectedId===id)?null:id; renderCards(); }
+function upd(key,val,id){ extras[key]=val; const el=document.getElementById('total-'+id); if(el) el.textContent=fmt(getTotal(packages.find(p=>p.id===id))); }
+function setCurrency(cur,btn){ currency=cur; document.querySelectorAll('.toggle-group button').forEach(b=>{if(b.id==='btn-jod'||b.id==='btn-usd') b.classList.remove('active');}); btn.classList.add('active'); renderAll(); }
+function setFilter(f){ activeFilter=f; renderSummary(); renderToolbar(); renderCards(); }
+function setLang(l,btn){
+  lang=l;
+  document.body.classList.toggle('ar',l==='ar');
+  document.documentElement.setAttribute('lang',l);
+  document.documentElement.setAttribute('dir',l==='ar'?'rtl':'ltr');
+  document.querySelectorAll('.toggle-group button').forEach(b=>{if(b.id==='btn-en'||b.id==='btn-ar') b.classList.remove('active');});
+  btn.classList.add('active');
+  renderAll();
+}
+
+renderAll();
+</script>
+</body>
+</html>

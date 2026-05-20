@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏖️ الجود — تسعير أنطاليا</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+  :root {
+    --gold: #c9a84c; --dark: #0a1628; --card: #111e35;
+    --border: rgba(201,168,76,0.2); --text: #e8e0d0; --text2: #a0a8b8;
+    --green: #22c55e; --blue: #60a5fa; --purple: #c084fc;
+    --orange: #fb923c; --red: #f87171; --teal: #2dd4bf;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Cairo', sans-serif; background: var(--dark); color: var(--text); min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg,#0a1628,#111e35); border-bottom: 2px solid var(--gold); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .header h1 { font-size: 18px; font-weight: 800; color: var(--gold); }
+  .header small { font-size: 11px; color: var(--text2); display: block; }
+  .validity { background: rgba(248,113,113,.15); border: 1px solid rgba(248,113,113,.35); border-radius: 8px; padding: 5px 12px; font-size: 11px; color: var(--red); font-weight: 700; }
+
+  .settings { background: #0d1a2e; border-bottom: 1px solid var(--border); padding: 14px 20px; }
+  .settings-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(145px,1fr)); gap: 10px; margin-bottom: 10px; }
+  .s-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .s-label { font-size: 10px; color: var(--text2); font-weight: 700; margin-bottom: 5px; }
+  .s-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; color: var(--text); font-family: 'Cairo',sans-serif; font-size: 13px; outline: none; }
+  .s-input:focus { border-color: var(--gold); }
+
+  .cur-note { background: rgba(45,212,191,.07); border: 1px solid rgba(45,212,191,.2); border-radius: 8px; padding: 8px 14px; font-size: 11px; color: var(--teal); line-height: 2; margin-bottom: 10px; }
+  .cur-note b { color: #fff; }
+
+  .formula { background: rgba(201,168,76,0.07); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 11px; color: var(--text2); line-height: 2; margin-bottom: 10px; }
+  .formula b { color: var(--gold); }
+  .calc-btn { width: 100%; background: var(--gold); color: #0a1628; border: none; border-radius: 10px; padding: 11px; font-family: 'Cairo',sans-serif; font-size: 15px; font-weight: 800; cursor: pointer; }
+  .calc-btn:hover { opacity: 0.88; }
+
+  /* AREA TABS */
+  .area-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); background: #0a1628; overflow-x: auto; }
+  .area-tab { padding: 10px 18px; border: none; background: transparent; color: var(--text2); font-family: 'Cairo',sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all .2s; }
+  .area-tab.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(201,168,76,.06); }
+  .area-tab:hover:not(.active) { color: var(--text); background: rgba(255,255,255,.04); }
+  .area-cnt { background: rgba(201,168,76,.15); color: var(--gold); border-radius: 10px; padding: 1px 7px; font-size: 10px; margin-right: 5px; }
+
+  .filters { padding: 10px 20px; background: #0a1628; border-bottom: 1px solid var(--border); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .f-input { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px; color: var(--text); font-family: 'Cairo',sans-serif; font-size: 13px; outline: none; }
+  .star-btns { display: flex; gap: 6px; }
+  .star-btn { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; color: var(--text2); font-size: 12px; cursor: pointer; transition: all .15s; }
+  .star-btn.active { background: var(--gold); color: #0a1628; font-weight: 800; border-color: var(--gold); }
+  .cnt { color: var(--text2); font-size: 12px; margin-right: auto; }
+
+  .grid-wrap { padding: 16px 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(360px,1fr)); gap: 14px; }
+
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: transform .2s, box-shadow .2s; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+
+  .card-head { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+  .card-name { font-size: 13px; font-weight: 700; }
+  .card-meta { font-size: 10px; color: var(--text2); margin-top: 2px; }
+  .card-stars { font-size: 11px; color: #f59e0b; margin-top: 2px; }
+  .card-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .card-num { background: rgba(201,168,76,.15); color: var(--gold); font-size: 11px; font-weight: 700; border-radius: 6px; padding: 3px 8px; }
+  .basis-badge { font-size: 10px; font-weight: 700; border-radius: 6px; padding: 2px 7px; }
+  .basis-uall { background: rgba(34,197,94,.15); color: var(--green); }
+  .basis-all { background: rgba(96,165,250,.15); color: var(--blue); }
+  .basis-ai { background: rgba(251,146,60,.15); color: var(--orange); }
+  .cur-chip { font-size: 10px; border-radius: 5px; padding: 2px 6px; font-weight: 700; }
+  .cur-eur { background: rgba(192,132,252,.2); color: var(--purple); }
+  .cur-usd { background: rgba(34,197,94,.15); color: var(--green); }
+
+  .periods-wrap { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .periods-title { font-size: 10px; color: var(--text2); font-weight: 700; margin-bottom: 8px; }
+  .col-header { display: grid; grid-template-columns: 1.8fr 0.8fr 0.7fr 0.7fr 0.7fr; gap: 4px; padding: 0 8px; margin-bottom: 4px; }
+  .col-header span { font-size: 9px; color: var(--text2); font-weight: 700; text-align: center; }
+  .col-header span:first-child { text-align: right; }
+  .period-row { display: grid; grid-template-columns: 1.8fr 0.8fr 0.7fr 0.7fr 0.7fr; gap: 4px; align-items: center; padding: 5px 8px; border-radius: 8px; cursor: pointer; transition: background .15s; border: 1px solid transparent; font-size: 11px; margin-bottom: 4px; }
+  .period-row:hover { background: rgba(201,168,76,.08); }
+  .period-row.selected { background: rgba(201,168,76,.12); border-color: var(--gold); }
+  .period-row .p-dates { color: var(--text2); font-size: 10px; }
+  .period-row .p-orig { font-size: 10px; text-align: center; }
+  .period-row .p-orig.eur { color: var(--purple); }
+  .period-row .p-orig.usd { color: var(--green); }
+  .period-row .p-dbl { color: var(--green); font-weight: 700; text-align: center; }
+  .period-row .p-sng { color: #f59e0b; font-weight: 700; text-align: center; }
+  .period-row .p-trp { color: var(--blue); font-weight: 700; text-align: center; }
+
+  .calc-section { padding: 12px 16px; }
+  .calc-title { font-size: 11px; color: var(--text2); font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .calc-title span { color: var(--gold); }
+
+  .price-boxes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .p-box { border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .p-box.sgl { background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.3); }
+  .p-box.dbl { background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.3); }
+  .p-box.tpl { background: rgba(96,165,250,.08); border: 1px solid rgba(96,165,250,.3); }
+  .p-box-type { font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+  .p-box.sgl .p-box-type { color: #f59e0b; }
+  .p-box.dbl .p-box-type { color: var(--green); }
+  .p-box.tpl .p-box-type { color: var(--blue); }
+  .p-box-orig { font-size: 10px; color: var(--text2); margin-bottom: 3px; }
+  .p-box-usd { font-size: 10px; color: var(--text2); margin-bottom: 3px; }
+  .p-full { font-size: 16px; font-weight: 800; }
+  .p-box.sgl .p-full { color: #f59e0b; }
+  .p-box.dbl .p-full { color: var(--green); }
+  .p-box.tpl .p-full { color: var(--blue); }
+  .p-label { font-size: 9px; color: var(--text2); margin-top: 1px; }
+
+  .child-box { background: rgba(192,132,252,.08); border: 1px solid rgba(192,132,252,.3); border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .child-box-label { font-size: 11px; color: var(--purple); font-weight: 700; }
+  .child-box-price { font-size: 15px; font-weight: 800; color: var(--purple); }
+
+  .breakdown { font-size: 10px; color: var(--text2); background: rgba(0,0,0,.2); border-radius: 8px; padding: 8px 10px; line-height: 2; margin-bottom: 10px; }
+  .breakdown b { color: var(--text); }
+
+  .wa-btn { width: 100%; background: #25d366; border: none; border-radius: 8px; padding: 9px; color: white; font-family: 'Cairo',sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .wa-btn:hover { opacity: .9; }
+  .no-period { color: var(--text2); font-size: 12px; text-align: center; padding: 20px; }
+  .ask-sale { color: var(--orange); font-size: 12px; text-align: center; padding: 16px; background: rgba(251,146,60,.06); border-radius: 8px; margin: 10px 16px; }
+
+  .bar { background: #0d1a2e; border-top: 1px solid var(--border); padding: 10px 20px; display: flex; gap: 16px; flex-wrap: wrap; position: sticky; bottom: 0; z-index: 99; }
+  .bar-item { font-size: 11px; color: var(--text2); }
+  .bar-item b { color: var(--gold); }
+
+  @media(max-width:600px){
+    .grid { grid-template-columns: 1fr; }
+    .settings-grid { grid-template-columns: 1fr 1fr; }
+    .price-boxes { grid-template-columns: 1fr 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>🏖️ لوحة تسعير أنطاليا</h1>
+    <small id="hotel-count-sub">فنادق متعددة • الأسعار لكل شخص/ليلة باليورو أو الدولار</small>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <div style="font-size:12px;color:var(--gold);font-weight:700">الجود للسياحة والسفر</div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="settings">
+  <div class="settings-grid">
+    <div class="s-box">
+      <div class="s-label">🗓️ عدد الليالي</div>
+      <input class="s-input" id="nights" type="number" value="7" min="1" max="30">
+    </div>
+    <div class="s-box">
+      <div class="s-label">✈️ تذكرة الشارتر (JOD)</div>
+      <input class="s-input" id="ticket" type="number" value="199" min="0">
+    </div>
+    <div class="s-box">
+      <div class="s-label">🚌 المواصلات (JOD)</div>
+      <input class="s-input" id="transport" type="number" value="20" min="0">
+    </div>
+    <div class="s-box">
+      <div class="s-label">💰 ربح ثابت للشخص (JOD)</div>
+      <input class="s-input" id="profit" type="number" value="30" min="0">
+    </div>
+    <div class="s-box">
+      <div class="s-label">📊 نسبة ربح إضافية (%)</div>
+      <input class="s-input" id="pct" type="number" value="0" min="0" max="50">
+    </div>
+    <div class="s-box" style="border-color:rgba(34,197,94,.3)">
+      <div class="s-label" style="color:var(--green)">💱 سعر الصرف USD ← JOD</div>
+      <input class="s-input" id="rateUsd" type="number" value="0.71" step="0.001" min="0.1">
+    </div>
+    <div class="s-box" style="border-color:rgba(192,132,252,.3)">
+      <div class="s-label" style="color:var(--purple)">💱 سعر الصرف EUR ← JOD</div>
+      <input class="s-input" id="rateEur" type="number" value="0.79" step="0.001" min="0.1">
+    </div>
+  </div>
+
+  <div class="cur-note">
+    <b>💡 تحويل العملات:</b> أسعار اليورو (€) تُحوَّل → JOD باستخدام سعر EUR/JOD &nbsp;|&nbsp; أسعار الدولار ($) تُحوَّل → JOD باستخدام سعر USD/JOD
+    <br>النتيجة النهائية دائماً بالدينار الأردني (JOD) ويمكنك رؤية السعر الأصلي داخل كل فندق
+  </div>
+
+  <div class="formula">
+    <div>🏨 <b>باقة كاملة للشخص =</b> (سعر الشخص × ليالي × سعر الصرف) + تذكرة + مواصلات + ربح ثابت ثم × (1 + نسبة%)</div>
+    <div>🛏️ <b>فندق فقط للشخص =</b> (سعر الشخص × ليالي × سعر الصرف) + مواصلات</div>
+    <div style="color:var(--purple)">💡 الفنادق ذات PPD واحد: DBL = سعر الشخص في غرفة مزدوجة | SNG = DBL × 1.6 | TPL = DBL × 0.9</div>
+  </div>
+  <button class="calc-btn" onclick="renderAll()">🔄 احسب وحدّث كل الأسعار</button>
+</div>
+
+<!-- AREA TABS -->
+<div class="area-tabs" id="area-tabs"></div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <input class="f-input" id="srch" placeholder="🔍 ابحث عن فندق..." oninput="renderAll()" style="min-width:200px">
+  <div class="star-btns">
+    <button class="star-btn active" onclick="setStar('all',this)">الكل</button>
+    <button class="star-btn" onclick="setStar(5,this)">5⭐</button>
+    <button class="star-btn" onclick="setStar(4,this)">4⭐</button>
+  </div>
+  <span class="cnt" id="cnt">0 فندق</span>
+</div>
+
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="bar">
+  <div class="bar-item">⭐ <b id="b-total">0</b> فندق</div>
+  <div class="bar-item">💱 USD/JOD: <b id="b-usd">—</b></div>
+  <div class="bar-item">💱 EUR/JOD: <b id="b-eur">—</b></div>
+  <div class="bar-item">🗓️ <b id="b-nights">—</b> ليالي</div>
+  <div class="bar-item">✈️ تذكرة: <b id="b-ticket">—</b> JOD</div>
+  <div class="bar-item">🚌 مواصلات: <b id="b-trans">—</b> JOD</div>
+  <div class="bar-item">💰 ربح: <b id="b-profit">—</b> JOD</div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// ANTALYA HOTELS DATA
+// ppd = price per person per night (in stated currency)
+// If hotel has SGL/DBL/TRP separately they are listed
+// If only DBL: SGL = DBL*1.6, TPL = DBL*0.9
+// ════════════════════════════════════════════════════════════
+const HOTELS = [
+
+// ─── ANTALYA CITY CENTER & LARA & KUNDU ─────────────────
+{
+  area: 'Lara & Kundu', name: 'Grand Park Lara', stars: 5, basis: 'UALL', cur: 'EUR',
+  childFree: true,
+  periods: [
+    { dates: '01.05–10.05', ppd: 65 },
+    { dates: '11.05–20.05', ppd: 76 },
+    { dates: '21.05–13.06', ppd: 88 },
+    { dates: '14.06–03.07', ppd: 105 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Grand Park Lara (YCB)', stars: 5, basis: 'UALL', cur: 'EUR',
+  childFree: true,
+  note: 'بيانات YCB',
+  periods: [
+    { dates: '05.05–10.05', ppd: 67 },
+    { dates: '11.05–20.05', ppd: 78 },
+    { dates: '21.05–13.06', ppd: 90 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Limak Lara', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–14.99',
+  periods: [
+    { dates: '05.05–08.05', ppd: 95 },
+    { dates: '09.05–16.05', ppd: 115 },
+    { dates: '17.05–25.05', ppd: 120 },
+    { dates: '26.05–31.05', ppd: 140 },
+    { dates: '01.06–14.06', ppd: 173 },
+    { dates: '15.06–30.06', ppd: 189 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Wyndham Garden Lara', stars: 5, basis: 'UALL', cur: 'EUR',
+  childFree: true,
+  periods: [
+    { dates: '01.05–08.05', ppd: 59 },
+    { dates: '09.05–15.05', ppd: 67 },
+    { dates: '16.05–22.05', ppd: 73 },
+    { dates: '23.05–30.05', ppd: 80 },
+    { dates: '31.05–12.06', ppd: 85 },
+    { dates: '13.06–19.06', ppd: 91 },
+    { dates: '20.06–03.07', ppd: 96 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Ramada Resort Lara', stars: 5, basis: 'UALL', cur: 'EUR',
+  childFree: true,
+  periods: [
+    { dates: '01.05–08.05', ppd: 65 },
+    { dates: '09.05–15.05', ppd: 74 },
+    { dates: '16.05–22.05', ppd: 81 },
+    { dates: '23.05–30.05', ppd: 88 },
+    { dates: '31.05–12.06', ppd: 94 },
+    { dates: '13.06–19.06', ppd: 101 },
+    { dates: '20.06–03.07', ppd: 106 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Titanic Deluxe Lara', stars: 5, basis: 'UALL', cur: 'EUR',
+  childFree: true,
+  periods: [
+    { dates: '01.05–20.05', ppd: 138 },
+    { dates: '21.05–05.06', ppd: 198 },
+    { dates: '06.06–30.06', ppd: 210 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Ducale Lara', stars: 5, basis: 'UALL', cur: 'EUR',
+  periods: [
+    { dates: '01.05–22.05', ppd: 84 },
+    { dates: '23.05–31.05', ppd: 121 },
+    { dates: '01.06–15.06', ppd: 137 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Dima Biz', stars: 5, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '01.05–21.05', ppd: 60 },
+    { dates: '22.05–31.05', ppd: 62 },
+    { dates: '01.06–05.06', ppd: 76 },
+    { dates: '06.06–15.06', ppd: 87 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Grand Ring', stars: 4, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '01.05–09.05', ppd: 41 },
+    { dates: '10.05–15.05', ppd: 46 },
+    { dates: '16.05–22.05', ppd: 51 },
+    { dates: '23.05–31.05', ppd: 59 },
+    { dates: '01.06–10.06', ppd: 71 },
+    { dates: '11.06–20.06', ppd: 86 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Swandor Topkapi Palace', stars: 5, basis: 'UALL', cur: 'EUR',
+  periods: [
+    { dates: '03.05–23.05', ppd: 89 },
+    { dates: '24.05–06.06', ppd: 115 },
+    { dates: '07.06–21.06', ppd: 122 },
+    { dates: '22.06–28.06', ppd: 147 },
+    { dates: '29.06–28.08', ppd: 171 }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'IC Green Palace', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–11.99',
+  periods: [
+    { dates: '05.05–10.05', ppd: 113, sng: 198, trp: null },
+    { dates: '11.05–21.05', ppd: 133, sng: 266, trp: null },
+    { dates: '22.05–31.05', ppd: 152, sng: 304, trp: null },
+    { dates: '01.06–19.06', ppd: 176, sng: 352, trp: null }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Royal Holiday Palace', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–06.99',
+  periods: [
+    { dates: '01.05–17.05', ppd: 136, sng: 204, trp: null },
+    { dates: '18.05–03.06', ppd: 163, sng: 245, trp: null },
+    { dates: '04.06–04.07', ppd: 194, sng: 291, trp: null }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Royal Seginus', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–06.99',
+  periods: [
+    { dates: '01.05–17.05', ppd: 140, sng: 210, trp: null },
+    { dates: '18.05–03.06', ppd: 167, sng: 251, trp: null },
+    { dates: '04.06–04.07', ppd: 194, sng: 291, trp: null }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Royal Wings', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–06.99',
+  periods: [
+    { dates: '01.05–15.05', ppd: 107, sng: 161, trp: null },
+    { dates: '16.05–05.06', ppd: 149, sng: 224, trp: null },
+    { dates: '06.06–20.06', ppd: 160, sng: 240, trp: null }
+  ]
+},
+{
+  area: 'Lara & Kundu', name: 'Cender Hotel', stars: 4, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '05.05–14.05', ppd: null, prices: { sng: 50, dbl: 37, trp: 34 } },
+    { dates: '15.05–23.05', ppd: null, prices: { sng: 57, dbl: 43, trp: 38 } },
+    { dates: '16.05–14.06', ppd: 45, sng: 68, trp: null },
+    { dates: '15.06–30.06', ppd: 53, sng: 80, trp: null }
+  ]
+},
+
+// ─── BELEK ───────────────────────────────────────────────
+{
+  area: 'Belek', name: 'Aydinbey Famous Resort', stars: 5, basis: 'ALL', cur: 'EUR',
+  childNote: '00–12.99',
+  periods: [
+    { dates: '05.05–10.05', ppd: 45, sng: 90, trp: 124 },
+    { dates: '11.05–23.05', ppd: 51, sng: 102, trp: 140 },
+    { dates: '24.05–31.05', ppd: 73, sng: 146, trp: 201 },
+    { dates: '01.06–05.06', ppd: 88, sng: 176, trp: 242 },
+    { dates: '06.06–21.06', ppd: 87, sng: 174, trp: 239 }
+  ]
+},
+{
+  area: 'Belek', name: 'Aydinbey Queen Palace', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–12.99',
+  periods: [
+    { dates: '05.05–10.05', ppd: 45, sng: 90, trp: 124 },
+    { dates: '11.05–23.05', ppd: 50, sng: 100, trp: 138 },
+    { dates: '24.05–05.06', ppd: 70, sng: 140, trp: 193 },
+    { dates: '06.06–21.06', ppd: 85, sng: 170, trp: 234 }
+  ]
+},
+{
+  area: 'Belek', name: 'Granada Luxury Belek', stars: 5, basis: 'UAI', cur: 'EUR',
+  childNote: '00–12.99',
+  periods: [
+    { dates: '01.05–22.05', ppd: 134 },
+    { dates: '23.05–22.06', ppd: 170 },
+    { dates: '23.06–13.07', ppd: 194 }
+  ]
+},
+{
+  area: 'Belek', name: 'Orange County Belek', stars: 5, basis: 'UALL', cur: 'EUR',
+  periods: [
+    { dates: '01.05–10.05', ppd: 64 },
+    { dates: '11.05–22.05', ppd: 68 },
+    { dates: '23.05–24.05', ppd: 98 },
+    { dates: '25.05–31.05', ppd: 100 },
+    { dates: '01.06–07.06', ppd: 99 },
+    { dates: '08.06–12.06', ppd: 122 },
+    { dates: '13.06–14.06', ppd: 118 },
+    { dates: '15.06–28.06', ppd: 121 }
+  ]
+},
+{
+  area: 'Belek', name: 'Selectum Family Resort Belek', stars: 5, basis: 'UALL', cur: 'USD',
+  childFree: true,
+  periods: [
+    { dates: '05.05–17.05', ppd: 68, sng: 102, trp: 184 },
+    { dates: '18.05–22.05', ppd: 68, sng: 102, trp: 184 },
+    { dates: '23.05–04.06', ppd: 103, sng: 155, trp: 278 },
+    { dates: '05.06–14.06', ppd: 117, sng: 176, trp: 316 }
+  ]
+},
+{
+  area: 'Belek', name: 'Eldar Garden Hotel', stars: 4, basis: 'UAI', cur: 'EUR',
+  periods: [
+    { dates: '28.04–31.05', ppd: 50, sng: 80, trp: 135 },
+    { dates: '01.06–30.06', ppd: 75, sng: 120, trp: 203 }
+  ]
+},
+{
+  area: 'Belek', name: 'Eldar Resort Hotel', stars: 4, basis: 'UAI', cur: 'EUR',
+  periods: [
+    { dates: '05.05–10.05', ppd: 75, sng: 120, trp: 203 },
+    { dates: '11.05–17.05', ppd: 85, sng: 136, trp: 230 },
+    { dates: '18.05–25.05', ppd: 95, sng: 152, trp: 257 },
+    { dates: '26.05–31.05', ppd: 105, sng: 168, trp: 284 },
+    { dates: '01.06–14.06', ppd: 115, sng: 184, trp: 311 },
+    { dates: '15.06–26.06', ppd: 130, sng: 208, trp: 351 }
+  ]
+},
+{
+  area: 'Belek', name: 'Sunland Resort Hotel', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–06.99',
+  periods: [
+    { dates: '05.05–22.05', ppd: 80, sng: 120, trp: 216 },
+    { dates: '24.05–04.06', ppd: 129, sng: 194, trp: 348 },
+    { dates: '05.06–14.06', ppd: 109, sng: 164, trp: 294 },
+    { dates: '15.06–30.06', ppd: 118, sng: 177, trp: 319 }
+  ]
+},
+
+// ─── KEMER ───────────────────────────────────────────────
+{
+  area: 'Kemer', name: 'Orange County Kemer', stars: 5, basis: 'UALL', cur: 'EUR',
+  periods: [
+    { dates: '07.05–10.05', ppd: 64 },
+    { dates: '11.05–17.05', ppd: 65 },
+    { dates: '18.05–22.05', ppd: 70 },
+    { dates: '23.05–24.05', ppd: 98 },
+    { dates: '25.05–31.05', ppd: 100 },
+    { dates: '01.06–07.06', ppd: 101 },
+    { dates: '08.06–14.06', ppd: 104 },
+    { dates: '15.06–28.06', ppd: 124 }
+  ]
+},
+{
+  area: 'Kemer', name: 'Dosinia Luxury', stars: 5, basis: 'UALL', cur: 'EUR',
+  periods: [
+    { dates: '01.05–09.05', ppd: 67 },
+    { dates: '10.05–22.05', ppd: 75 },
+    { dates: '23.05–10.06', ppd: 87 },
+    { dates: '11.06–20.06', ppd: 103 },
+    { dates: '21.06–03.07', ppd: 117 }
+  ]
+},
+{
+  area: 'Kemer', name: 'Transatlantic Hotel', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–11.99',
+  periods: [
+    { dates: '01.05–15.05', ppd: 65, sng: 117, trp: 176 },
+    { dates: '16.05–31.05', ppd: 70, sng: 126, trp: 189 },
+    { dates: '01.06–10.06', ppd: 85, sng: 153, trp: 230 },
+    { dates: '11.06–20.06', ppd: 104, sng: 187, trp: 281 }
+  ]
+},
+{
+  area: 'Kemer', name: 'Miarosa Kemer Beach', stars: 5, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '05.05–31.05', ppd: 80 },
+    { dates: '01.06–30.06', ppd: 100 }
+  ]
+},
+{
+  area: 'Kemer', name: 'Queens Park Göynük', stars: 5, basis: 'UALL', cur: 'EUR',
+  note: 'Club Standard Room',
+  periods: [
+    { dates: '10.05–24.05', ppd: 52 },
+    { dates: '25.05–31.05', ppd: 80 },
+    { dates: '01.06–07.06', ppd: 90 },
+    { dates: '08.06–16.06', ppd: 95 }
+  ]
+},
+{
+  area: 'Kemer', name: 'Ma Biche Kemer', stars: 5, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '05.05–10.05', ppd: 80 },
+    { dates: '11.05–17.05', ppd: 100 },
+    { dates: '18.05–25.05', ppd: 105 },
+    { dates: '26.05–31.05', ppd: 130 },
+    { dates: '01.06–14.06', ppd: 145 }
+  ]
+},
+{
+  area: 'Kemer', name: 'Crystal Boutique', stars: 5, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '05.05–10.05', ppd: 80 },
+    { dates: '11.05–17.05', ppd: 100 },
+    { dates: '18.05–24.05', ppd: 105 },
+    { dates: '25.05–30.05', ppd: 130 }
+  ]
+},
+
+// ─── ALANYA & SIDE ───────────────────────────────────────
+{
+  area: 'Alanya & Side', name: 'Crystal Admiral', stars: 5, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '05.05–23.05', ppd: 35, sng: 70, trp: 96 },
+    { dates: '24.05–31.05', ppd: 50, sng: 100, trp: 138 },
+    { dates: '01.06–05.06', ppd: 55, sng: 110, trp: 151 },
+    { dates: '06.06–21.06', ppd: 65, sng: 130, trp: 179 },
+    { dates: '22.06–05.07', ppd: 70, sng: 140, trp: 193 }
+  ]
+},
+{
+  area: 'Alanya & Side', name: 'Crystal Sunset', stars: 5, basis: 'ALL', cur: 'EUR',
+  periods: [
+    { dates: '05.05–23.05', ppd: 35, sng: 70, trp: 96 },
+    { dates: '24.05–31.05', ppd: 50, sng: 100, trp: 138 },
+    { dates: '01.06–05.06', ppd: 55, sng: 110, trp: 151 },
+    { dates: '06.06–21.06', ppd: 65, sng: 130, trp: 179 },
+    { dates: '22.06–05.07', ppd: 70, sng: 140, trp: 193 }
+  ]
+},
+{
+  area: 'Alanya & Side', name: 'Kirman Arycanda De Luxe', stars: 5, basis: 'UALL', cur: 'EUR',
+  periods: [
+    { dates: '28.04–30.04', ppd: 77, sng: 116, trp: 208 },
+    { dates: '01.05–22.05', ppd: 95, sng: 143, trp: 257 },
+    { dates: '23.05–22.06', ppd: 127, sng: 216, trp: 343 }
+  ]
+},
+{
+  area: 'Alanya & Side', name: 'Kirman Calyptus Resort', stars: 5, basis: 'UALL', cur: 'EUR',
+  periods: [
+    { dates: '28.04–30.04', ppd: 77, sng: 116, trp: 208 },
+    { dates: '01.05–22.05', ppd: 95, sng: 143, trp: 257 },
+    { dates: '23.05–22.06', ppd: 127, sng: 191, trp: 343 }
+  ]
+},
+{
+  area: 'Alanya & Side', name: 'Selectum Family Comfort Side', stars: 5, basis: 'UALL', cur: 'EUR',
+  childNote: '00–12.99',
+  periods: [
+    { dates: '05.05–14.05', ppd: null, prices: { sng: 144, dbl: 216, trp: 389 } },
+    { dates: '15.05–24.05', ppd: null, prices: { sng: 152, dbl: 228, trp: 410 } },
+    { dates: '25.05–04.06', ppd: null, prices: { sng: 186, dbl: 279, trp: 502 } },
+    { dates: '05.06–14.06', ppd: null, prices: { sng: 191, dbl: 287, trp: 516 } },
+    { dates: '15.06–30.06', ppd: null, prices: { sng: 221, dbl: 332, trp: 597 } }
+  ]
+},
+{
+  area: 'Alanya & Side', name: 'Selectum Family Resort Side', stars: 5, basis: 'UALL', cur: 'USD',
+  childFree: true,
+  periods: [
+    { dates: '05.05–17.05', ppd: 68, sng: 102, trp: 184 },
+    { dates: '18.05–22.05', ppd: 68, sng: 102, trp: 184 },
+    { dates: '23.05–04.06', ppd: 103, sng: 155, trp: 278 },
+    { dates: '05.06–14.06', ppd: 117, sng: 176, trp: 316 }
+  ]
+}
+
+]; // END HOTELS
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+let starFilter = 'all', areaFilter = 'all';
+const selectedPeriod = {};
+
+function g(id){ return document.getElementById(id); }
+function gf(id){ return parseFloat(g(id).value)||0; }
+function gi(id){ return parseInt(g(id).value)||1; }
+
+function toJOD(val, cur){
+  const rUsd = gf('rateUsd'), rEur = gf('rateEur');
+  return cur === 'EUR' ? val * rEur : val * rUsd;
+}
+function fmtJOD(v){ return v.toFixed(1) + ' JOD'; }
+function fmtOrig(v, cur){ return (cur === 'EUR' ? '€' : '$') + v; }
+
+// ═══ AREAS ═══
+function buildAreaTabs(){
+  const areas = ['all', ...new Set(HOTELS.map(h=>h.area))];
+  const tabsEl = g('area-tabs');
+  tabsEl.innerHTML = areas.map(a => {
+    const cnt = a === 'all' ? HOTELS.length : HOTELS.filter(h=>h.area===a).length;
+    return `<button class="area-tab ${a==='all'?'active':''}" onclick="setArea('${a}',this)">
+      ${a === 'all' ? 'الكل' : a} <span class="area-cnt">${cnt}</span>
+    </button>`;
+  }).join('');
+}
+function setArea(a, btn){
+  areaFilter = a;
+  document.querySelectorAll('.area-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+function setStar(s, btn){
+  starFilter = s;
+  document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+
+// ═══ GET PRICES FOR A HOTEL PERIOD ═══
+function getPrices(h, period){
+  if(!period) return null;
+  const cur = h.cur;
+  let dbl, sng, trp;
+
+  if(period.prices){
+    // explicit SGL/DBL/TRP in period
+    sng = period.prices.sng; dbl = period.prices.dbl; trp = period.prices.trp;
+  } else if(period.sng && period.ppd){
+    // has sng override
+    dbl = period.ppd;
+    sng = period.sng;
+    trp = period.trp || Math.round(period.ppd * 0.9);
+  } else if(period.ppd){
+    // only dbl
+    dbl = period.ppd;
+    sng = Math.round(period.ppd * 1.6);
+    trp = Math.round(period.ppd * 0.9);
+  }
+  return { dbl, sng, trp, cur };
+}
+
+// ═══ CALCULATE FINAL PRICE ═══
+function calcFinal(pricePerPersonPerNight, cur){
+  const nights = gi('nights');
+  const ticket = gf('ticket');
+  const transport = gf('transport');
+  const profit = gf('profit');
+  const pct = gf('pct');
+
+  const hotelJOD = toJOD(pricePerPersonPerNight, cur) * nights;
+  const fullTotal = (hotelJOD + ticket + transport + profit) * (1 + pct/100);
+  const hotelOnly = hotelJOD + transport;
+  return { fullTotal, hotelOnly, hotelJOD };
+}
+
+// ═══ RENDER ALL ═══
+function renderAll(){
+  const nights = gi('nights');
+  const ticket = gf('ticket');
+  const transport = gf('transport');
+  const profit = gf('profit');
+  const rUsd = gf('rateUsd');
+  const rEur = gf('rateEur');
+  const srch = g('srch').value.trim().toLowerCase();
+
+  g('b-usd').textContent = '1 USD = ' + rUsd.toFixed(3) + ' JOD';
+  g('b-eur').textContent = '1 EUR = ' + rEur.toFixed(3) + ' JOD';
+  g('b-nights').textContent = nights;
+  g('b-ticket').textContent = ticket;
+  g('b-trans').textContent = transport;
+  g('b-profit').textContent = profit;
+
+  let filtered = HOTELS.filter(h => {
+    if(starFilter !== 'all' && h.stars !== starFilter) return false;
+    if(areaFilter !== 'all' && h.area !== areaFilter) return false;
+    if(srch && !h.name.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+
+  g('cnt').textContent = filtered.length + ' فندق';
+  g('b-total').textContent = filtered.length;
+
+  const grid = g('grid');
+  grid.innerHTML = filtered.map(h => buildCard(h)).join('');
+}
+
+// ═══ BUILD CARD ═══
+function buildCard(h){
+  const id = h.name.replace(/\s+/g,'_');
+  const starStr = '★'.repeat(h.stars) + '☆'.repeat(5-h.stars);
+  const basisClass = h.basis.includes('UALL') ? 'uall' : h.basis.includes('ALL') ? 'all' : 'ai';
+  const curClass = h.cur === 'EUR' ? 'eur' : 'usd';
+
+  // PERIODS
+  const periodsHtml = h.periods.map((p, pi) => {
+    const prices = getPrices(h, p);
+    if(!prices) return '';
+    const isSel = selectedPeriod[id] === pi;
+    return `<div class="period-row ${isSel?'selected':''}" onclick="selectPeriod('${id}',${pi})">
+      <span class="p-dates">${p.dates}</span>
+      <span class="p-orig ${curClass}">${prices.dbl ? fmtOrig(prices.dbl, h.cur) : '—'}</span>
+      <span class="p-sng">${prices.sng ? fmtJOD(toJOD(prices.sng, h.cur)) : '—'}</span>
+      <span class="p-dbl">${prices.dbl ? fmtJOD(toJOD(prices.dbl, h.cur)) : '—'}</span>
+      <span class="p-trp">${prices.trp ? fmtJOD(toJOD(prices.trp, h.cur)) : '—'}</span>
+    </div>`;
+  }).join('');
+
+  // SELECTED PERIOD CALC
+  const selIdx = selectedPeriod[id] !== undefined ? selectedPeriod[id] : 0;
+  const selPeriod = h.periods[selIdx];
+  const prices = selPeriod ? getPrices(h, selPeriod) : null;
+  let calcHtml = '';
+
+  if(prices && prices.dbl){
+    const dblCalc = calcFinal(prices.dbl, h.cur);
+    const sngCalc = prices.sng ? calcFinal(prices.sng, h.cur) : null;
+    const trpCalc = prices.trp ? calcFinal(prices.trp, h.cur) : null;
+    const nights = gi('nights');
+    const ticket = gf('ticket');
+    const transport = gf('transport');
+    const profit = gf('profit');
+    const pct = gf('pct');
+
+    const childMultiplier = h.cur === 'EUR' ? gf('rateEur') : gf('rateUsd');
+    const childPPD = prices.dbl * 0.5;
+    const childTotal = (toJOD(childPPD, h.cur) * nights + ticket + transport + profit) * (1 + pct/100);
+
+    // WhatsApp
+    const waMsg = encodeURIComponent(
+      `🏖️ طلب حجز — أنطاليا\n` +
+      `🏨 ${h.name} (${h.stars}⭐) — ${h.area}\n` +
+      `📅 الفترة: ${selPeriod.dates}\n` +
+      `🌟 الأساس: ${h.basis}\n` +
+      `🗓️ ${nights} ليالي\n\n` +
+      `💰 الأسعار (شامل تذكرة + مواصلات + ربح):\n` +
+      (sngCalc ? `• سنجل: ${fmtJOD(sngCalc.fullTotal)}/شخص\n` : '') +
+      `• دبل:   ${fmtJOD(dblCalc.fullTotal)}/شخص\n` +
+      (trpCalc ? `• تريبل: ${fmtJOD(trpCalc.fullTotal)}/شخص\n` : '') +
+      `• طفل تقريبي: ${fmtJOD(childTotal)}\n\n` +
+      `📞 الجود للسياحة والسفر — +962 777 066 005`
+    );
+
+    calcHtml = `
+      <div class="calc-section">
+        <div class="calc-title">
+          الأسعار النهائية
+          <span>${selPeriod.dates}</span>
+        </div>
+        <div class="price-boxes">
+          ${sngCalc ? `<div class="p-box sgl">
+            <div class="p-box-type">👤 سنجل</div>
+            <div class="p-box-orig">${fmtOrig(prices.sng||0, h.cur)}/ليلة</div>
+            <div class="p-box-usd">${fmtJOD(toJOD(prices.sng||0, h.cur))} × ${nights}ل</div>
+            <div class="p-full">${fmtJOD(sngCalc.fullTotal)}</div>
+            <div class="p-label">فندق: ${fmtJOD(sngCalc.hotelOnly)}</div>
+          </div>` : '<div class="p-box sgl"><div class="no-period">—</div></div>'}
+          <div class="p-box dbl">
+            <div class="p-box-type">👥 دبل</div>
+            <div class="p-box-orig">${fmtOrig(prices.dbl, h.cur)}/ليلة</div>
+            <div class="p-box-usd">${fmtJOD(toJOD(prices.dbl, h.cur))} × ${nights}ل</div>
+            <div class="p-full">${fmtJOD(dblCalc.fullTotal)}</div>
+            <div class="p-label">فندق: ${fmtJOD(dblCalc.hotelOnly)}</div>
+          </div>
+          ${trpCalc ? `<div class="p-box tpl">
+            <div class="p-box-type">👥+ تريبل</div>
+            <div class="p-box-orig">${fmtOrig(prices.trp||0, h.cur)}/ليلة</div>
+            <div class="p-box-usd">${fmtJOD(toJOD(prices.trp||0, h.cur))} × ${nights}ل</div>
+            <div class="p-full">${fmtJOD(trpCalc.fullTotal)}</div>
+            <div class="p-label">فندق: ${fmtJOD(trpCalc.hotelOnly)}</div>
+          </div>` : '<div class="p-box tpl"><div class="no-period">—</div></div>'}
+        </div>
+        <div class="child-box">
+          <div class="child-box-label">👶 طفل (50% فندق + تذكرة + مواصلات + ربح)</div>
+          <div class="child-box-price">${fmtJOD(childTotal)}</div>
+        </div>
+        <div class="breakdown">
+          <b>التفاصيل (دبل):</b><br>
+          🏨 فندق: ${fmtOrig(prices.dbl, h.cur)} × ${nights} ل × صرف = ${fmtJOD(dblCalc.hotelJOD)}<br>
+          ✈️ تذكرة: ${gf('ticket').toFixed(0)} JOD &nbsp;|&nbsp; 🚌 مواصلات: ${transport.toFixed(0)} JOD &nbsp;|&nbsp; 💰 ربح: ${profit.toFixed(0)} JOD
+          ${pct > 0 ? `<br>📊 نسبة ربح: ${pct}%` : ''}
+        </div>
+        <button class="wa-btn" onclick="sendWA('${waMsg}')">
+          💬 إرسال عرض عبر واتساب
+        </button>
+      </div>`;
+  } else {
+    calcHtml = `<div class="ask-sale">📞 اتصل وبيع — أسعار عند الطلب فقط</div>`;
+  }
+
+  return `<div class="card">
+    <div class="card-head">
+      <div>
+        <div class="card-name">${h.name}</div>
+        <div class="card-meta">${h.area}${h.note ? ' · ' + h.note : ''}</div>
+        <div class="card-stars">${starStr} · ${h.stars} نجوم</div>
+      </div>
+      <div class="card-badges">
+        <span class="card-num">#${HOTELS.indexOf(h)+1}</span>
+        <span class="basis-badge basis-${basisClass}">${h.basis}</span>
+        <span class="cur-chip cur-${curClass}">${h.cur === 'EUR' ? '€ EUR' : '$ USD'}</span>
+        ${h.childFree ? '<span style="font-size:10px;color:var(--green)">👶 مجاني</span>' : ''}
+        ${h.childNote ? `<span style="font-size:10px;color:var(--purple)">👶 ${h.childNote}</span>` : ''}
+      </div>
+    </div>
+
+    <div class="periods-wrap">
+      <div class="periods-title">📅 اختر الفترة الزمنية — السعر/شخص/ليلة</div>
+      <div class="col-header">
+        <span>الفترة</span>
+        <span>الأصلي</span>
+        <span style="color:#f59e0b">SNG</span>
+        <span style="color:var(--green)">DBL</span>
+        <span style="color:var(--blue)">TRP</span>
+      </div>
+      ${periodsHtml}
+    </div>
+
+    ${calcHtml}
+  </div>`;
+}
+
+function selectPeriod(id, idx){
+  selectedPeriod[id] = idx;
+  renderAll();
+}
+
+function sendWA(msg){
+  window.open('https://wa.me/962777066005?text=' + msg, '_blank');
+}
+
+// INIT
+buildAreaTabs();
+renderAll();
+</script>
+</body>
+</html>

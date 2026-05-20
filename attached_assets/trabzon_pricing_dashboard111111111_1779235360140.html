@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trabzon Pricing Dashboard — AL JUDE Travel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body style="padding:16px;min-height:100vh;">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans', Arial, sans-serif;background:#f0f4f8;color:#1a2332}
+.hdr{background:linear-gradient(135deg,#14532d,#1a6b3c);color:white;padding:16px 20px;border-radius:12px;margin-bottom:12px}
+.hdr h1{font-size:18px;font-weight:500}.hdr p{font-size:12px;opacity:.8;margin-top:3px}
+.tabs{display:flex;gap:8px;margin-bottom:8px}
+.tab{padding:8px 20px;border-radius:8px;border:0.5px solid #c8d4e0;cursor:pointer;font-size:13px;background:#e8edf2;color:#5a6a7a}
+.tab.active{background:#14532d;color:white;border-color:#14532d}
+.ctrl{background:#ffffff;border:0.5px solid #dde5ed;border-radius:12px;padding:14px;display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+.cg{display:flex;flex-direction:column;gap:4px}
+.cg label{font-size:11px;font-weight:500;color:#5a6a7a;text-transform:uppercase}
+.sum{background:#1a6b3c;color:white;border-radius:8px;padding:10px 14px;display:flex;gap:20px;flex-wrap:wrap;font-size:12px;margin-bottom:8px}
+.sum span{font-weight:500}
+.sbar{background:#ffffff;border:0.5px solid #dde5ed;border-radius:8px;padding:10px 14px;margin-bottom:6px}
+.sbar input{width:100%;max-width:380px;padding:7px 12px;border:0.5px solid #c8d4e0;border-radius:8px;font-size:13px;background:#e8edf2;color:#1a2332}
+.sf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.sb{padding:5px 14px;border:0.5px solid #c8d4e0;border-radius:20px;background:#ffffff;cursor:pointer;font-size:12px;color:#5a6a7a}
+.sb.active{background:#f59e0b;border-color:#f59e0b;color:white;font-weight:500}
+.tours-box{background:#ffffff;border:0.5px solid #dde5ed;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:12px}
+.tours-box h3{font-size:12px;font-weight:500;color:#1a6b3c;margin-bottom:6px}
+.tchip{background:#e8edf2;border:0.5px solid #dde5ed;border-radius:12px;padding:3px 10px;font-size:11px;color:#5a6a7a;display:inline-block;margin:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{background:#ffffff;border:0.5px solid #dde5ed;border-radius:12px;overflow:hidden}
+.ch{background:linear-gradient(135deg,#14532d,#2d9d5c);color:white;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start}
+.ch-name{font-size:13px;font-weight:500;flex:1;line-height:1.3}
+.ch-stars{font-size:11px;margin-left:6px;white-space:nowrap;opacity:.9}
+.sp{font-size:10px;background:rgba(255,255,255,.18);padding:2px 6px;border-radius:4px;margin-top:3px;display:inline-block}
+.cb{padding:12px 14px}
+.prow{display:flex;gap:6px;margin-bottom:8px}
+.pbox{flex:1;background:#e8edf2;border-radius:8px;padding:7px;text-align:center;border:0.5px solid #dde5ed}
+.pbox.hl{background:#ecfdf5;border-color:#6ee7b7}
+.pl{font-size:10px;color:#5a6a7a;font-weight:500;text-transform:uppercase}
+.pd{font-size:11px;color:#5a6a7a;margin-top:1px}
+.pf{font-size:14px;font-weight:500;color:#14532d;margin-top:2px}
+.final{text-align:center;margin:6px 0}
+.final-lbl{font-size:10px;color:#5a6a7a}
+.final-val{font-size:18px;font-weight:500;color:#14532d}
+.cinfo{font-size:10px;color:#5a6a7a;background:#e8edf2;padding:4px 8px;border-radius:6px;margin-top:4px}
+.tbadge{font-size:10px;background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:10px;margin-top:5px;display:inline-block}
+.actions{display:flex;gap:6px;margin-top:8px}
+.btn-bd{flex:1;padding:6px;border:0.5px solid #1a6b3c;border-radius:8px;background:white;color:#1a6b3c;font-size:11px;font-weight:500;cursor:pointer}
+.btn-wa{flex:1;padding:6px;border:none;border-radius:8px;background:#25D366;color:white;font-size:11px;font-weight:500;cursor:pointer}
+.bd{display:none;background:#e8edf2;border-top:0.5px dashed #dde5ed;padding:10px 14px;font-size:11px}
+.bd.show{display:block}
+.bdr{display:flex;justify-content:space-between;padding:2px 0}
+.bdr.tot{font-weight:500;color:#14532d;border-top:0.5px solid #dde5ed;margin-top:3px;padding-top:5px}
+.none{text-align:center;color:#5a6a7a;padding:40px;grid-column:1/-1;font-size:14px}
+</style>
+
+<div class="hdr">
+  <h1>Trabzon Pricing Dashboard</h1>
+  <p>AL JUDE Travel & Tourism — Venus DMC | V.501 May & V.503 June 2026</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchMonth('may',this)">May 2026 (01.05–31.05)</div>
+  <div class="tab" onclick="switchMonth('jun',this)">June 2026 (03.06–30.06)</div>
+</div>
+
+<div class="ctrl">
+  <div class="cg"><label>Nights</label>
+    <select id="ni" onchange="render()"><option value="3">3 Nights</option><option value="4">4 Nights</option><option value="5">5 Nights</option><option value="6">6 Nights</option><option value="7">7 Nights</option></select>
+  </div>
+  <div class="cg"><label>Room</label>
+    <select id="rm" onchange="render()"><option value="dbl">DBL p.p</option><option value="sgl">SGL p.p</option><option value="extra">DBL+Extra</option></select>
+  </div>
+  <div class="cg"><label>Ticket Price</label><input type="number" id="tp" value="150" style="width:90px" oninput="render()"></div>
+  <div class="cg"><label>Currency</label>
+    <select id="tc" onchange="render()"><option value="USD">USD</option><option value="JOD">JOD</option><option value="EUR">EUR</option><option value="SAR">SAR</option></select>
+  </div>
+  <div class="cg"><label>USD→JOD</label><input type="number" id="ru" value="0.709" step="0.001" style="width:80px" oninput="render()"></div>
+  <div class="cg"><label>EUR→JOD</label><input type="number" id="re" value="0.78" step="0.001" style="width:80px" oninput="render()"></div>
+  <div class="cg"><label>SAR→JOD</label><input type="number" id="rs" value="0.189" step="0.001" style="width:80px" oninput="render()"></div>
+  <div class="cg"><label>Fixed Profit (JOD)</label><input type="number" id="fp" value="20" style="width:80px" oninput="render()"></div>
+  <div class="cg"><label>Profit %</label><input type="number" id="pp" value="10" style="width:70px" oninput="render()"></div>
+  <div class="cg"><label>Show Prices</label>
+    <select id="dc" onchange="render()"><option value="JOD">JOD Only</option><option value="USD">USD Only</option><option value="BOTH">Both</option></select>
+  </div>
+</div>
+
+<div class="sum">
+  <div>Hotels: <span id="hc">—</span></div>
+  <div>Period: <span id="pl">—</span></div>
+  <div>Nights: <span id="nl">—</span></div>
+  <div>Ticket: <span id="tl">—</span></div>
+</div>
+
+<div class="sbar"><input type="text" id="si" placeholder="Search hotel name..." oninput="render()"></div>
+
+<div class="sf">
+  <button class="sb active" onclick="toggleStar(this,'all')">All</button>
+  <button class="sb" onclick="toggleStar(this,'3')">3 Stars</button>
+  <button class="sb" onclick="toggleStar(this,'3+')">3+ Stars</button>
+  <button class="sb" onclick="toggleStar(this,'4')">4 Stars</button>
+  <button class="sb" onclick="toggleStar(this,'5')">5 Stars</button>
+</div>
+
+<div class="tours-box"><h3>Tours included per nights:</h3><div id="tl2"></div></div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const D = {
+  may: [
+    {n:"Nazar Hotel",s:"3",sp:null,n3:{dbl:100,sgl:160,extra:100},n4:{dbl:125,sgl:205,extra:125},n5:{dbl:150,sgl:250,extra:150},n6:{dbl:175,sgl:295,extra:175},n7:{dbl:195,sgl:335,extra:195}},
+    {n:"City Port Hotel (City View) Early May",s:"3+",sp:"01.05–24.05",n3:{dbl:108,sgl:175,extra:107},n4:{dbl:135,sgl:225,extra:134},n5:{dbl:163,sgl:275,extra:162},n6:{dbl:190,sgl:325,extra:189},n7:{dbl:213,sgl:370,extra:211}},
+    {n:"City Port Hotel (City View) Late May",s:"3+",sp:"25.05–31.05",n3:{dbl:123,sgl:205,extra:117},n4:{dbl:155,sgl:265,extra:148},n5:{dbl:188,sgl:325,extra:178},n6:{dbl:220,sgl:385,extra:209},n7:{dbl:248,sgl:440,extra:235}},
+    {n:"City Port Hotel (Sea View) Early May",s:"3+",sp:"01.05–24.05",n3:{dbl:123,sgl:205,extra:117},n4:{dbl:155,sgl:265,extra:148},n5:{dbl:188,sgl:325,extra:178},n6:{dbl:220,sgl:385,extra:209},n7:{dbl:248,sgl:440,extra:235}},
+    {n:"City Port Hotel (Sea View) Late May",s:"3+",sp:"25.05–31.05",n3:{dbl:145,sgl:250,extra:132},n4:{dbl:185,sgl:325,extra:168},n5:{dbl:225,sgl:400,extra:203},n6:{dbl:265,sgl:475,extra:239},n7:{dbl:300,sgl:545,extra:270}},
+    {n:"White House Hotel (Garden View)",s:"3+",sp:null,n3:{dbl:118,sgl:196,extra:112},n4:{dbl:149,sgl:253,extra:141},n5:{dbl:180,sgl:310,extra:170},n6:{dbl:211,sgl:367,extra:199},n7:{dbl:237,sgl:419,extra:223}},
+    {n:"White House Hotel (Partial Sea View)",s:"3+",sp:null,n3:{dbl:123,sgl:205,extra:120},n4:{dbl:155,sgl:265,extra:152},n5:{dbl:188,sgl:325,extra:183},n6:{dbl:220,sgl:385,extra:215},n7:{dbl:248,sgl:440,extra:242}},
+    {n:"White House Hotel (Sea View)",s:"3+",sp:null,n3:{dbl:135,sgl:229,extra:null},n4:{dbl:171,sgl:297,extra:null},n5:{dbl:208,sgl:365,extra:null},n6:{dbl:244,sgl:433,extra:null},n7:{dbl:276,sgl:496,extra:null}},
+    {n:"Peerless Villas (Std King Bed) Early May",s:"4",sp:"01.05–15.05",n3:{dbl:123,sgl:205,extra:null},n4:{dbl:155,sgl:265,extra:null},n5:{dbl:188,sgl:325,extra:null},n6:{dbl:220,sgl:385,extra:null},n7:{dbl:248,sgl:440,extra:null}},
+    {n:"Peerless Villas (Std King Bed) Late May",s:"4",sp:"16.05–31.05",n3:{dbl:130,sgl:220,extra:null},n4:{dbl:165,sgl:285,extra:null},n5:{dbl:200,sgl:350,extra:null},n6:{dbl:235,sgl:415,extra:null},n7:{dbl:265,sgl:475,extra:null}},
+    {n:"Peerless Villas (Dlx S.V Garden Terrace) Early May",s:"4",sp:"01.05–15.05",n3:{dbl:138,sgl:235,extra:135},n4:{dbl:175,sgl:305,extra:172},n5:{dbl:213,sgl:375,extra:208},n6:{dbl:250,sgl:445,extra:245},n7:{dbl:283,sgl:510,extra:277}},
+    {n:"Peerless Villas (Dlx S.V Garden Terrace) Late May",s:"4",sp:"16.05–31.05",n3:{dbl:145,sgl:250,extra:140},n4:{dbl:185,sgl:325,extra:178},n5:{dbl:225,sgl:400,extra:217},n6:{dbl:265,sgl:475,extra:255},n7:{dbl:300,sgl:545,extra:288}},
+    {n:"Peerless Villas (Dlx Suite S.V Balcony) Early May",s:"4",sp:"01.05–15.05",n3:{dbl:153,sgl:265,extra:145},n4:{dbl:195,sgl:345,extra:185},n5:{dbl:238,sgl:425,extra:225},n6:{dbl:280,sgl:505,extra:265},n7:{dbl:318,sgl:580,extra:300}},
+    {n:"Peerless Villas (Dlx Suite S.V Balcony) Late May",s:"4",sp:"16.05–31.05",n3:{dbl:160,sgl:280,extra:150},n4:{dbl:205,sgl:365,extra:192},n5:{dbl:250,sgl:450,extra:233},n6:{dbl:295,sgl:535,extra:275},n7:{dbl:335,sgl:615,extra:312}},
+    {n:"Peerless Villas (Premium Suite) Early May",s:"4",sp:"01.05–15.05",n3:{dbl:160,sgl:280,extra:150},n4:{dbl:205,sgl:365,extra:192},n5:{dbl:250,sgl:450,extra:233},n6:{dbl:295,sgl:535,extra:275},n7:{dbl:335,sgl:615,extra:312}},
+    {n:"Peerless Villas (Premium Suite) Late May",s:"4",sp:"16.05–31.05",n3:{dbl:168,sgl:295,extra:155},n4:{dbl:215,sgl:385,extra:198},n5:{dbl:263,sgl:475,extra:242},n6:{dbl:310,sgl:565,extra:285},n7:{dbl:353,sgl:650,extra:323}},
+    {n:"Peerless Villas (Elite Suite S.V Balcony) Early May",s:"4",sp:"01.05–15.05",n3:{dbl:175,sgl:310,extra:160},n4:{dbl:225,sgl:405,extra:205},n5:{dbl:275,sgl:500,extra:250},n6:{dbl:325,sgl:595,extra:295},n7:{dbl:370,sgl:685,extra:335}},
+    {n:"Peerless Villas (Elite Suite S.V Balcony) Late May",s:"4",sp:"16.05–31.05",n3:{dbl:183,sgl:325,extra:165},n4:{dbl:235,sgl:425,extra:212},n5:{dbl:288,sgl:525,extra:258},n6:{dbl:340,sgl:625,extra:305},n7:{dbl:388,sgl:720,extra:347}},
+    {n:"Peerless Villas (Executive Suite) Early May",s:"4",sp:"01.05–15.05",n3:{dbl:198,sgl:355,extra:175},n4:{dbl:255,sgl:465,extra:225},n5:{dbl:313,sgl:575,extra:275},n6:{dbl:370,sgl:685,extra:325},n7:{dbl:423,sgl:790,extra:370}},
+    {n:"Peerless Villas (Executive Suite) Late May",s:"4",sp:"16.05–31.05",n3:{dbl:213,sgl:385,extra:185},n4:{dbl:275,sgl:505,extra:238},n5:{dbl:338,sgl:625,extra:292},n6:{dbl:400,sgl:745,extra:345},n7:{dbl:458,sgl:860,extra:393}},
+    {n:"Peerless Villas (Peerless/Trapezus/Roof Suite+Jacuzzi)",s:"4",sp:"01.05–31.05",n3:{dbl:246,sgl:451,extra:207},n4:{dbl:319,sgl:593,extra:268},n5:{dbl:393,sgl:735,extra:328},n6:{dbl:466,sgl:877,extra:389},n7:{dbl:535,sgl:1014,extra:445}},
+    {n:"Peerless Villas (Akyazi Suite+Jacuzzi) Early May",s:"4",sp:"01.05–15.05",n3:{dbl:231,sgl:421,extra:197},n4:{dbl:299,sgl:553,extra:254},n5:{dbl:368,sgl:685,extra:312},n6:{dbl:436,sgl:817,extra:369},n7:{dbl:500,sgl:944,extra:421}},
+    {n:"Peerless Villas (Akyazi/Suvva/Blacksea Suite+Jacuzzi) Late May",s:"4",sp:"16.05–31.05",n3:{dbl:261,sgl:481,extra:217},n4:{dbl:339,sgl:633,extra:281},n5:{dbl:418,sgl:785,extra:345},n6:{dbl:496,sgl:937,extra:409},n7:{dbl:570,sgl:1084,extra:468}},
+    {n:"Saylamlar Hotel",s:"4",sp:null,n3:{dbl:130,sgl:175,extra:112},n4:{dbl:165,sgl:225,extra:141},n5:{dbl:200,sgl:275,extra:170},n6:{dbl:235,sgl:325,extra:199},n7:{dbl:265,sgl:370,extra:223}},
+    {n:"Mell Hotel (Superior S.V)",s:"4",sp:null,n3:{dbl:138,sgl:235,extra:null},n4:{dbl:175,sgl:305,extra:null},n5:{dbl:213,sgl:375,extra:null},n6:{dbl:250,sgl:445,extra:null},n7:{dbl:283,sgl:510,extra:null}},
+    {n:"Mell Hotel (Dlx S.V with Balcony)",s:"4",sp:null,n3:{dbl:145,sgl:250,extra:140},n4:{dbl:185,sgl:325,extra:178},n5:{dbl:225,sgl:400,extra:217},n6:{dbl:265,sgl:475,extra:255},n7:{dbl:300,sgl:545,extra:288}},
+    {n:"Funda Hotel (City View)",s:"4",sp:null,n3:{dbl:149,sgl:235,extra:137},n4:{dbl:190,sgl:305,extra:174},n5:{dbl:231,sgl:375,extra:212},n6:{dbl:273,sgl:445,extra:249},n7:{dbl:309,sgl:510,extra:281}},
+    {n:"Funda Hotel (Sea View)",s:"4",sp:null,n3:{dbl:164,sgl:265,extra:null},n4:{dbl:210,sgl:345,extra:null},n5:{dbl:256,sgl:425,extra:null},n6:{dbl:303,sgl:505,extra:null},n7:{dbl:344,sgl:580,extra:null}},
+    {n:"Usta Park Hotel",s:"4",sp:null,n3:{dbl:160,sgl:235,extra:137},n4:{dbl:205,sgl:305,extra:174},n5:{dbl:250,sgl:375,extra:212},n6:{dbl:295,sgl:445,extra:249},n7:{dbl:335,sgl:510,extra:281}},
+    {n:"Zorlu Grand Hotel Trabzon (Superior Rooms)",s:"5",sp:null,n3:{dbl:242,sgl:444,extra:212},n4:{dbl:315,sgl:584,extra:275},n5:{dbl:387,sgl:724,extra:337},n6:{dbl:459,sgl:864,extra:399},n7:{dbl:527,sgl:999,extra:457}},
+    {n:"Ramada Plaza Trabzon (Dlx Land View) Early May",s:"5",sp:"01.05–22.05",n3:{dbl:260,sgl:480,extra:224},n4:{dbl:338,sgl:631,extra:290},n5:{dbl:417,sgl:783,extra:357},n6:{dbl:495,sgl:935,extra:423},n7:{dbl:568,sgl:1081,extra:484}},
+    {n:"Ramada Plaza Trabzon (Dlx Land View) Late May",s:"5",sp:"23.05–31.05",n3:{dbl:278,sgl:515,extra:248},n4:{dbl:362,sgl:679,extra:322},n5:{dbl:446,sgl:842,extra:396},n6:{dbl:530,sgl:1005,extra:470},n7:{dbl:609,sgl:1164,extra:539}},
+    {n:"Ramada Plaza Trabzon (Dlx Sea View) Early May",s:"5",sp:"01.05–22.05",n3:{dbl:313,sgl:586,extra:259},n4:{dbl:409,sgl:773,extra:338},n5:{dbl:505,sgl:960,extra:416},n6:{dbl:601,sgl:1147,extra:494},n7:{dbl:692,sgl:1329,extra:567}},
+    {n:"Ramada Plaza Trabzon (Dlx Sea View) Late May",s:"5",sp:"23.05–31.05",n3:{dbl:331,sgl:621,extra:283},n4:{dbl:433,sgl:820,extra:369},n5:{dbl:535,sgl:1019,extra:455},n6:{dbl:636,sgl:1218,extra:541},n7:{dbl:733,sgl:1412,extra:622}},
+  ],
+  jun: [
+    {n:"Nazar Hotel",s:"3",sp:null,n3:{dbl:120,sgl:195,extra:115},n4:{dbl:150,sgl:250,extra:143},n5:{dbl:180,sgl:305,extra:172},n6:{dbl:210,sgl:360,extra:200},n7:{dbl:235,sgl:410,extra:223}},
+    {n:"White House Hotel (Garden View)",s:"3+",sp:null,n3:{dbl:150,sgl:240,extra:137},n4:{dbl:190,sgl:310,extra:173},n5:{dbl:230,sgl:380,extra:208},n6:{dbl:270,sgl:450,extra:244},n7:{dbl:305,sgl:515,extra:275}},
+    {n:"White House Hotel (Partial Sea View)",s:"3+",sp:null,n3:{dbl:158,sgl:255,extra:142},n4:{dbl:200,sgl:330,extra:179},n5:{dbl:243,sgl:405,extra:217},n6:{dbl:285,sgl:480,extra:254},n7:{dbl:323,sgl:550,extra:286}},
+    {n:"White House Hotel (Sea View)",s:"3+",sp:null,n3:{dbl:165,sgl:270,extra:null},n4:{dbl:210,sgl:350,extra:null},n5:{dbl:255,sgl:430,extra:null},n6:{dbl:300,sgl:510,extra:null},n7:{dbl:340,sgl:585,extra:null}},
+    {n:"City Port Hotel (City View)",s:"3+",sp:null,n3:{dbl:165,sgl:285,extra:147},n4:{dbl:210,sgl:370,extra:186},n5:{dbl:255,sgl:455,extra:225},n6:{dbl:300,sgl:540,extra:264},n7:{dbl:340,sgl:620,extra:298}},
+    {n:"City Port Hotel (Sea View)",s:"3+",sp:null,n3:{dbl:180,sgl:315,extra:157},n4:{dbl:230,sgl:410,extra:199},n5:{dbl:280,sgl:505,extra:242},n6:{dbl:330,sgl:600,extra:284},n7:{dbl:375,sgl:690,extra:321}},
+    {n:"Saylamlar Hotel",s:"4",sp:null,n3:{dbl:150,sgl:225,extra:132},n4:{dbl:190,sgl:290,extra:166},n5:{dbl:230,sgl:355,extra:200},n6:{dbl:270,sgl:420,extra:234},n7:{dbl:305,sgl:480,extra:263}},
+    {n:"Mell Hotel (Superior S.V) Early June",s:"4",sp:"03.06–20.06",n3:{dbl:143,sgl:240,extra:null},n4:{dbl:180,sgl:310,extra:null},n5:{dbl:218,sgl:380,extra:null},n6:{dbl:255,sgl:450,extra:null},n7:{dbl:288,sgl:515,extra:null}},
+    {n:"Mell Hotel (Superior S.V) Late June",s:"4",sp:"21.06–30.06",n3:{dbl:233,sgl:420,extra:null},n4:{dbl:300,sgl:550,extra:null},n5:{dbl:368,sgl:680,extra:null},n6:{dbl:435,sgl:810,extra:null},n7:{dbl:498,sgl:935,extra:null}},
+    {n:"Mell Hotel (Dlx S.V Balcony) Early June",s:"4",sp:"03.06–20.06",n3:{dbl:150,sgl:255,extra:145},n4:{dbl:190,sgl:330,extra:183},n5:{dbl:230,sgl:405,extra:222},n6:{dbl:270,sgl:480,extra:260},n7:{dbl:305,sgl:550,extra:293}},
+    {n:"Mell Hotel (Dlx S.V Balcony) Late June",s:"4",sp:"21.06–30.06",n3:{dbl:240,sgl:435,extra:205},n4:{dbl:310,sgl:570,extra:263},n5:{dbl:380,sgl:705,extra:322},n6:{dbl:450,sgl:840,extra:380},n7:{dbl:515,sgl:970,extra:433}},
+    {n:"Peerless Villas (Std King Bed) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:135,sgl:225,extra:null},n4:{dbl:170,sgl:290,extra:null},n5:{dbl:205,sgl:355,extra:null},n6:{dbl:240,sgl:420,extra:null},n7:{dbl:270,sgl:480,extra:null}},
+    {n:"Peerless Villas (Std King Bed) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:191,sgl:336,extra:null},n4:{dbl:244,sgl:438,extra:null},n5:{dbl:298,sgl:540,extra:null},n6:{dbl:351,sgl:642,extra:null},n7:{dbl:400,sgl:739,extra:null}},
+    {n:"Peerless Villas (Dlx S.V Garden Terrace) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:150,sgl:255,extra:145},n4:{dbl:190,sgl:330,extra:183},n5:{dbl:230,sgl:405,extra:222},n6:{dbl:270,sgl:480,extra:260},n7:{dbl:305,sgl:550,extra:293}},
+    {n:"Peerless Villas (Dlx S.V Garden Terrace) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:263,sgl:480,extra:220},n4:{dbl:340,sgl:630,extra:283},n5:{dbl:418,sgl:780,extra:347},n6:{dbl:495,sgl:930,extra:410},n7:{dbl:568,sgl:1075,extra:468}},
+    {n:"Peerless Villas (Dlx Suite S.V Balcony) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:165,sgl:285,extra:155},n4:{dbl:210,sgl:370,extra:197},n5:{dbl:255,sgl:455,extra:238},n6:{dbl:300,sgl:540,extra:280},n7:{dbl:340,sgl:620,extra:317}},
+    {n:"Peerless Villas (Dlx Suite S.V Balcony) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:288,sgl:531,extra:237},n4:{dbl:374,sgl:698,extra:306},n5:{dbl:460,sgl:865,extra:375},n6:{dbl:546,sgl:1032,extra:444},n7:{dbl:627,sgl:1194,extra:508}},
+    {n:"Peerless Villas (Premium Suite) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:173,sgl:300,extra:160},n4:{dbl:220,sgl:390,extra:203},n5:{dbl:268,sgl:480,extra:247},n6:{dbl:315,sgl:570,extra:290},n7:{dbl:358,sgl:655,extra:328}},
+    {n:"Peerless Villas (Premium Suite) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:308,sgl:570,extra:250},n4:{dbl:400,sgl:750,extra:323},n5:{dbl:493,sgl:930,extra:397},n6:{dbl:585,sgl:1110,extra:470},n7:{dbl:673,sgl:1285,extra:538}},
+    {n:"Peerless Villas (Elite Suite) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:188,sgl:330,extra:170},n4:{dbl:240,sgl:430,extra:217},n5:{dbl:293,sgl:530,extra:263},n6:{dbl:345,sgl:630,extra:310},n7:{dbl:393,sgl:725,extra:352}},
+    {n:"Peerless Villas (Elite Suite) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:323,sgl:600,extra:260},n4:{dbl:420,sgl:790,extra:337},n5:{dbl:518,sgl:980,extra:413},n6:{dbl:615,sgl:1170,extra:490},n7:{dbl:708,sgl:1355,extra:562}},
+    {n:"Peerless Villas (Executive Suite) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:218,sgl:390,extra:190},n4:{dbl:280,sgl:510,extra:243},n5:{dbl:343,sgl:630,extra:297},n6:{dbl:405,sgl:750,extra:350},n7:{dbl:463,sgl:865,extra:398}},
+    {n:"Peerless Villas (Executive Suite) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:338,sgl:630,extra:270},n4:{dbl:440,sgl:830,extra:350},n5:{dbl:543,sgl:1030,extra:430},n6:{dbl:645,sgl:1230,extra:510},n7:{dbl:743,sgl:1425,extra:585}},
+    {n:"Peerless Villas (Peerless/Trapezus/Roof+Jacuzzi) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:251,sgl:456,extra:212},n4:{dbl:324,sgl:598,extra:273},n5:{dbl:398,sgl:740,extra:333},n6:{dbl:471,sgl:882,extra:394},n7:{dbl:540,sgl:1019,extra:450}},
+    {n:"Peerless Villas (Peerless/Trapezus/Roof+Jacuzzi) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:353,sgl:660,extra:280},n4:{dbl:460,sgl:870,extra:363},n5:{dbl:568,sgl:1080,extra:447},n6:{dbl:675,sgl:1290,extra:530},n7:{dbl:778,sgl:1495,extra:608}},
+    {n:"Peerless Villas (Akyazi/Suvva/Blacksea+Jacuzzi) Early June",s:"4",sp:"03.06–15.06",n3:{dbl:266,sgl:486,extra:222},n4:{dbl:344,sgl:638,extra:286},n5:{dbl:423,sgl:790,extra:350},n6:{dbl:501,sgl:942,extra:414},n7:{dbl:575,sgl:1089,extra:473}},
+    {n:"Peerless Villas (Akyazi/Suvva/Blacksea+Jacuzzi) Late June",s:"4",sp:"16.06–30.06",n3:{dbl:368,sgl:690,extra:290},n4:{dbl:480,sgl:910,extra:377},n5:{dbl:593,sgl:1130,extra:463},n6:{dbl:705,sgl:1350,extra:550},n7:{dbl:813,sgl:1565,extra:632}},
+    {n:"Funda Hotel (City View)",s:"4",sp:null,n3:{dbl:180,sgl:315,extra:160},n4:{dbl:230,sgl:410,extra:203},n5:{dbl:280,sgl:505,extra:247},n6:{dbl:330,sgl:600,extra:290},n7:{dbl:375,sgl:690,extra:328}},
+    {n:"Funda Hotel (Sea View)",s:"4",sp:null,n3:{dbl:195,sgl:345,extra:null},n4:{dbl:250,sgl:450,extra:null},n5:{dbl:305,sgl:555,extra:null},n6:{dbl:360,sgl:660,extra:null},n7:{dbl:410,sgl:760,extra:null}},
+    {n:"Usta Park Hotel",s:"4",sp:"01.06–30.06",n3:{dbl:188,sgl:270,extra:172},n4:{dbl:240,sgl:350,extra:219},n5:{dbl:293,sgl:430,extra:267},n6:{dbl:345,sgl:510,extra:314},n7:{dbl:393,sgl:585,extra:356}},
+    {n:"Zorlu Grand Hotel Trabzon (Superior Rooms) Early June",s:"5",sp:"03.06–15.06",n3:{dbl:265,sgl:485,extra:229},n4:{dbl:343,sgl:636,extra:295},n5:{dbl:422,sgl:788,extra:362},n6:{dbl:500,sgl:940,extra:428},n7:{dbl:573,sgl:1086,extra:489}},
+    {n:"Zorlu Grand Hotel Trabzon (Superior Rooms) Late June",s:"5",sp:"16.06–30.06",n3:{dbl:283,sgl:520,extra:241},n4:{dbl:367,sgl:684,extra:311},n5:{dbl:451,sgl:847,extra:381},n6:{dbl:535,sgl:1010,extra:452},n7:{dbl:614,sgl:1169,extra:517}},
+    {n:"Ramada Plaza Trabzon (Dlx Land View)",s:"5",sp:"03.06–30.06",n3:{dbl:283,sgl:520,extra:253},n4:{dbl:367,sgl:684,extra:327},n5:{dbl:451,sgl:847,extra:401},n6:{dbl:535,sgl:1010,extra:475},n7:{dbl:614,sgl:1169,extra:544}},
+    {n:"Ramada Plaza Trabzon (Dlx Sea View)",s:"5",sp:"03.06–30.06",n3:{dbl:336,sgl:626,extra:288},n4:{dbl:438,sgl:825,extra:374},n5:{dbl:540,sgl:1024,extra:460},n6:{dbl:641,sgl:1223,extra:546},n7:{dbl:738,sgl:1417,extra:627}},
+  ]
+};
+
+const T={3:["Uzungol","Ayder & Riza"],4:["Uzungol","Ayder & Riza","Trabzon City"],5:["Uzungol","Ayder & Riza","Trabzon City","Hidir Nebi & Cal Cave"],6:["Uzungol","Ayder & Riza","Trabzon City","Hidir Nebi & Cal Cave","Sumela & Zigana"],7:["Uzungol","Ayder & Riza","Trabzon City","Hidir Nebi & Cal Cave","Sumela & Zigana"]};
+const PL={may:"01 May – 31 May 2026",jun:"03 June – 30 June 2026"};
+
+let mo='may', sf='all';
+
+function switchMonth(m,el){mo=m;document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&m==='may')||(i===1&&m==='jun')));render()}
+function toggleStar(el,s){sf=s;document.querySelectorAll('.sb').forEach(b=>b.classList.remove('active'));el.classList.add('active');render()}
+
+function tUSD(){
+  const p=parseFloat(document.getElementById('tp').value||0);
+  const c=document.getElementById('tc').value;
+  const ru=parseFloat(document.getElementById('ru').value||0.709);
+  const re=parseFloat(document.getElementById('re').value||0.78);
+  const rs=parseFloat(document.getElementById('rs').value||0.189);
+  if(c==='USD')return p;if(c==='JOD')return p/ru;if(c==='EUR')return p*(re/ru);if(c==='SAR')return p*(rs/ru);return p;
+}
+
+function calc(dmc){
+  const ru=parseFloat(document.getElementById('ru').value||0.709);
+  const tk=tUSD();
+  const fp=parseFloat(document.getElementById('fp').value||0);
+  const pp=parseFloat(document.getElementById('pp').value||0)/100;
+  const base=(dmc+tk)*ru;
+  const fin=(base+fp)*(1+pp);
+  return{fin,finUSD:fin/ru,dmc,tk,fp,pp,ru};
+}
+
+function fmt(v,cur){
+  const jod=v.toFixed(2)+' JD';
+  const usd='$'+v.toFixed(0);
+  if(cur==='JOD')return jod;if(cur==='USD')return usd;return jod+' / '+usd;
+}
+
+function render(){
+  const ni=document.getElementById('ni').value;
+  const nk='n'+ni;
+  const rm=document.getElementById('rm').value;
+  const si=document.getElementById('si').value.toLowerCase();
+  const dc=document.getElementById('dc').value;
+  const hotels=D[mo];
+  const fil=hotels.filter(h=>h.n.toLowerCase().includes(si)&&(sf==='all'||h.s===sf));
+  document.getElementById('hc').textContent=fil.length;
+  document.getElementById('pl').textContent=PL[mo];
+  document.getElementById('nl').textContent=ni+' nights';
+  document.getElementById('tl').textContent=document.getElementById('tp').value+' '+document.getElementById('tc').value;
+  const tours=T[ni]||[];
+  document.getElementById('tl2').innerHTML=tours.map(t=>`<span class="tchip">${t}</span>`).join('');
+  const ru=parseFloat(document.getElementById('ru').value||0.709);
+  const grid=document.getElementById('grid');
+  if(!fil.length){grid.innerHTML='<div class="none">No hotels found.</div>';return;}
+  grid.innerHTML=fil.map((h,i)=>{
+    const pd=h[nk];if(!pd)return'';
+    const v=pd[rm];const na=v===null||v===undefined;
+    let fval='',bhtml='';
+    if(!na){
+      const c=calc(v);
+      if(dc==='JOD')fval=c.fin.toFixed(2)+' JD';
+      else if(dc==='USD')fval='$'+c.finUSD.toFixed(0);
+      else fval=c.fin.toFixed(2)+' JD / $'+c.finUSD.toFixed(0);
+      bhtml=`<div class="bdr"><span>DMC Base (${rm.toUpperCase()})</span><span>$${v}</span></div>
+      <div class="bdr"><span>Ticket (USD)</span><span>$${c.tk.toFixed(2)}</span></div>
+      <div class="bdr"><span>Total in JOD</span><span>${((v+c.tk)*ru).toFixed(2)} JD</span></div>
+      <div class="bdr"><span>Fixed profit</span><span>${c.fp.toFixed(2)} JD</span></div>
+      <div class="bdr"><span>Profit %</span><span>${(c.pp*100).toFixed(0)}%</span></div>
+      <div class="bdr tot"><span>Final Price</span><span>${fval}</span></div>`;
+    }
+    const ss={'3':'3','3+':'3+','4':'4','5':'5'}[h.s];
+    const chiinfo=!na?`Child 0-5: FREE | Child 6-11: ~${(v*0.5*ru).toFixed(2)} JD (50% hotel only)`:'';
+    const wa=!na?encodeURIComponent(`Trabzon Package — AL JUDE Travel\nHotel: ${h.n}\n${ss} Stars | ${ni} Nights\nPeriod: ${PL[mo]}\nRoom: ${rm.toUpperCase()}\nDMC: $${v}/person\nTicket: ${document.getElementById('tp').value} ${document.getElementById('tc').value}\nFinal: ${fval}/person\nTours: ${tours.join(', ')}\nAL JUDE Travel +962 777 066 005`):'';
+    return`<div class="card">
+      <div class="ch">
+        <div><div class="ch-name">${h.n}</div><div style="font-size:10px;opacity:.8">City Center — Trabzon</div>${h.sp?`<div class="sp">${h.sp}</div>`:''}</div>
+        <div class="ch-stars">${ss} Stars</div>
+      </div>
+      <div class="cb">
+        <div class="prow">
+          <div class="pbox ${rm==='dbl'?'hl':''}"><div class="pl">DBL</div><div class="pd">${pd.dbl!==null?'$'+pd.dbl:'N/A'}</div></div>
+          <div class="pbox ${rm==='sgl'?'hl':''}"><div class="pl">SGL</div><div class="pd">${pd.sgl!==null?'$'+pd.sgl:'N/A'}</div></div>
+          <div class="pbox ${rm==='extra'?'hl':''}"><div class="pl">Extra Bed</div><div class="pd">${pd.extra!==null&&pd.extra!==undefined?'$'+pd.extra:'N/A'}</div></div>
+        </div>
+        ${!na?`<div class="final"><div class="final-lbl">Final (${rm.toUpperCase()}) incl. ticket + profit</div><div class="final-val">${fval}</div></div>
+        <div class="cinfo">${chiinfo}</div>`:'<div style="color:#aaa;font-size:12px;margin:6px 0">Room type not available</div>'}
+        <div class="tbadge">${ni}N tours: ${tours.join(' | ')}</div>
+        ${!na?`<div class="actions">
+          <button class="btn-bd" onclick="document.getElementById('bd${i}').classList.toggle('show')">Breakdown</button>
+          <button class="btn-wa" onclick="window.open('https://wa.me/?text=${wa}','_blank')">WhatsApp</button>
+        </div>
+        <div class="bd" id="bd${i}">${bhtml}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+render();
+
+
+// ═══ TRABZON TOURS DATA ═══
+const CITY_TOURS = [
+  {name:'Batumi Tour',nameAr:'جولة باتومي (جورجيا)',dur:'Full-Day',
+   sic:45,sic_e:null,pvt:290,pvt_e:null,
+   desc:'Sarpi Waterfalls • Gonio Fortress • Batumi Boulevard • Ali & Nino Statue • Alphabetic Tower • 6 May Park • Black Sea Cruise • Cable Car • Botanical Garden'},
+  {name:'Uzungol Tour',nameAr:'جولة أوزونغول',dur:'Full-Day',
+   sic:20,sic_e:null,pvt:95,pvt_e:null,
+   desc:'Uzungöl Lake • Uzungöl Waterfalls • Expert Guide • Transfers'},
+  {name:'Hidir Nebi & Cal Cave',nameAr:'هدر نبي وكهف جال',dur:'Full-Day',
+   sic:20,sic_e:null,pvt:95,pvt_e:null,
+   desc:'Hıdırnebi Plateau • Çal Cave • Akçaabat Mountains & Valleys'},
+  {name:'Ayder & Rize Tour',nameAr:'جولة أيدر وريزه',dur:'Full-Day',
+   sic:20,sic_e:null,pvt:105,pvt_e:null,
+   desc:'Storm River (Rafting & Zipline) • Ayder Plateau • Eskitoğlu Waterfalls • Historic Ottoman Bridges'},
+  {name:'Trabzon City Tour',nameAr:'جولة مدينة طرابزون',dur:'Full-Day',
+   sic:15,sic_e:null,pvt:75,pvt_e:null,
+   desc:'Trabzon Botanic Park • Boztepe Hill • Hagia Sophia Trabzon • Atatürk Pavilion • Sera Lake • Black Sea Cruise • Old City'},
+  {name:'Sumela & Zigana & Hamsikoy',nameAr:'سوميلا وزيغانا وهامسيكوي',dur:'Full-Day',
+   sic:20,sic_e:null,pvt:100,pvt_e:null,
+   desc:'Zigana Pass • Karaca Cave • Glass Terrace • Limni Lake • Hamsiköy Village'},
+  {name:'Giresun & Ordu Tour',nameAr:'جولة جيرسون وأوردو',dur:'Full-Day',
+   sic:20,sic_e:null,pvt:165,pvt_e:null,
+   desc:'Giresun Castle & Island • Ordu Boztepe Cable Car (Teleferik) • Black Sea Cruise'},
+  {name:'Ikizdere & Ridos Tour',nameAr:'جولة إيكيزديره وريدوس',dur:'Full-Day',
+   sic:null,sic_e:null,pvt:125,pvt_e:null,
+   desc:'Ikizdere Village • Manli Waterfalls • Ridos Thermal Resort • Stone Bridges & Wooden Houses'},
+  {name:'Qibla Mountain Tour',nameAr:'جولة جبل القبلة',dur:'Full-Day',
+   sic:null,sic_e:null,pvt:135,pvt_e:null,
+   desc:'Qibla Mountain & Mosque • Arab Square • Teacup Tower'},
+];
+
+const CITY_TRANSFERS = [
+  {type:'ECO Private VITO (≤5) — TZX Airport ↔ City Center',price:50,cat:'ECO'},
+  {type:'PREMIUM Private VITO (≤5) — TZX Airport ↔ City Center',price:70,cat:'PREM'},
+  {type:'ECO Private VITO (≤5) — City Center ↔ Uzungol',price:150,cat:'ECO'},
+  {type:'PREMIUM Private VITO (≤5) — City Center ↔ Uzungol',price:180,cat:'PREM'},
+  {type:'ECO Private VITO (≤5) — City Center ↔ Rize / Ayder',price:190,cat:'ECO'},
+  {type:'PREMIUM Private VITO (≤5) — City Center ↔ Rize / Ayder',price:220,cat:'PREM'},
+  {type:'ECO Private VITO (≤5) — City Center ↔ Giresun / Ordu',price:260,cat:'ECO'},
+  {type:'PREMIUM Private VITO (≤5) — City Center ↔ Giresun / Ordu',price:290,cat:'PREM'},
+  {type:'ECO Private VITO (≤5) — City Center ↔ Batumi',price:280,cat:'ECO'},
+  {type:'PREMIUM Private VITO (≤5) — City Center ↔ Batumi',price:310,cat:'PREM'},
+  {type:'Private SIPRINTER (≤12) — TZX Airport ↔ City Center',price:80,cat:'BUS'},
+  {type:'Above 12 pax',price:null,cat:'ORB'},
+];
+
+const TOUR_PACKAGES = null; // No tour packages for Trabzon
+
+
+
+function tourFinalPrice(dmc) {
+  if (dmc === null || dmc === undefined) return null;
+  const fp  = parseFloat(document.getElementById('tourProfit').value)    || 0;
+  const pp  = parseFloat(document.getElementById('tourProfitPct').value) || 0;
+  return Math.round((dmc + fp) * (1 + pp / 100));
+}
+
+function renderTours() {
+  const tbody = document.getElementById('toursTableBody');
+  if (!tbody) return;
+  const na  = '<span style="color:#555;font-size:10px">N/A</span>';
+  const orb = '<span style="color:#a0a8b8;font-size:10px">O.R.B</span>';
+
+  tbody.innerHTML = CITY_TOURS.map((t, i) => {
+    const sicF  = tourFinalPrice(t.sic);
+    const pvtF  = tourFinalPrice(t.pvt);
+    const pvtEF = tourFinalPrice(t.pvt_e);
+    const bg = i % 2 === 0 ? 'background:rgba(255,255,255,0.015)' : '';
+
+    const waMsg = encodeURIComponent(
+      '🗺️ Tour Offer — AL JUDE Travel\n\n' +
+      '📍 ' + t.name + '\n' +
+      (t.nameAr ? t.nameAr + '\n' : '') +
+      '⏱️ ' + t.dur + '\n\n' +
+      '✅ ' + t.desc + '\n\n' +
+      (sicF  !== null ? '👥 SIC (Group): $' + sicF  + ' per person\n' : '') +
+      (pvtF  !== null ? '🚌 Private (≤5 pax): $' + pvtF + '\n' : '') +
+      (pvtEF !== null ? '🚌 Private Economy: $' + pvtEF + '\n' : '') +
+      '\n📞 +962 777 066 005 | الجود للسياحة والسفر'
+    );
+
+    const sicDmc  = t.sic  !== null ? '$' + t.sic  : (t.pvt === null ? orb : na);
+    const sicYour = sicF   !== null ? '<span style="background:rgba(34,197,94,0.15);color:#22c55e;font-weight:800;border-radius:5px;padding:2px 7px;">$' + sicF + '</span>' : (t.pvt === null ? orb : na);
+    const pvtDmc  = t.pvt  !== null ? '$' + t.pvt  : orb;
+    const pvtYour = pvtF   !== null ? '<span style="background:rgba(245,158,11,0.15);color:#f59e0b;font-weight:800;border-radius:5px;padding:2px 7px;">$' + pvtF  + '</span>' : orb;
+
+    return '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);' + bg + '">' +
+      '<td style="padding:8px 10px;">' +
+        '<div style="font-weight:700;color:#e8e0d0;font-size:11px;">' + t.name + '</div>' +
+        (t.nameAr ? '<div style="color:#a0a8b8;font-size:10px;">' + t.nameAr + '</div>' : '') +
+        '<div style="color:#606880;font-size:9px;margin-top:3px;line-height:1.5;">' + t.desc + '</div>' +
+      '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#a0a8b8;font-size:10px;white-space:nowrap;">' + t.dur + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;">'  + sicDmc  + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">'                                + sicYour + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;">'  + pvtDmc  + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">'                                + pvtYour + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">' +
+        '<button onclick="sendWATour(\'' + waMsg + '\')" ' +
+        'style="background:#25d366;border:none;border-radius:6px;padding:4px 8px;color:white;cursor:pointer;font-size:12px;">💬</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+
+  // Transfers
+  const tgrid = document.getElementById('transfersGrid');
+  if (tgrid) {
+    const cc = {ECO:'#60a5fa',PREM:'#f59e0b',VIP:'#c084fc',BUS:'#22c55e',SIC:'#a0a8b8',ORB:'#555'};
+    tgrid.innerHTML = CITY_TRANSFERS.map(t => {
+      if (t.price === null) return (
+        '<div style="background:#111e35;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;">' +
+        '<div style="color:#a0a8b8;font-size:10px;">' + t.type + '</div>' +
+        '<div style="color:#555;font-weight:700;">O.R.B</div></div>'
+      );
+      const col = cc[t.cat] || '#a0a8b8';
+      return (
+        '<div style="background:#111e35;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;">' +
+        '<div><div style="color:#e8e0d0;font-size:10px;">' + t.type + '</div>' +
+        '<div style="font-size:9px;color:' + col + ';font-weight:700;margin-top:2px;">' + t.cat + '</div></div>' +
+        '<div style="color:' + col + ';font-weight:800;font-size:15px;white-space:nowrap;margin-right:6px;">$' + t.price + '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  // Tour packages (Istanbul only)
+  const pkgWrap = document.getElementById('tourPackagesWrap');
+  if (pkgWrap && typeof TOUR_PACKAGES !== "undefined" && TOUR_PACKAGES) {
+    pkgWrap.style.display = 'block';
+    // Detect current period
+    const mayBtn = document.getElementById('tab-may');
+    const period = (mayBtn && mayBtn.classList.contains('active')) ? 'may' : 'jun';
+    const pkgs = TOUR_PACKAGES[period] || TOUR_PACKAGES.may;
+    const pgrid = document.getElementById('tourPackagesGrid');
+    if (pgrid) {
+      pgrid.innerHTML = pkgs.map(p => {
+        const pF = tourFinalPrice(p.prem);
+        const eF = tourFinalPrice(p.eco);
+        return (
+          '<div style="background:#111e35;border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:12px;">' +
+          '<div style="color:#c9a84c;font-weight:800;font-size:12px;margin-bottom:4px;">📦 ' + p.n + '</div>' +
+          '<div style="color:#a0a8b8;font-size:10px;margin-bottom:8px;">' + p.tours + '</div>' +
+          '<div style="display:flex;gap:10px;">' +
+            '<div style="flex:1;background:rgba(34,197,94,0.1);border-radius:6px;padding:6px;text-align:center;">' +
+              '<div style="font-size:9px;color:#22c55e;">Premium</div>' +
+              '<div style="font-size:11px;color:#a0a8b8;text-decoration:line-through;">$' + p.prem + '</div>' +
+              '<div style="font-size:16px;font-weight:800;color:#22c55e;">$' + pF + '</div>' +
+            '</div>' +
+            '<div style="flex:1;background:rgba(96,165,250,0.1);border-radius:6px;padding:6px;text-align:center;">' +
+              '<div style="font-size:9px;color:#60a5fa;">Economy</div>' +
+              '<div style="font-size:11px;color:#a0a8b8;text-decoration:line-through;">$' + p.eco + '</div>' +
+              '<div style="font-size:16px;font-weight:800;color:#60a5fa;">$' + eF + '</div>' +
+            '</div>' +
+          '</div></div>'
+        );
+      }).join('');
+    }
+  }
+}
+
+
+function sendWATour(msg){window.open("https://wa.me/962777066005?text="+msg,"_blank");}
+renderTours();
+</script>
+
+<!-- TOURS & EXCURSIONS SECTION -->
+<div style="background:#f0f4f8;border-top:2px solid rgba(26,107,60,0.3);padding:20px 0 40px;margin-top:20px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="background:#ffffff;border:1px solid rgba(26,107,60,0.2);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+      <div style="color:#14532d;font-size:14px;font-weight:800;">🗺️ Daily Excursions & Transfers</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <label style="font-size:11px;color:#5a6a7a;">💰 Tour Profit (USD/person):</label>
+        <input type="number" id="tourProfit" value="5" min="0" step="1"
+          style="width:65px;background:#f0f4f8;border:1px solid rgba(26,107,60,0.3);border-radius:6px;padding:5px 8px;color:#1a2332;font-size:13px;outline:none;"
+          oninput="renderTours()">
+        <label style="font-size:11px;color:#5a6a7a;">📊 Profit %:</label>
+        <input type="number" id="tourProfitPct" value="0" min="0" max="100" step="5"
+          style="width:55px;background:#f0f4f8;border:1px solid rgba(26,107,60,0.3);border-radius:6px;padding:5px 8px;color:#1a2332;font-size:13px;outline:none;"
+          oninput="renderTours()">
+        <button onclick="renderTours()" style="background:#14532d;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">🔄 Update Tours</button>
+      </div>
+    </div>
+
+    <h3 style="color:#14532d;font-size:13px;font-weight:800;margin-bottom:10px;">🗺️ Daily Excursions</h3>
+    <div style="overflow-x:auto;margin-bottom:24px;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+        <thead>
+          <tr style="background:rgba(26,107,60,0.1);">
+            <th style="padding:8px 10px;text-align:left;color:#14532d;font-weight:700;border-bottom:1px solid rgba(26,107,60,0.2);">الجولة / Tour</th>
+            <th style="padding:8px 6px;text-align:center;color:#5a6a7a;border-bottom:1px solid rgba(26,107,60,0.2);white-space:nowrap;">Duration</th>
+            <th style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;border-bottom:1px solid rgba(26,107,60,0.2);">SIC<br><span style="font-size:9px;font-weight:400;color:#5a6a7a;">DMC $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;border-bottom:1px solid rgba(26,107,60,0.2);">SIC<br><span style="font-size:9px;font-weight:400;color:#5a6a7a;">Your $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;border-bottom:1px solid rgba(26,107,60,0.2);">Private<br><span style="font-size:9px;font-weight:400;color:#5a6a7a;">DMC $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;border-bottom:1px solid rgba(26,107,60,0.2);">Private<br><span style="font-size:9px;font-weight:400;color:#5a6a7a;">Your $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#5a6a7a;border-bottom:1px solid rgba(26,107,60,0.2);">WA</th>
+          </tr>
+        </thead>
+        <tbody id="toursTableBody"></tbody>
+      </table>
+    </div>
+
+    <h3 style="color:#14532d;font-size:13px;font-weight:800;margin-bottom:10px;">🚗 Transfer Rates (USD)</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px;" id="transfersGrid"></div>
+  </div>
+</div>
+</body>
+</html>

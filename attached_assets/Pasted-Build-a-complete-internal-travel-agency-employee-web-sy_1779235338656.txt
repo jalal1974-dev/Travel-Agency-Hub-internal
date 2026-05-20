@@ -1,0 +1,172 @@
+Build a complete internal travel-agency employee web system using the EXACT uploaded HTML files without redesigning or changing their layouts, styling, structure, sections, cards, tables, spacing, colors, or UI components. I will upload around 14 HTML files for different destinations and hotel/package dashboards (Sharm El Sheikh, Istanbul, Georgia, etc.). These HTML files are already finalized and approved. Your job is to KEEP THEM EXACTLY AS THEY ARE visually and structurally.
+
+IMPORTANT:
+
+Do NOT recreate the pages from scratch.
+Do NOT redesign anything.
+Do NOT simplify or modernize the UI.
+Do NOT replace the HTML with new components.
+Do NOT change CSS classes, styling logic, tables, cards, or layouts unless absolutely necessary for functionality.
+Treat the uploaded HTML files as production-ready templates.
+Integrate them into ONE unified website/system only.
+
+SYSTEM PURPOSE:
+This is an INTERNAL employee system for a tourism and travel agency. Employees use it to:
+
+Update ticket prices.
+Update exchange rates/currencies.
+Automatically recalculate package prices.
+Print hotel offers or travel programs for customers.
+Export customer-facing PDFs WITHOUT exposing internal cost details.
+
+MAIN REQUIREMENT (VERY IMPORTANT):
+The uploaded HTML pages contain INTERNAL sensitive pricing information such as:
+
+Ticket costs
+Transportation costs
+Internal expenses
+Profit margins
+Employee calculations
+Net cost breakdowns
+
+These MUST NEVER appear in:
+
+Print view
+Generated PDF
+Customer copy
+Shared/exported document
+
+Even if hidden visually on screen, they must be fully removed or covered automatically during print/export mode.
+
+PRINT/PDF LOGIC:
+Create a professional print/export system with:
+
+“Print Single Hotel”
+“Print Selected Hotels”
+“Print Entire Package”
+“Print Specific Program”
+“Print All Programs on Page”
+
+Before printing/exporting:
+
+Automatically hide all internal financial data.
+Automatically remove profit columns.
+Automatically remove internal calculations.
+Automatically remove ticket cost details.
+Automatically remove transportation cost breakdowns.
+Automatically remove admin notes.
+
+Do this automatically using:
+
+CSS print mode
+Print-only templates
+Hidden print classes
+Overlay masking if needed
+Logo cover blocks if needed
+
+The employee should NEVER need to manually hide data before printing.
+
+PDF OUTPUT REQUIREMENTS:
+The exported/printed PDF must:
+
+Look clean and professional.
+Preserve original design.
+Preserve hotel images.
+Preserve package styling.
+Preserve tables and formatting.
+Include only customer-facing information.
+Be optimized for A4 printing.
+Support Arabic and English properly.
+Have proper page breaks.
+Avoid broken tables/cards between pages.
+
+FUNCTIONAL REQUIREMENTS:
+
+Unified Dashboard
+Sidebar navigation for all destinations.
+Each uploaded HTML page opens inside the system.
+Keep each page independent but connected.
+Editable Pricing System
+Employees can:
+Change flight ticket prices.
+Change currency exchange rates.
+Change hotel costs.
+Change transportation costs.
+Change package pricing.
+
+When values change:
+
+Package totals auto-update instantly.
+Dynamic Currency Support
+Support:
+JOD
+USD
+EGP
+TRY
+EUR
+SAR
+Package Management
+Some destinations (like Georgia) contain multiple programs/packages inside one dashboard.
+Employees should be able to:
+Print one specific program only.
+Print all programs together.
+Export each separately.
+Smart Print Buttons
+Add easy employee buttons:
+Print
+Export PDF
+Print Hotels Only
+Print Program Only
+Print All
+Authentication
+Create a simple employee login system:
+Admin role
+Employee role
+
+Only logged-in employees can access dashboards.
+
+Internal Security
+Internal calculations must:
+Never appear in exported PDFs.
+Never appear in print preview.
+Never appear in customer-facing mode.
+Tech Stack
+Use:
+HTML/CSS/JavaScript
+Optional lightweight backend
+Node.js or Express if needed
+Local storage or database if needed
+Performance
+The system should:
+Load fast.
+Work smoothly.
+Handle all 14 dashboards efficiently.
+Important UI Rule
+DO NOT redesign uploaded HTML pages.
+DO NOT convert them into another design system.
+DO NOT replace existing layouts with React cards/components.
+JUST integrate and enhance functionality around them.
+Employee Experience
+The workflow must be extremely simple:
+Employee opens destination page.
+Updates prices/currency.
+Clicks print/export.
+Customer-ready PDF is generated automatically with hidden internal data.
+Additional Requirement
+Create a dedicated “customer print mode” that automatically:
+Hides internal sections.
+Removes admin-only elements.
+Produces clean offer documents.
+Final Deliverable
+Deliver:
+Full working integrated website
+All dashboards connected
+Print/PDF system
+Hidden internal pricing logic
+Employee authentication
+Responsive layout
+Clean navigation
+Production-ready structure
+
+The final system should feel like a professional internal tourism operating platform for employees of:
+الجود للسياحة والسفر

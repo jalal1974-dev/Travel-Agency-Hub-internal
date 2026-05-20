@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سريلانكا – باقات DMC | Sri Lanka DMC Packages</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean:#006d77;--ocean-light:#83c5be;--gold:#f4a261;--sunset:#e29578;
+    --night:#0a1628;--night2:#112240;--card:#0d1f3c;--card2:#152944;
+    --white:#f0f4f8;--muted:#8fa3bf;--accent:#00b4d8;--green:#52b788;
+    --border:rgba(0,180,216,0.18);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Cairo','DM Sans',sans-serif;background:var(--night);color:var(--white);min-height:100vh;overflow-x:hidden;direction:rtl;}
+  header{position:relative;overflow:hidden;padding:60px 40px 52px;text-align:center;background:linear-gradient(135deg,#0a1628 0%,#1a3a5c 50%,#006d77 100%);}
+  header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2300b4d8' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");}
+  .h-inner{position:relative;z-index:1;}
+  .h-ar{font-family:'Cairo',sans-serif;font-size:clamp(52px,9vw,100px);font-weight:900;line-height:1;background:linear-gradient(135deg,#fff 30%,var(--ocean-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .h-en{font-family:'Playfair Display',serif;font-size:clamp(16px,2.5vw,26px);font-weight:700;color:var(--ocean-light);opacity:.7;letter-spacing:4px;margin-top:4px;}
+  .h-sub{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.8;}
+  .wave{position:absolute;bottom:-1px;left:0;right:0;height:40px;}
+  .wave svg{display:block;width:100%;height:100%;}
+
+  /* STRIP */
+  .calc-strip{background:var(--card);border-bottom:1px solid var(--border);padding:13px 40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .cg{display:flex;align-items:center;gap:8px;}
+  .cl{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-align:center;}
+  .cl b{display:block;font-family:'Cairo',sans-serif;font-size:12px;color:var(--white);font-weight:700;}
+  .calc-strip input,.calc-strip select{background:var(--night2);border:1px solid var(--border);color:var(--white);padding:7px 11px;border-radius:7px;font-family:'Cairo','DM Sans',sans-serif;font-size:13px;outline:none;direction:ltr;transition:border .2s;}
+  .calc-strip input:focus,.calc-strip select:focus{border-color:var(--accent);}
+  .calc-strip input{width:100px;}
+  .sep{color:var(--border);font-size:20px;}
+  .opt-note{margin-right:auto;background:rgba(82,183,136,.12);border:1px solid rgba(82,183,136,.3);color:var(--green);font-size:11px;padding:6px 14px;border-radius:20px;}
+
+  /* MAIN */
+  .main{padding:40px;max-width:1500px;margin:0 auto;}
+  .stitle{font-family:'Cairo',sans-serif;font-size:19px;font-weight:700;color:var(--ocean-light);margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+  .stitle::before{content:'';flex:1;height:1px;background:var(--border);}
+  .stitle .en{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;opacity:.6;margin-right:8px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:26px;}
+
+  /* CARD */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;}
+  .card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px var(--accent);}
+  .band{padding:20px 22px 16px;position:relative;overflow:hidden;}
+  .band.fam{background:linear-gradient(135deg,#006d77,#0a3d62);}
+  .band.hon{background:linear-gradient(135deg,#8b2252,#3d0c26);}
+  .bref{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);font-size:10px;color:rgba(255,255,255,.45);padding:3px 8px;border-radius:5px;direction:ltr;}
+  .btype-ar{font-family:'Cairo',sans-serif;font-size:11px;font-weight:600;opacity:.75;margin-bottom:2px;}
+  .btype-en{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.5;margin-bottom:6px;}
+  .bname-ar{font-family:'Cairo',sans-serif;font-size:20px;font-weight:800;line-height:1.2;}
+  .bname-en{font-family:'Playfair Display',serif;font-size:12px;opacity:.6;margin-top:3px;}
+  .bmeta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+  .badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:4px 10px;border-radius:14px;font-size:11px;font-weight:500;}
+  .badge.stars{color:var(--gold);}
+
+  .cbody{padding:18px 22px;flex:1;}
+  .sh{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+  .sh .ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;letter-spacing:0;color:var(--white);}
+
+  .hrow{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+  .hrow:last-child{border-bottom:none;}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .d-neg{background:var(--accent);}
+  .d-kan{background:var(--gold);}
+  .d-col{background:var(--green);}
+  .d-ben{background:var(--sunset);}
+  .hinfo{flex:1;min-width:0;}
+  .hcities{display:flex;justify-content:space-between;align-items:center;}
+  .hcity-ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;}
+  .hcity-en{font-size:10px;color:var(--muted);letter-spacing:.5px;}
+  .hname{font-size:12px;color:var(--muted);margin-top:2px;}
+  .hdetail{font-size:11px;color:var(--muted);opacity:.7;}
+  .hnights{background:var(--night2);border:1px solid var(--border);color:var(--accent);font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+
+  .tlist{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+  .tblock{background:var(--night2);border:1px solid var(--border);border-radius:9px;padding:9px 12px;}
+  .tloc{font-size:11px;font-weight:600;color:var(--ocean-light);margin-bottom:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .tloc .ar{font-family:'Cairo',sans-serif;font-size:12px;}
+  .otag{font-size:9px;color:var(--gold);background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.25);padding:2px 7px;border-radius:10px;font-weight:600;}
+  .titems{display:flex;flex-wrap:wrap;gap:4px;}
+  .ti{font-size:10px;background:rgba(0,180,216,.07);border:1px solid rgba(0,180,216,.15);color:var(--muted);padding:3px 8px;border-radius:8px;}
+
+  .irow{display:flex;flex-wrap:wrap;gap:5px;}
+  .ich{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);background:rgba(82,183,136,.07);border:1px solid rgba(82,183,136,.18);padding:3px 9px;border-radius:10px;}
+  .ich::before{content:'✓';color:var(--green);font-size:9px;font-weight:700;}
+
+  .pwrap{background:var(--night2);border-top:1px solid var(--border);padding:18px 22px;}
+  .prow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+  .plbl{color:var(--muted);font-size:11px;display:flex;flex-direction:column;gap:1px;}
+  .plbl .ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;color:var(--white);}
+  .pval{font-weight:600;color:var(--white);font-size:13px;direction:ltr;}
+  .pval.base{color:var(--accent);font-size:14px;}
+  .pin{background:var(--card);border:1px solid var(--border);color:var(--white);padding:5px 10px;border-radius:6px;font-size:12px;width:95px;text-align:left;font-family:'DM Sans',sans-serif;outline:none;direction:ltr;}
+  .pin:focus{border-color:var(--accent);}
+  .div{height:1px;background:var(--border);margin:10px 0;}
+  .trow{display:flex;justify-content:space-between;align-items:flex-end;padding-top:8px;}
+  .tlbl{font-size:11px;color:var(--muted);}
+  .tlbl .ar{font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;color:var(--white);display:block;}
+  .talt{font-size:11px;color:var(--muted);margin-top:3px;}
+  .tnum{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);text-align:left;direction:ltr;}
+
+  .nwrap{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin-top:44px;}
+  .ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:16px;}
+  .nitem{display:flex;gap:10px;padding:10px 13px;background:var(--night2);border-radius:9px;border-right:3px solid var(--ocean-light);font-size:11px;color:var(--muted);line-height:1.7;}
+  .nitem .ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--white);display:block;margin-bottom:2px;}
+  .nitem::before{content:'◆';color:var(--ocean-light);flex-shrink:0;font-size:8px;margin-top:4px;}
+  @media(max-width:700px){.main{padding:20px;}.calc-strip{padding:12px 16px;}header{padding:36px 20px 40px;}.opt-note{display:none;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="h-inner">
+    <div class="h-ar">سريلانكا</div>
+    <div class="h-en">SRI LANKA</div>
+    <p class="h-sub">
+      باقات DMC · 7 ليالي · الأسعار بالدينار الأردني للشخص · الطيران الدولي غير مشمول<br>
+      <span style="opacity:.6;font-size:12px">DMC Packages · 7 Nights · JOD per person · International flights excluded</span>
+    </p>
+  </div>
+  <div class="wave"><svg viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#0a1628"/></svg></div>
+</header>
+
+<div class="calc-strip">
+  <div class="cg"><div class="cl"><b>العملة</b>Currency</div>
+    <select id="currency" onchange="recalcAll()"><option value="JOD">دينار أردني – JOD</option><option value="USD">دولار أمريكي – USD</option></select></div>
+  <span class="sep">|</span>
+  <div class="cg"><div class="cl"><b>سعر الصرف</b>JOD → USD</div>
+    <input type="number" id="usdRate" value="1.41" step="0.01" min="0.5" onchange="recalcAll()"></div>
+  <span class="sep">|</span>
+  <div class="cg"><div class="cl"><b>تأشيرة / شخص</b>Visa JOD/person</div>
+    <input type="number" id="globalVisa" value="0" step="1" min="0" onchange="recalcAll()" placeholder="0"></div>
+  <div class="opt-note">✦ جميع الجولات اختيارية وتُدفع للـ DMC &nbsp;·&nbsp; All tours optional – paid to DMC</div>
+</div>
+
+<main class="main">
+  <div class="stitle"><span class="en">Sri Lanka – 4 Packages</span>الباقات الأربع – سريلانكا</div>
+  <div class="grid" id="pgrid"></div>
+
+  <div class="nwrap">
+    <div class="stitle"><span class="en">Important Notes</span>ملاحظات هامة</div>
+    <div class="ngrid">
+      <div class="nitem"><span class="ar">حجم السيارة</span>If vehicle doesn't suit group/luggage, notify DMC in advance.</div>
+      <div class="nitem"><span class="ar">الأسعار حسب الحجم</span>Prices vary by group size — confirm with DMC.</div>
+      <div class="nitem"><span class="ar">ضريبة المدينة</span>City tax 10 LKR/room/night paid directly at hotel.</div>
+      <div class="nitem"><span class="ar">سعة الغرفة</span>Standard room fits 2 adults with breakfast.</div>
+      <div class="nitem"><span class="ar">الإلغاء والاسترجاع</span>Cancellation/refund per hotel policy — no guarantee from company.</div>
+      <div class="nitem"><span class="ar">الطيران الداخلي</span>Domestic flight tickets non-refundable after confirmation.</div>
+      <div class="nitem"><span class="ar">أوقات الفنادق</span>Check-in 2:00 PM · Check-out 12:00 PM.</div>
+      <div class="nitem"><span class="ar">مدة الجولة</span>Tour day = 8 hours only. Entry tickets not included.</div>
+      <div class="nitem"><span class="ar">الجولات اختيارية</span>All activities are OPTIONAL — paid separately to DMC.</div>
+      <div class="nitem"><span class="ar">مصاريف الجولات</span>All tours include fuel and driver expenses.</div>
+      <div class="nitem"><span class="ar">شريحة الاتصال</span>SIM card with internet included in all packages.</div>
+      <div class="nitem"><span class="ar">استقبال بالورد</span>Complimentary flower welcome upon arrival.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const PKG=[
+  {id:'p1',ref:'493328',stars:4,nights:7,typeAr:'عائلي · 4 بالغين',typeEn:'Family · 4 Adults',band:'fam',nameAr:'نقمبو – كاندي – كولومبو',nameEn:'Negombo – Kandy – Colombo',
+   hotels:[{ar:'نقمبو',en:'Negombo',dot:'d-neg',name:'Sentido Heritance Negombo',det:'Standard Pool View · إفطار',n:1},{ar:'كاندي',en:'Kandy',dot:'d-kan',name:'The Golden Crown Hotel',det:'ديلوكس · إفطار',n:3},{ar:'كولومبو',en:'Colombo',dot:'d-col',name:'Amari Colombo',det:'Standard City View · إفطار',n:3}],
+   tours:[{ar:'كاندي',en:'Kandy',items:['بحيرة كاندي','ميتم الفيلة','الحديقة النباتية الملكية','مزرعة جيراجاما للشاي','المتحف الوطني','الرقصات الشعبية','مول كاندي سيتي']},{ar:'كولومبو',en:'Colombo',items:['شاطئ لافينيا','المتحف الوطني','حديقة الحيوان','حديقة فيهارا','معبد جانجرامايا','سوق بيتاة','مسجد جامع الغار']}],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM','استقبال بالورد'],base:458},
+  {id:'p2',ref:'493333',stars:5,nights:7,typeAr:'عائلي · 5 نجوم',typeEn:'Family · 5-Star',band:'fam',nameAr:'نقمبو – كاندي – كولومبو',nameEn:'Negombo – Kandy – Colombo',
+   hotels:[{ar:'نقمبو',en:'Negombo',dot:'d-neg',name:'Sentido Heritance Negombo',det:'Standard Pool View · إفطار',n:1},{ar:'كاندي',en:'Kandy',dot:'d-kan',name:'Mahaweli Reach Hotel',det:'ديلوكس · إفطار',n:3},{ar:'كولومبو',en:'Colombo',dot:'d-col',name:'Amari Colombo',det:'Standard City View · إفطار',n:3}],
+   tours:[{ar:'كاندي',en:'Kandy',items:['بحيرة كاندي','ميتم الفيلة','الحديقة النباتية الملكية','مزرعة جيراجاما للشاي','المتحف الوطني','الرقصات الشعبية','مول كاندي سيتي']},{ar:'كولومبو',en:'Colombo',items:['شاطئ لافينيا','المتحف الوطني','حديقة الحيوان','حديقة فيهارا','معبد جانجرامايا','سوق بيتاة','مسجد جامع الغار']}],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM','استقبال بالورد'],base:391},
+  {id:'p3',ref:'493295',stars:4,nights:7,typeAr:'شهر عسل · اقتصادي',typeEn:'Honeymoon · Economical',band:'hon',nameAr:'نقمبو – كاندي – بنتوتة – كولومبو',nameEn:'Negombo – Kandy – Bentota – Colombo',
+   hotels:[{ar:'نقمبو',en:'Negombo',dot:'d-neg',name:'Amagi Aria – Negombo City Secret',det:'Standard Pool View · إفطار',n:1},{ar:'كاندي',en:'Kandy',dot:'d-kan',name:'Radisson Hotel Kandy',det:'ديلوكس · إفطار',n:2},{ar:'بنتوتة',en:'Bentota',dot:'d-ben',name:'Eco Surf Bentota',det:'Superior Sea View · إفطار',n:2},{ar:'كولومبو',en:'Colombo',dot:'d-col',name:'Granbell Hotel Colombo',det:'Standard Sea View · إفطار',n:2}],
+   tours:[{ar:'كاندي',en:'Kandy',items:['بحيرة كاندي','ميتم الفيلة','الحديقة النباتية الملكية','مزرعة الشاي']},{ar:'بنتوتة',en:'Bentota',items:['شاطئ بنتوتة','محمية السلاحف البحرية','حديقة بريف','سفاري المنجروف']},{ar:'كولومبو',en:'Colombo',items:['شاطئ لافينيا','المتحف الوطني','حديقة الحيوان','حديقة فيهارا']}],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM','استقبال بالورد'],base:370},
+  {id:'p4',ref:'493321',stars:5,nights:7,typeAr:'شهر عسل · 5 نجوم فاخر',typeEn:'Honeymoon · 5-Star Luxury',band:'hon',nameAr:'نقمبو – كاندي – بنتوتة – كولومبو',nameEn:'Negombo – Kandy – Bentota – Colombo',
+   hotels:[{ar:'نقمبو',en:'Negombo',dot:'d-neg',name:'Sentido Heritance Negombo',det:'ديلوكس · إفطار',n:1},{ar:'كاندي',en:'Kandy',dot:'d-kan',name:'The Golden Crown Hotel Kandy',det:'ديلوكس · إفطار',n:2},{ar:'بنتوتة',en:'Bentota',dot:'d-ben',name:'Thala Bentota',det:'Standard Sea View · إفطار',n:2},{ar:'كولومبو',en:'Colombo',dot:'d-col',name:'Amari Colombo',det:'ديلوكس على المدينة · إفطار',n:2}],
+   tours:[{ar:'كاندي',en:'Kandy',items:['بحيرة كاندي','ميتم الفيلة','الحديقة النباتية الملكية','مزرعة الشاي']},{ar:'بنتوتة',en:'Bentota',items:['شاطئ بنتوتة','محمية السلاحف البحرية','حديقة بريف','سفاري المنجروف']},{ar:'كولومبو',en:'Colombo',items:['شاطئ لافينيا','المتحف الوطني','حديقة الحيوان','حديقة فيهارا']}],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM','استقبال بالورد'],base:447},
+];
+function gc(){return document.getElementById('currency').value;}
+function gr(){return parseFloat(document.getElementById('usdRate').value)||1.41;}
+function gv(){return parseFloat(document.getElementById('globalVisa').value)||0;}
+function sy(){return gc()==='USD'?'$':'د.أ';}
+function fm(j){return gc()==='USD'?(j*gr()).toFixed(0):j.toFixed(0);}
+function af(j){return gc()==='JOD'?'≈ $'+(j*gr()).toFixed(0):'≈ د.أ '+j.toFixed(0);}
+function tj(p){const t=parseFloat(document.getElementById('ticket_'+p.id)?.value)||0;const pr=parseFloat(document.getElementById('profit_'+p.id)?.value)||0;return p.base+gv()+t+pr;}
+function upd(id){const p=PKG.find(x=>x.id===id);const t=tj(p);const e=document.getElementById('tot_'+id);const e2=document.getElementById('alt_'+id);const eb=document.getElementById('bas_'+id);if(e)e.textContent=sy()+' '+fm(t);if(e2)e2.textContent=af(t);if(eb)eb.textContent=sy()+' '+fm(p.base);}
+function recalcAll(){PKG.forEach(p=>upd(p.id));}
+function rc(p){
+  const st='★'.repeat(p.stars)+'☆'.repeat(5-p.stars);
+  const hs=p.hotels.map(h=>`<div class="hrow"><div class="dot ${h.dot}"></div><div class="hinfo"><div class="hcities"><span class="hcity-ar">${h.ar}</span><span class="hcity-en">${h.en}</span></div><div class="hname">${h.name}</div><div class="hdetail">${h.det}</div></div><div class="hnights">${h.n} ليلة</div></div>`).join('');
+  const ts=p.tours.map(t=>`<div class="tblock"><div class="tloc"><span class="ar">${t.ar}</span><span style="opacity:.5;font-size:10px">${t.en}</span><span class="otag">اختياري · Optional</span></div><div class="titems">${t.items.map(i=>`<span class="ti">${i}</span>`).join('')}</div></div>`).join('');
+  const ic=p.inc.map(i=>`<div class="ich">${i}</div>`).join('');
+  return `<div class="card"><div class="band ${p.band}"><div class="bref">Ref #${p.ref}</div><div class="btype-ar">${p.typeAr}</div><div class="btype-en">${p.typeEn}</div><div class="bname-ar">${p.nameAr}</div><div class="bname-en">${p.nameEn}</div><div class="bmeta"><span class="badge stars">${st}</span><span class="badge">🌙 ${p.nights} ليالي · Nights</span></div></div>
+  <div class="cbody"><div class="sh"><span class="ar">الإقامة</span> Accommodation</div>${hs}<div class="sh" style="margin-top:14px"><span class="ar">الجولات السياحية (اختيارية)</span> Optional Tours</div><div class="tlist">${ts}</div><div class="sh" style="margin-top:14px"><span class="ar">يشمل البرنامج</span> Package Includes</div><div class="irow">${ic}</div></div>
+  <div class="pwrap"><div class="sh" style="margin-bottom:12px"><span class="ar">حاسبة السعر – للشخص</span> Price Calculator / Person</div>
+  <div class="prow"><div class="plbl"><span class="ar">سعر DMC (فنادق + مواصلات)</span>Base DMC Price</div><span class="pval base" id="bas_${p.id}">${sy()} ${fm(p.base)}</span></div>
+  <div class="prow"><div class="plbl"><span class="ar">تذكرة الطيران الدولي ذ+إ</span>Int'l Round-Trip Ticket</div><input class="pin" type="number" id="ticket_${p.id}" placeholder="د.أ / JOD" min="0" step="1" onchange="upd('${p.id}')"></div>
+  <div class="prow"><div class="plbl"><span class="ar">تكلفة التأشيرة</span>Visa Cost</div><span class="pval" style="color:var(--muted);font-size:11px">← من الشريط أعلاه · Set above</span></div>
+  <div class="prow"><div class="plbl"><span class="ar">هامش الربح</span>Profit / Margin</div><input class="pin" type="number" id="profit_${p.id}" placeholder="د.أ / JOD" min="0" step="1" onchange="upd('${p.id}')"></div>
+  <div class="div"></div>
+  <div class="trow"><div><div class="tlbl"><span class="ar">إجمالي سعر البيع للشخص</span>Total Selling Price / Person</div><div class="talt" id="alt_${p.id}"></div></div>
+  <div class="tnum" id="tot_${p.id}">${sy()} ${fm(p.base)}</div></div></div></div>`;
+}
+document.getElementById('pgrid').innerHTML=PKG.map(rc).join('');
+recalcAll();
+</script>
+</body>
+</html>

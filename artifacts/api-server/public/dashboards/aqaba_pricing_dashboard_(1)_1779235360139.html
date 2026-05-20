@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aqaba Hotels – AL JUDE Travel & Tourism</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sand: #f0e6d0; --sand2: #e8d8b8;
+  --ocean: #0e4d6b; --ocean2: #1a6d93; --ocean3: #0a3a52;
+  --coral: #c9623f; --coral2: #e07a55;
+  --cream: #fdf8f0; --dark: #0a2233;
+  --card: #ffffff; --border: rgba(14,77,107,0.15);
+  --muted: rgba(10,34,51,0.45);
+  --green: #2a7d4f; --green2: #1a5a38;
+  --gold: #c49a3a; --gold2: #e8c060;
+  --red: #c0392b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--cream); color: var(--dark); font-family: 'Outfit', sans-serif; min-height: 100vh; }
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #071520 0%, #0e4d6b 60%, #1a6d93 100%);
+  padding: 26px 32px 22px;
+  position: relative; overflow: hidden;
+}
+.header::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M0 40 Q20 20 40 40 Q60 60 80 40 L80 80 L0 80Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.header-inner { position: relative; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.header-left { display: flex; align-items: center; gap: 16px; }
+.logo-circle { width: 50px; height: 50px; background: linear-gradient(135deg, var(--coral), var(--gold)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 20px rgba(201,98,63,0.4); flex-shrink: 0; }
+.header h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; color: var(--sand); font-weight: 700; line-height: 1.1; }
+.header h1 span { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 400; color: rgba(240,230,208,0.65); display: block; letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
+.header-badges { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.validity-badge { background: rgba(196,154,58,0.2); border: 1px solid rgba(196,154,58,0.45); border-radius: 8px; padding: 6px 14px; font-size: 0.74rem; color: var(--gold2); text-align: center; line-height: 1.5; }
+.validity-badge strong { display: block; font-size: 0.85rem; font-family: 'DM Mono', monospace; }
+.nat-badge { background: rgba(201,98,63,0.2); border: 1px solid rgba(201,98,63,0.4); border-radius: 8px; padding: 5px 14px; font-size: 0.72rem; color: #f0a080; text-align: center; }
+
+/* STAR TABS */
+.star-nav { background: var(--sand2); border-bottom: 2px solid var(--border); display: flex; }
+.star-tab { flex: 1; padding: 13px 20px; border: none; background: transparent; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 7px; }
+.star-tab.active { color: var(--ocean); border-bottom-color: var(--ocean); background: var(--cream); font-weight: 700; }
+.star-tab:hover:not(.active) { background: rgba(14,77,107,0.05); color: var(--ocean2); }
+.tab-count { background: var(--ocean); color: white; border-radius: 10px; padding: 1px 7px; font-size: 0.68rem; font-family: 'DM Mono', monospace; }
+.star-tab.active .tab-count { background: var(--ocean); }
+.tab-count.five { background: var(--green); }
+
+/* CONTROLS */
+.controls { background: white; border-bottom: 1px solid var(--border); padding: 14px 32px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.ctrl-group { display: flex; flex-direction: column; gap: 4px; }
+.ctrl-group label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.3px; color: var(--muted); font-weight: 600; }
+select, input[type=number], input[type=text] {
+  background: var(--cream); border: 1.5px solid var(--border); color: var(--dark); border-radius: 8px;
+  padding: 8px 11px; font-size: 0.86rem; font-family: 'Outfit', sans-serif; outline: none;
+  transition: border-color 0.2s; min-width: 105px;
+}
+select:focus, input:focus { border-color: var(--ocean); background: white; }
+.toggle-row { display: flex; border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; }
+.toggle-btn { padding: 8px 14px; border: none; background: var(--cream); cursor: pointer; font-size: 0.8rem; font-family: 'Outfit', sans-serif; color: var(--muted); transition: all 0.18s; font-weight: 500; border-right: 1px solid var(--border); }
+.toggle-btn:last-child { border-right: none; }
+.toggle-btn.active { background: var(--ocean); color: white; font-weight: 600; }
+.toggle-btn.active-green { background: var(--green); color: white; font-weight: 600; }
+.toggle-btn.active-coral { background: var(--coral); color: white; font-weight: 600; }
+
+/* PRICING BAR */
+.pricing-bar { background: linear-gradient(90deg, rgba(14,77,107,0.04), rgba(201,98,63,0.04)); border-bottom: 1px solid var(--border); padding: 12px 32px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.pricing-bar .ctrl-group label { color: var(--coral); }
+.pax-note { font-size: 0.7rem; color: var(--muted); background: rgba(14,77,107,0.06); border-radius: 6px; padding: 6px 10px; max-width: 240px; line-height: 1.4; align-self: flex-end; }
+
+/* SUMMARY BAR */
+.summary-bar { background: var(--ocean3); padding: 10px 32px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+.sum-item { display: flex; flex-direction: column; gap: 1px; }
+.sum-item .sl { font-size: 0.6rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; font-family: 'DM Mono', monospace; }
+.sum-item .sv { font-size: 0.88rem; font-weight: 600; color: var(--gold2); font-family: 'DM Mono', monospace; }
+
+/* SEARCH BAR */
+.search-wrap { background: white; border-bottom: 1px solid var(--border); padding: 12px 32px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.search-wrap input { flex: 1; min-width: 220px; background: var(--cream); }
+.profit-calc-btn { background: linear-gradient(135deg, var(--coral), var(--coral2)); color: white; border: none; padding: 8px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.18s; }
+.profit-calc-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(201,98,63,0.35); }
+
+/* CARDS */
+.cards-section { padding: 20px 32px 40px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--ocean); font-weight: 700; }
+.section-title.five { color: var(--green); }
+.hotel-count { font-size: 0.74rem; color: var(--muted); }
+.hotel-count span { color: var(--coral); font-weight: 700; }
+
+.note-card { background: rgba(14,77,107,0.06); border: 1px solid rgba(14,77,107,0.15); border-radius: 8px; padding: 10px 14px; font-size: 0.76rem; color: var(--ocean); margin-bottom: 14px; line-height: 1.5; }
+.note-card.five { background: rgba(42,125,79,0.06); border-color: rgba(42,125,79,0.2); color: var(--green2); }
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }
+
+.hotel-card { background: white; border-radius: 14px; border: 1.5px solid var(--border); overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; box-shadow: 0 2px 10px rgba(10,34,51,0.06); }
+.hotel-card:hover { box-shadow: 0 8px 28px rgba(10,34,51,0.12); transform: translateY(-2px); }
+
+.card-header { background: linear-gradient(135deg, var(--ocean3), var(--ocean2)); padding: 13px 15px; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.card-header.five { background: linear-gradient(135deg, #1a4a2e, var(--green)); }
+.hotel-name-wrap { flex: 1; }
+.hotel-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; color: white; line-height: 1.2; }
+.hotel-note { font-family: 'Outfit', sans-serif; font-size: 0.68rem; font-weight: 400; color: rgba(255,255,255,0.65); display: block; margin-top: 3px; line-height: 1.3; }
+.star-badge { background: rgba(255,255,255,0.15); border-radius: 6px; padding: 3px 8px; font-size: 0.7rem; color: rgba(255,255,255,0.9); white-space: nowrap; flex-shrink: 0; }
+
+.card-body { padding: 12px 14px; }
+.room-rows { display: flex; flex-direction: column; gap: 7px; }
+
+.room-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: var(--cream); border-radius: 8px; border: 1px solid rgba(14,77,107,0.08); gap: 6px; }
+.room-row.addon-row { background: rgba(196,154,58,0.07); border-color: rgba(196,154,58,0.2); }
+.room-row.orb-row { background: rgba(10,34,51,0.03); border-color: rgba(10,34,51,0.08); }
+
+.room-label { flex: 1; min-width: 0; }
+.room-label .rl-name { font-size: 0.82rem; font-weight: 600; color: var(--dark); }
+.room-label .rl-sub { font-size: 0.67rem; color: var(--muted); display: block; margin-top: 1px; line-height: 1.3; }
+.room-label .rl-addon { font-size: 0.67rem; color: var(--gold); display: block; }
+
+.room-prices { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.base-price { font-size: 0.68rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+.final-price { font-size: 1rem; font-weight: 700; color: var(--ocean); font-family: 'DM Mono', monospace; white-space: nowrap; }
+.final-price.five { color: var(--green); }
+.final-price.has-profit { color: var(--coral); }
+.per-person-price { font-size: 0.7rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+.breakdown-row { font-size: 0.65rem; color: var(--muted); font-family: 'DM Mono', monospace; display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+.bd-chip { background: rgba(14,77,107,0.07); border-radius: 4px; padding: 1px 5px; }
+
+.orb-label { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+.addon-price { font-size: 0.82rem; font-weight: 600; color: var(--gold); font-family: 'DM Mono', monospace; }
+
+.card-footer { padding: 10px 14px; background: var(--cream); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.footer-meta { display: flex; flex-direction: column; gap: 3px; }
+.meal-badge { background: rgba(42,125,79,0.1); border: 1px solid rgba(42,125,79,0.2); color: var(--green); font-size: 0.68rem; font-weight: 600; border-radius: 5px; padding: 2px 7px; display: inline-block; }
+.day-meta { font-size: 0.68rem; color: var(--muted); }
+.wa-btn { background: #25d366; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 0.76rem; font-weight: 700; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.18s; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.wa-btn:hover { background: #20bd5a; transform: translateY(-1px); }
+
+.no-results { text-align: center; padding: 40px 20px; color: var(--muted); grid-column: 1/-1; font-size: 0.95rem; }
+
+@media(max-width:640px){
+  .header,.controls,.pricing-bar,.summary-bar,.search-wrap,.cards-section { padding-left: 16px; padding-right: 16px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .header h1 { font-size: 1.45rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="logo-circle">🌊</div>
+      <div>
+        <h1>Aqaba Hotels
+          <span>AL JUDE Travel & Tourism · Pricing Dashboard</span>
+        </h1>
+      </div>
+    </div>
+    <div class="header-badges">
+      <div class="validity-badge">
+        <strong>📅 Valid Until: 19 May 2026</strong>
+        يرجى تشبيك التواريخ حسب الإمكانيات
+      </div>
+      <div class="nat-badge">🇯🇴 Jordanian Nationality Rates</div>
+    </div>
+  </div>
+</div>
+
+<!-- STAR TABS -->
+<div class="star-nav">
+  <button class="star-tab active" onclick="setTab(4,this)">
+    ★★★★ 4-Star Hotels <span class="tab-count" id="tc4">14</span>
+  </button>
+  <button class="star-tab" onclick="setTab(5,this)">
+    ★★★★★ 5-Star Beachfront <span class="tab-count five" id="tc5">10</span>
+  </button>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="ctrl-group">
+    <label>📅 Day Type</label>
+    <div class="toggle-row">
+      <button class="toggle-btn active" onclick="setDay('weekday',this)">Weekday</button>
+      <button class="toggle-btn" onclick="setDay('weekend',this)">Weekend</button>
+    </div>
+  </div>
+  <div class="ctrl-group">
+    <label>🌙 Nights</label>
+    <input type="number" id="nights" value="2" min="1" max="30" step="1" oninput="render()">
+  </div>
+  <div class="ctrl-group">
+    <label>🏷 Show Prices In</label>
+    <div class="toggle-row">
+      <button class="toggle-btn active-coral" id="cur-jod" onclick="setOutputCur('JOD',this)">JOD</button>
+      <button class="toggle-btn" id="cur-usd" onclick="setOutputCur('USD',this)">USD</button>
+      <button class="toggle-btn" id="cur-both" onclick="setOutputCur('BOTH',this)">Both</button>
+    </div>
+  </div>
+  <div class="ctrl-group">
+    <label>💱 JOD → USD Rate</label>
+    <input type="number" id="rate" value="1.41" min="0.1" step="0.001" oninput="render()">
+  </div>
+</div>
+
+<!-- PRICING BAR -->
+<div class="pricing-bar">
+  <div class="ctrl-group">
+    <label>🚌 Transport/pax</label>
+    <input type="number" id="transport" value="0" min="0" step="1" oninput="render()">
+  </div>
+  <div class="ctrl-group">
+    <label>Transport Currency</label>
+    <div class="toggle-row">
+      <button class="toggle-btn active" onclick="setTransCur('JOD',this)" id="tr-jod">JOD</button>
+      <button class="toggle-btn" onclick="setTransCur('USD',this)" id="tr-usd">USD</button>
+    </div>
+  </div>
+  <div class="ctrl-group">
+    <label>✈️ Ticket/pax</label>
+    <input type="number" id="ticket" value="0" min="0" step="1" oninput="render()">
+  </div>
+  <div class="ctrl-group">
+    <label>Ticket Currency</label>
+    <div class="toggle-row">
+      <button class="toggle-btn active" onclick="setTicketCur('JOD',this)" id="tk-jod">JOD</button>
+      <button class="toggle-btn" onclick="setTicketCur('USD',this)" id="tk-usd">USD</button>
+    </div>
+  </div>
+  <div class="ctrl-group">
+    <label>👥 No. of Pax</label>
+    <input type="number" id="pax" value="2" min="1" max="50" step="1" oninput="render()">
+  </div>
+  <div class="ctrl-group">
+    <label>💰 Profit/pax (JOD)</label>
+    <input type="number" id="profit" value="0" min="0" step="5" oninput="render()">
+  </div>
+  <div class="ctrl-group">
+    <label>📊 Profit %</label>
+    <input type="number" id="profitpct" value="0" min="0" max="100" step="1" oninput="render()">
+  </div>
+  <div class="pax-note">💡 Transport, Ticket & Profit: per person × pax. Hotel: per room × nights.</div>
+</div>
+
+<!-- SUMMARY BAR -->
+<div class="summary-bar">
+  <div class="sum-item"><span class="sl">Day Type</span><span class="sv" id="s-day">Weekday</span></div>
+  <div class="sum-item"><span class="sl">Nights</span><span class="sv" id="s-nights">2N</span></div>
+  <div class="sum-item"><span class="sl">Pax</span><span class="sv" id="s-pax">2 pax</span></div>
+  <div class="sum-item"><span class="sl">Transport Total</span><span class="sv" id="s-trans">0 JOD</span></div>
+  <div class="sum-item"><span class="sl">Ticket Total</span><span class="sv" id="s-ticket">0 JOD</span></div>
+  <div class="sum-item"><span class="sl">Profit Total</span><span class="sv" id="s-profit">0 JOD</span></div>
+  <div class="sum-item"><span class="sl">Rate</span><span class="sv" id="s-rate">1 JOD = 1.41 USD</span></div>
+</div>
+
+<!-- SEARCH BAR -->
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="🔍  Search hotel name..." oninput="render()" style="min-width:240px;">
+  <button class="profit-calc-btn" onclick="render()">⚡ Calculate</button>
+</div>
+
+<!-- CARDS -->
+<div class="cards-section">
+  <!-- 4 STAR -->
+  <div id="sec4">
+    <div class="section-header">
+      <div class="section-title">4-Star Hotels · Aqaba</div>
+      <div class="hotel-count">Showing <span id="shown4">0</span> hotels</div>
+    </div>
+    <div class="note-card">ℹ️ Prices per room per night in JOD · Breakfast included · Valid until 19 May 2026 · <strong>Jordanian Nationality</strong></div>
+    <div class="cards-grid" id="grid4"></div>
+    <div class="no-results" id="nores4" style="display:none">No hotels match your search.</div>
+  </div>
+  <!-- 5 STAR -->
+  <div id="sec5" style="display:none">
+    <div class="section-header">
+      <div class="section-title five">5-Star Beachfront Hotels · Aqaba</div>
+      <div class="hotel-count">Showing <span id="shown5">0</span> hotels</div>
+    </div>
+    <div class="note-card five">ℹ️ Prices per room per night in JOD · Beachfront/Sea hotels · Valid until 19 May 2026 (Kempinski: until 8 May) · <strong>Jordanian Nationality · Check availability first</strong></div>
+    <div class="cards-grid" id="grid5"></div>
+    <div class="no-results" id="nores5" style="display:none">No hotels match your search.</div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// DATA — 4 STAR HOTELS
+// prices per room per night in JOD
+// weekday = Sun–Thu | weekend = Thu–Sat
+// ════════════════════════════════════════
+const HOTELS4 = [
+  {
+    name: 'Tala Bay Residence',
+    note: 'Family Only (عائلات فقط)',
+    meals: 'Breakfast',
+    rooms: [
+      { label: '1 Bedroom Standard', weekday: 99, weekend: 110 },
+      { label: '2 Bedroom Standard', weekday: 159, weekend: 170 }
+    ]
+  },
+  {
+    name: 'Luxotel Aqaba',
+    note: 'لا يسمح بدخول الأطفال أو الشباب',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Standard Room', weekday: 90, weekend: 90 },
+      { label: '+ Sea View (إطلالة بحر)', isAddon: true, addon: 25 },
+      { label: '+ Pool Room (غرف ع البرك)', isAddon: true, addon: 30 },
+      { label: '+ Beach Room (غرف ع الشاطئ)', isAddon: true, addon: 35 }
+    ]
+  },
+  {
+    name: 'Grand Season',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 40, weekend: 40 },
+      { label: 'Triple Room (ثلاثي)', weekday: 55, weekend: 55 },
+      { label: 'Quad Room (رباعي)', weekday: 65, weekend: 65 }
+    ]
+  },
+  {
+    name: 'City Tower',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 50, weekend: 50 },
+      { label: 'Triple Room (ثلاثي)', weekday: 65, weekend: 65 },
+      { label: 'Family Room (عائلي)', weekday: 79, weekend: 79 }
+    ]
+  },
+  {
+    name: 'Lacosta',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 55, weekend: 55 },
+      { label: 'Family Room (فاميلي)', weekday: 95, weekend: 95 }
+    ]
+  },
+  {
+    name: 'Ishq Hotel Aqaba',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 50, weekend: 50 }
+    ]
+  },
+  {
+    name: 'Hill Top Hotel',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 50, weekend: 50 },
+      { label: 'Triple Room (ثلاثي)', weekday: 65, weekend: 65 },
+      { label: 'Quad Room (رباعي)', weekday: 75, weekend: 75 },
+      { label: 'Quint Room (خماسي)', weekday: 85, weekend: 85 }
+    ]
+  },
+  {
+    name: 'Diamond Palm',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 55, weekend: 55 }
+    ]
+  },
+  {
+    name: 'The Loft Hotel',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 45, weekend: 45 }
+    ]
+  },
+  {
+    name: 'Aqaba Gulf Hotel',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 55, weekend: 55 },
+      { label: 'Triple Room (ثلاثي)', weekday: 80, weekend: 80 }
+    ]
+  },
+  {
+    name: 'Saraya Abdeen',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 45, weekend: 50 },
+      { label: 'Triple Room (ثلاثي)', weekday: 60, weekend: 60 }
+    ]
+  },
+  {
+    name: 'Aqua Vista',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 40, weekend: 40 }
+    ]
+  },
+  {
+    name: 'My Hotel',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 45, weekend: 45 }
+    ]
+  },
+  {
+    name: 'Al Raad Hotel',
+    meals: 'Breakfast',
+    rooms: [
+      { label: 'Double Room (ثنائي)', weekday: 35, weekend: 35 }
+    ]
+  }
+];
+
+// ════════════════════════════════════════
+// DATA — 5 STAR BEACHFRONT HOTELS
+// ════════════════════════════════════════
+const HOTELS5 = [
+  {
+    name: 'Grand Tala Bay',
+    note: 'Beachfront · Room view assigned by hotel per availability',
+    rooms: [
+      { label: 'B&B — Room (view per availability)', meals: 'Breakfast', weekday: 85, weekend: 95 },
+      { label: 'HB — Room (view per availability)', meals: 'Breakfast + Dinner', weekday: 115, weekend: 125 }
+    ]
+  },
+  {
+    name: 'Mövenpick Tala Bay',
+    note: 'Beachfront',
+    rooms: [
+      { label: 'B&B — Base Rate', meals: 'Breakfast', isORB: true, orbNote: 'O.R.B – On Request', addons: '+15 Pool View · +25 Sea View' },
+      { label: 'HB — Base Rate', meals: 'Breakfast + Dinner', isORB: true, orbNote: 'O.R.B – On Request' }
+    ]
+  },
+  {
+    name: 'Hyatt Regency Ayla',
+    note: 'Check-in 4pm / Check-out 11am',
+    rooms: [
+      { label: 'Garden / Lake View — B&B', meals: 'Breakfast', weekday: 155, weekend: 179 },
+      { label: '+ Marina View (اليخوت)', meals: 'Breakfast', isAddon: true, addon: 55 },
+      { label: 'Dinner per person +', meals: 'Optional', isAddon: true, addon: 20, perPerson: true }
+    ]
+  },
+  {
+    name: 'Kempinski Aqaba',
+    note: 'لغاية 2026/5/8 — All rooms sea view',
+    noteClass: 'red',
+    rooms: [
+      { label: 'All Sea View — B&B', meals: 'Breakfast', weekday: 180, weekend: 200 },
+      { label: 'Dinner per person +', meals: 'Optional', isAddon: true, addon: 25, perPerson: true }
+    ]
+  },
+  {
+    name: 'Intercontinental Aqaba',
+    note: 'Beachfront',
+    rooms: [
+      { label: 'Pool View — B&B', meals: 'Breakfast', weekday: 149, weekend: 175 },
+      { label: '+ Sea View Upgrade', meals: 'Breakfast', isAddon: true, addon: 25 },
+      { label: 'Dinner per person +', meals: 'Optional', isAddon: true, addon: 21, perPerson: true }
+    ]
+  },
+  {
+    name: 'Mövenpick City',
+    note: 'Beachfront · City location',
+    rooms: [
+      { label: 'Superior Sea View (no balcony)', meals: 'Breakfast', isORB: true, orbNote: 'O.R.B – On Request', addons: '+15 Superior S.V · +25 Deluxe City · +35 Deluxe S.V' },
+      { label: 'Dinner per person +', meals: 'Optional', isAddon: true, addon: 25, perPerson: true }
+    ]
+  },
+  {
+    name: 'Al Manara Saraya',
+    note: 'Beachfront · Sea or Garden view — view assigned by hotel',
+    rooms: [
+      { label: 'Sea / Garden View — B&B', meals: 'Breakfast', weekday: 160, weekend: 170 },
+      { label: 'Dinner per person +', meals: 'Optional', isAddon: true, addon: 30, perPerson: true }
+    ]
+  },
+  {
+    name: 'The Westin Saraya',
+    note: 'Beachfront',
+    rooms: [
+      { label: '+ Pool View — B&B', meals: 'Breakfast', weekday: 150, weekend: 160 },
+      { label: 'Dinner per person +', meals: 'Optional', isAddon: true, addon: 30, perPerson: true }
+    ]
+  },
+  {
+    name: 'DoubleTree by Hilton',
+    note: 'ليس على البحر — Not beachfront',
+    rooms: [
+      { label: 'Single Room — B&B', meals: 'Breakfast', weekday: 85, weekend: 85 },
+      { label: 'Double Room — B&B', meals: 'Breakfast', weekday: 95, weekend: 95 }
+    ]
+  },
+  {
+    name: 'Cloud 7 Ayla Aqaba',
+    note: 'Ayla Apartments · مبلغ تأمين 100–300 دينار (مستردة)',
+    rooms: [
+      { label: 'One Bedroom Apartment — B&B', meals: 'Breakfast', weekday: 155, weekend: 155 },
+      { label: 'Two Bedroom Apartment — B&B', meals: 'Breakfast', weekday: 260, weekend: 260 }
+    ]
+  }
+];
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+const S = {
+  tab: 4, day: 'weekday',
+  outCur: 'JOD', transCur: 'JOD', ticketCur: 'JOD'
+};
+
+function g(id){ return document.getElementById(id); }
+function gf(id){ return parseFloat(g(id).value) || 0; }
+function gi(id){ return parseInt(g(id).value) || 1; }
+
+function getRate(){ return gf('rate') || 1.41; }
+function toJOD(v, cur){ return cur === 'USD' ? v / getRate() : v; }
+
+function fmt(jod){
+  const usd = (jod * getRate()).toFixed(0);
+  if(S.outCur === 'JOD') return jod.toFixed(1) + ' JOD';
+  if(S.outCur === 'USD') return '$' + usd;
+  return jod.toFixed(1) + ' JOD / $' + usd;
+}
+function fmtJOD(jod){ return jod.toFixed(2) + ' JOD'; }
+
+function setTab(n, btn){
+  S.tab = n;
+  document.querySelectorAll('.star-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  g('sec4').style.display = n===4 ? 'block' : 'none';
+  g('sec5').style.display = n===5 ? 'block' : 'none';
+  render();
+}
+function setDay(d, btn){
+  S.day = d;
+  document.querySelectorAll('.toggle-row .toggle-btn').forEach(b => {
+    if(b.textContent.toLowerCase().includes('weekday') || b.textContent.toLowerCase().includes('weekend'))
+      b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  render();
+}
+function setOutputCur(c, btn){
+  S.outCur = c;
+  ['cur-jod','cur-usd','cur-both'].forEach(id => g(id).classList.remove('active-coral','active'));
+  btn.classList.add('active-coral');
+  render();
+}
+function setTransCur(c, btn){
+  S.transCur = c;
+  ['tr-jod','tr-usd'].forEach(id => g(id).classList.remove('active','active-coral'));
+  btn.classList.add('active');
+  render();
+}
+function setTicketCur(c, btn){
+  S.ticketCur = c;
+  ['tk-jod','tk-usd'].forEach(id => g(id).classList.remove('active','active-coral'));
+  btn.classList.add('active');
+  render();
+}
+
+// ════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════
+function render(){
+  const nights = gi('nights');
+  const pax = gi('pax');
+  const transJOD = toJOD(gf('transport'), S.transCur) * pax;
+  const ticketJOD = toJOD(gf('ticket'), S.ticketCur) * pax;
+  const profitJOD = gf('profit') * pax;
+  const profitPct = gf('profitpct') / 100;
+  const search = g('search').value.toLowerCase().trim();
+  const dk = S.day; // 'weekday' or 'weekend'
+
+  // Summary bar
+  g('s-day').textContent = dk === 'weekend' ? 'Weekend' : 'Weekday';
+  g('s-nights').textContent = nights + 'N';
+  g('s-pax').textContent = pax + ' pax';
+  g('s-trans').textContent = fmtJOD(transJOD);
+  g('s-ticket').textContent = fmtJOD(ticketJOD);
+  g('s-profit').textContent = fmtJOD(profitJOD);
+  g('s-rate').textContent = '1 JOD = ' + getRate().toFixed(3) + ' USD';
+
+  const hasExtras = transJOD > 0 || ticketJOD > 0 || profitJOD > 0 || profitPct > 0;
+
+  function buildCard(h, isFive){
+    if(search && !h.name.toLowerCase().includes(search)) return '';
+
+    const hdrClass = 'card-header' + (isFive ? ' five' : '');
+    const stars = isFive ? '★★★★★' : '★★★★';
+    const fpClass = 'final-price' + (isFive ? ' five' : '') + (hasExtras ? ' has-profit' : '');
+
+    let rowsHtml = '';
+    h.rooms.forEach(r => {
+      if(r.isORB){
+        rowsHtml += `<div class="room-row orb-row">
+          <div class="room-label">
+            <div class="rl-name">${r.label}</div>
+            <span class="rl-sub">${r.meals}</span>
+            ${r.addons ? `<span class="rl-addon">📌 ${r.addons}</span>` : ''}
+          </div>
+          <div class="room-prices"><span class="orb-label">On Request</span></div>
+        </div>`;
+        return;
+      }
+      if(r.isAddon){
+        const ppNote = r.perPerson ? '/person' : '/room';
+        rowsHtml += `<div class="room-row addon-row">
+          <div class="room-label">
+            <div class="rl-name" style="color:var(--gold)">+ ${r.label}</div>
+            <span class="rl-sub">${r.meals}</span>
+          </div>
+          <div class="room-prices">
+            <span class="addon-price">+${fmtJOD(r.addon)}${ppNote}</span>
+          </div>
+        </div>`;
+        return;
+      }
+
+      const roomJOD = r[dk];
+      if(roomJOD === null || roomJOD === undefined) return;
+
+      const hotelTotal = roomJOD * nights;
+      const subtotal = hotelTotal + transJOD + ticketJOD + profitJOD;
+      const total = subtotal * (1 + profitPct);
+      const perPerson = pax > 0 ? total / pax : 0;
+
+      let bdHtml = '';
+      if(hasExtras){
+        const parts = [];
+        parts.push(`<span class="bd-chip">🏨 ${fmtJOD(hotelTotal)}</span>`);
+        if(transJOD > 0) parts.push(`<span class="bd-chip">🚌 ${fmtJOD(transJOD)}</span>`);
+        if(ticketJOD > 0) parts.push(`<span class="bd-chip">✈️ ${fmtJOD(ticketJOD)}</span>`);
+        if(profitJOD > 0) parts.push(`<span class="bd-chip">💰 +${fmtJOD(profitJOD)}</span>`);
+        if(profitPct > 0) parts.push(`<span class="bd-chip">📊 +${gf('profitpct')}%</span>`);
+        bdHtml = `<div class="breakdown-row">${parts.join(' ')}</div>`;
+      }
+
+      rowsHtml += `<div class="room-row">
+        <div class="room-label">
+          <div class="rl-name">${r.label}</div>
+          <span class="rl-sub">${r.meals || h.meals || 'Breakfast'} · ${nights} night${nights>1?'s':''}</span>
+        </div>
+        <div class="room-prices">
+          <span class="base-price">${fmtJOD(roomJOD)}/night</span>
+          <span class="${fpClass}">${fmt(total)}</span>
+          ${pax > 1 ? `<span class="per-person-price">${fmt(perPerson)}/person</span>` : ''}
+          ${bdHtml}
+        </div>
+      </div>`;
+    });
+
+    if(!rowsHtml) return '';
+
+    // Build WhatsApp message
+    const mainRoom = h.rooms.find(r => !r.isAddon && !r.isORB);
+    const mainPrice = mainRoom ? fmt((mainRoom[dk] * nights + transJOD + ticketJOD + profitJOD) * (1 + profitPct)) : 'On Request';
+    const waMsg = encodeURIComponent(
+      `🌊 طلب حجز فندق — AL JUDE Travel & Tourism\n\n` +
+      `🏨 ${h.name}${h.note ? ` (${h.note})` : ''}\n` +
+      `⭐ ${isFive ? '5' : '4'} Stars\n` +
+      `📅 ${nights} ليلة · ${dk === 'weekend' ? 'نهاية الأسبوع' : 'وسط الأسبوع'}\n` +
+      `👥 ${pax} أشخاص\n` +
+      `🍳 الوجبات: ${h.meals || 'Breakfast'}\n` +
+      `💵 السعر: ${mainPrice}\n\n` +
+      `📞 AL JUDE Travel & Tourism\n+962 777 066 005`
+    );
+
+    const noteColor = h.noteClass === 'red' ? 'color:var(--red)' : '';
+
+    return `<div class="hotel-card">
+      <div class="${hdrClass}">
+        <div class="hotel-name-wrap">
+          <div class="hotel-name">${h.name}</div>
+          ${h.note ? `<span class="hotel-note" style="${noteColor}">${h.note}</span>` : ''}
+        </div>
+        <div class="star-badge">${stars}</div>
+      </div>
+      <div class="card-body">
+        <div class="room-rows">${rowsHtml}</div>
+      </div>
+      <div class="card-footer">
+        <div class="footer-meta">
+          <span class="meal-badge">🍳 ${h.meals || 'Breakfast'}</span>
+          <span class="day-meta">${dk === 'weekend' ? '📅 Weekend rate' : '📅 Weekday rate'} · ${nights}N · ${pax} pax</span>
+        </div>
+        <button class="wa-btn" onclick="window.open('https://wa.me/962777066005?text=${waMsg}','_blank')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </button>
+      </div>
+    </div>`;
+  }
+
+  // Build 4-star grid
+  let html4 = ''; let cnt4 = 0;
+  HOTELS4.forEach(h => { const c = buildCard(h, false); if(c){ html4 += c; cnt4++; }});
+  g('grid4').innerHTML = html4;
+  g('shown4').textContent = cnt4;
+  g('nores4').style.display = cnt4 ? 'none' : 'block';
+  g('tc4').textContent = cnt4;
+
+  // Build 5-star grid
+  let html5 = ''; let cnt5 = 0;
+  HOTELS5.forEach(h => { const c = buildCard(h, true); if(c){ html5 += c; cnt5++; }});
+  g('grid5').innerHTML = html5;
+  g('shown5').textContent = cnt5;
+  g('nores5').style.display = cnt5 ? 'none' : 'block';
+  g('tc5').textContent = cnt5;
+}
+
+render();
+
+
+const CITY_TOURS = [
+  {name:'Wadi Rum Desert Tour',nameAr:'جولة وادي رم الصحراوية',dur:'Full-Day',
+   sic:35,pvt:120,desc:'Jeep Safari | Red Sand Dunes | Bedouin Camp | Lawrence Spring | Sunset Views'},
+  {name:'Petra Day Trip',nameAr:'جولة البتراء',dur:'Full-Day',
+   sic:45,pvt:150,desc:'The Siq | Treasury Al-Khazneh | Street of Facades | Royal Tombs | Expert Guide'},
+  {name:'Snorkeling & Coral Reef',nameAr:'جولة الغوص وشعاب المرجان',dur:'Half-Day',
+   sic:25,pvt:80,desc:'Red Sea Coral Reefs | Snorkeling Equipment | Marine Life | Glass-Bottom Boat'},
+  {name:'Aqaba City Tour',nameAr:'جولة مدينة العقبة',dur:'Half-Day',
+   sic:15,pvt:60,desc:'Aqaba Fort | Aqaba Museum | Old City Souq | Corniche | King Hussein Mosque'},
+  {name:'Wadi Rum Overnight Camp',nameAr:'مبيت في وادي رم',dur:'Overnight',
+   sic:65,pvt:200,desc:'Jeep Safari | Camel Ride | Traditional Dinner | Overnight Bedouin Camp | Stargazing'},
+  {name:'Dead Sea Day Trip',nameAr:'جولة البحر الميت',dur:'Full-Day',
+   sic:50,pvt:160,desc:'Float in Dead Sea | Mineral Mud Treatment | Panoramic Views | Lunch included'},
+  {name:'Boat Trip Red Sea',nameAr:'رحلة بحرية في البحر الأحمر',dur:'Half-Day',
+   sic:30,pvt:100,desc:'Red Sea Boat Trip | Snorkeling Stops | Fish and Marine Life | BBQ on Board'},
+  {name:'Jerash & Amman Day Trip',nameAr:'جولة جرش وعمّان',dur:'Full-Day',
+   sic:55,pvt:180,desc:'Roman City of Jerash | Oval Plaza | Hippodrome | Amman Citadel | Roman Theatre'},
+];
+const CITY_TRANSFERS = [
+  {type:'Private Transfer — Aqaba Airport to Hotel (up to 4 pax)',price:20,cat:'STD'},
+  {type:'Private Transfer — Aqaba Airport to Hotel (5-8 pax)',price:30,cat:'STD'},
+  {type:'Private Transfer — Aqaba to Petra (one way)',price:60,cat:'STD'},
+  {type:'Private Transfer — Aqaba to Wadi Rum',price:40,cat:'STD'},
+  {type:'Private Transfer — Aqaba to Dead Sea',price:120,cat:'STD'},
+  {type:'Private Transfer — Aqaba to Amman',price:100,cat:'STD'},
+];
+
+function tourFinalPrice(dmc) {
+  if (dmc === null || dmc === undefined) return null;
+  var fp = parseFloat(document.getElementById('tourProfit').value) || 0;
+  var pp = parseFloat(document.getElementById('tourProfitPct').value) || 0;
+  return Math.round((dmc + fp) * (1 + pp / 100));
+}
+
+function renderTours() {
+  var tbody = document.getElementById('toursTableBody');
+  if (!tbody) return;
+  var na  = '<span style="color:#555;font-size:10px">N/A</span>';
+  var orb = '<span style="color:#a0a8b8;font-size:10px">O.R.B</span>';
+  var rows = '';
+
+  for (var i = 0; i < CITY_TOURS.length; i++) {
+    var t = CITY_TOURS[i];
+    var sicF = tourFinalPrice(t.sic);
+    var pvtF = tourFinalPrice(t.pvt);
+    var bg = (i % 2 === 0) ? 'background:rgba(255,255,255,0.015)' : '';
+
+    var sicDmc  = (t.sic !== null && t.sic !== undefined) ? '$' + t.sic : na;
+    var sicYour = (sicF  !== null) ? '<span style="background:rgba(34,197,94,0.15);color:#22c55e;font-weight:800;border-radius:5px;padding:2px 7px;">$' + sicF + '</span>' : na;
+    var pvtDmc  = (t.pvt !== null && t.pvt !== undefined) ? '$' + t.pvt : orb;
+    var pvtYour = (pvtF  !== null) ? '<span style="background:rgba(245,158,11,0.15);color:#f59e0b;font-weight:800;border-radius:5px;padding:2px 7px;">$' + pvtF + '</span>' : orb;
+
+    var waText = 'Tour Offer - AL JUDE Travel\n\n' +
+      t.name + '\n' + (t.nameAr || '') + '\n' +
+      'Duration: ' + t.dur + '\n\n' +
+      t.desc + '\n\n' +
+      (sicF !== null ? 'SIC Group: $' + sicF + ' per person\n' : '') +
+      (pvtF !== null ? 'Private (up to 5 pax): $' + pvtF + '\n' : '') +
+      '\nBook: +962 777 066 005';
+    var waHref = 'https://wa.me/962777066005?text=' + encodeURIComponent(waText);
+
+    rows += '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);' + bg + '">' +
+      '<td style="padding:8px 10px;">' +
+        '<div style="font-weight:700;color:#e8e0d0;font-size:11px;">' + t.name + '</div>' +
+        '<div style="color:#a0a8b8;font-size:10px;">' + (t.nameAr || '') + '</div>' +
+        '<div style="color:#606880;font-size:9px;margin-top:3px;line-height:1.5;">' + t.desc + '</div>' +
+      '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#a0a8b8;font-size:10px;white-space:nowrap;">' + t.dur + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;">' + sicDmc  + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">'                               + sicYour + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;">' + pvtDmc  + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">'                               + pvtYour + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">' +
+        '<button onclick="window.open(' + "'" + waHref.replace(/'/g, '%27') + "'" + ')" ' +
+        'style="background:#25d366;border:none;border-radius:6px;padding:4px 8px;color:white;cursor:pointer;font-size:12px;">WA</button>' +
+      '</td>' +
+    '</tr>';
+  }
+  tbody.innerHTML = rows;
+
+  // Transfers
+  var tgrid = document.getElementById('transfersGrid');
+  if (!tgrid) return;
+  var cc = {ECO:'#60a5fa',PREM:'#f59e0b',VIP:'#c084fc',BUS:'#22c55e',SIC:'#a0a8b8',ORB:'#555',STD:'#a0a8b8'};
+  var thtml = '';
+  for (var j = 0; j < CITY_TRANSFERS.length; j++) {
+    var tr = CITY_TRANSFERS[j];
+    var col = cc[tr.cat] || '#a0a8b8';
+    if (!tr.price) {
+      thtml += '<div style="background:#111e35;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;">' +
+        '<div style="color:#a0a8b8;font-size:10px;">' + tr.type + '</div>' +
+        '<div style="color:#555;font-weight:700;">O.R.B</div></div>';
+    } else {
+      thtml += '<div style="background:#111e35;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;">' +
+        '<div><div style="color:#e8e0d0;font-size:10px;">' + tr.type + '</div>' +
+        '<div style="font-size:9px;color:' + col + ';font-weight:700;margin-top:2px;">' + tr.cat + '</div></div>' +
+        '<div style="color:' + col + ';font-weight:800;font-size:15px;white-space:nowrap;margin-right:6px;">$' + tr.price + '</div>' +
+        '</div>';
+    }
+  }
+  tgrid.innerHTML = thtml;
+}
+
+renderTours();
+</script>
+
+<div id="tours-section" style="background:#0a1628;border-top:2px solid rgba(201,168,76,0.3);padding:20px 20px 40px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="background:#111e35;border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+      <div style="color:#c9a84c;font-size:14px;font-weight:800;">&#x1F5FA; Daily Excursions &amp; Transfers</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <label style="font-size:11px;color:#a0a8b8;">Tour Profit (USD/person):</label>
+        <input type="number" id="tourProfit" value="5" min="0" step="1"
+          style="width:65px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:5px 8px;color:#e8e0d0;font-family:Cairo,sans-serif;font-size:13px;outline:none;"
+          oninput="renderTours()">
+        <label style="font-size:11px;color:#a0a8b8;">Profit (%):</label>
+        <input type="number" id="tourProfitPct" value="0" min="0" max="100" step="5"
+          style="width:55px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:5px 8px;color:#e8e0d0;font-family:Cairo,sans-serif;font-size:13px;outline:none;"
+          oninput="renderTours()">
+        <button onclick="renderTours()" style="background:#c9a84c;color:#0a1628;border:none;border-radius:8px;padding:6px 14px;font-family:Cairo,sans-serif;font-size:12px;font-weight:800;cursor:pointer;">Update</button>
+      </div>
+      <div style="font-size:10px;color:#a0a8b8;">Your price = DMC price + profit x (1 + %)</div>
+    </div>
+    <h3 style="color:#c9a84c;font-size:13px;font-weight:800;margin-bottom:10px;">Daily Excursions</h3>
+    <div style="overflow-x:auto;margin-bottom:24px;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead>
+          <tr style="background:rgba(201,168,76,0.12);">
+            <th style="padding:8px 10px;text-align:right;color:#c9a84c;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">Tour</th>
+            <th style="padding:8px 6px;text-align:center;color:#a0a8b8;border-bottom:1px solid rgba(201,168,76,0.2);">Duration</th>
+            <th style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">SIC DMC</th>
+            <th style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">SIC Your $</th>
+            <th style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">Private DMC</th>
+            <th style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">Private Your $</th>
+            <th style="padding:8px 6px;text-align:center;border-bottom:1px solid rgba(201,168,76,0.2);">WA</th>
+          </tr>
+        </thead>
+        <tbody id="toursTableBody"></tbody>
+      </table>
+    </div>
+    <h3 style="color:#c9a84c;font-size:13px;font-weight:800;margin-bottom:10px;">Transfer Rates (USD)</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px;" id="transfersGrid"></div>
+  </div>
+</div>
+
+</body>
+</html>

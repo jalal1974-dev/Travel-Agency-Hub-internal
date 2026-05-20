@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maldives DMC Packages — Eid Al-Adha 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--ocean:#006D77;--ocean-dark:#004C54;--ocean-mid:#008C9A;--coral:#E29578;--sand:#F8F3EC;--sand-dark:#EDE5D8;--white:#FFFFFF;--ink:#1A2630;--muted:#6B7A85;--gold:#C9A849;--gold-light:#E8C97A;--border:#D9D0C4;--shadow:0 6px 28px rgba(0,77,84,0.10);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Jost',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;}
+  html[lang="ar"] body{font-family:'Cairo',sans-serif;}
+
+  .ar{display:none;}.en{display:inline;}
+  html[lang="ar"] .ar{display:inline;}html[lang="ar"] .en{display:none;}
+
+  .lang-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.12);border-radius:8px;padding:3px;border:1px solid rgba(255,255,255,0.2);}
+  .lang-btn{padding:5px 14px;border:none;border-radius:6px;cursor:pointer;font-size:0.8rem;font-weight:700;background:transparent;color:rgba(255,255,255,0.6);transition:all 0.2s;}
+  .lang-btn.active{background:var(--coral);color:white;}
+
+  /* header */
+  header{background:linear-gradient(135deg,var(--ocean-dark) 0%,var(--ocean) 55%,var(--ocean-mid) 100%);padding:40px 56px 32px;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;bottom:-1px;left:0;right:0;height:60px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%23F8F3EC' d='M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z'/%3E%3C/svg%3E") no-repeat bottom;background-size:cover;}
+  .header-dots{position:absolute;top:0;right:0;width:320px;height:100%;opacity:0.07;background-image:radial-gradient(circle,white 1.5px,transparent 1.5px);background-size:22px 22px;}
+  .header-inner{max-width:1380px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1;}
+  .header-left h1{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:white;line-height:1.05;}
+  html[lang="ar"] .header-left h1{font-family:'Cairo',sans-serif;font-size:2.2rem;}
+  .header-left h1 em{color:var(--gold-light);font-style:normal;}
+  .header-left p{color:rgba(255,255,255,0.72);font-size:0.88rem;margin-top:8px;}
+  .header-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .header-badge{background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.28);border-radius:50px;padding:9px 20px;color:white;font-size:0.8rem;font-weight:600;}
+
+  /* currency bar */
+  .currency-bar{background:var(--ink);padding:11px 56px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .cb-label{color:rgba(255,255,255,0.5);font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;}
+  html[lang="ar"] .cb-label{text-transform:none;letter-spacing:0;}
+  .toggle-group{display:flex;gap:3px;background:rgba(255,255,255,0.07);border-radius:8px;padding:3px;}
+  .toggle-btn{padding:6px 18px;border:none;border-radius:6px;cursor:pointer;font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:700;background:transparent;color:rgba(255,255,255,0.55);transition:all 0.2s;}
+  .toggle-btn.active{background:var(--coral);color:white;}
+  .rate-group{display:flex;align-items:center;gap:8px;margin-left:14px;}
+  .rate-group input{width:76px;padding:5px 10px;border:1px solid rgba(255,255,255,0.18);border-radius:6px;background:rgba(255,255,255,0.09);color:white;font-family:'DM Mono',monospace;font-size:0.82rem;outline:none;}
+  .rate-group span{color:rgba(255,255,255,0.55);font-size:0.82rem;}
+
+  /* main */
+  main{max-width:1380px;margin:0 auto;padding:44px 56px 80px;}
+
+  /* global panel */
+  .global-panel{background:white;border:1px solid var(--border);border-radius:20px;padding:26px 32px;margin-bottom:40px;box-shadow:var(--shadow);display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;}
+  .global-panel h2{width:100%;font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--ocean-dark);padding-bottom:14px;border-bottom:2px solid var(--sand);margin-bottom:2px;}
+  html[lang="ar"] .global-panel h2{font-family:'Cairo',sans-serif;}
+  .inp-grp{display:flex;flex-direction:column;gap:6px;flex:1;min-width:190px;}
+  .inp-grp label{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;}
+  html[lang="ar"] .inp-grp label{font-size:0.8rem;text-transform:none;letter-spacing:0;}
+  .inp-grp input{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Mono',monospace;font-size:0.92rem;font-weight:500;color:var(--ink);background:var(--sand);outline:none;transition:border-color 0.2s;}
+  .inp-grp input:focus{border-color:var(--ocean);background:white;}
+  .inp-grp .hint{font-size:0.7rem;color:var(--muted);}
+
+  /* section title */
+  .section-title{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:var(--ink);margin-bottom:26px;display:flex;align-items:center;gap:14px;}
+  html[lang="ar"] .section-title{font-family:'Cairo',sans-serif;}
+  .section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--coral),transparent);}
+  html[lang="ar"] .section-title::after{background:linear-gradient(to left,var(--coral),transparent);}
+
+  /* grid */
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:30px;}
+
+  /* card */
+  .pkg-card{background:white;border-radius:22px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform 0.22s,box-shadow 0.22s;}
+  .pkg-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,77,84,0.14);}
+  .card-top{padding:22px 26px 18px;position:relative;overflow:hidden;}
+  .card-top.ocean{background:linear-gradient(135deg,var(--ocean-dark),var(--ocean-mid));}
+  .card-top.coral{background:linear-gradient(135deg,#7B3B2A,#C96A4A);}
+  .card-top.sand{background:linear-gradient(135deg,#5C4A1E,var(--gold));}
+  .card-top.deep{background:linear-gradient(135deg,#0D2B36,#1A5C6E);}
+  .card-top::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:30px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 30'%3E%3Cpath fill='white' d='M0,15 C100,30 300,0 400,15 L400,30 L0,30 Z'/%3E%3C/svg%3E") no-repeat bottom;background-size:cover;}
+  .ct-ref{font-family:'DM Mono',monospace;font-size:0.68rem;color:rgba(255,255,255,0.5);margin-bottom:5px;}
+  .ct-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:white;line-height:1.15;}
+  html[lang="ar"] .ct-title{font-family:'Cairo',sans-serif;font-size:1.2rem;}
+  .ct-stars{color:var(--gold-light);font-size:0.85rem;margin-top:5px;}
+  .ct-tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .ct-tag{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.22);border-radius:20px;padding:3px 12px;font-size:0.72rem;font-weight:600;color:white;}
+  .ct-tag.honey{background:rgba(201,168,73,0.35);border-color:var(--gold-light);}
+
+  /* body */
+  .card-body{padding:20px 26px 4px;flex:1;}
+  .resort-block{background:var(--sand);border-radius:14px;padding:14px 18px;margin-bottom:14px;border:1px solid var(--sand-dark);}
+  .rb-label{font-size:0.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  html[lang="ar"] .rb-label{font-size:0.78rem;text-transform:none;letter-spacing:0;}
+  .resort-row{display:flex;align-items:flex-start;gap:10px;}
+  .resort-city{background:var(--ocean-dark);color:white;border-radius:8px;padding:4px 12px;font-size:0.72rem;font-weight:700;min-width:60px;text-align:center;}
+  .ri-name{font-size:0.88rem;font-weight:700;color:var(--ink);}
+  .ri-detail{font-size:0.74rem;color:var(--muted);margin-top:2px;line-height:1.4;}
+  .transfer-note{display:flex;align-items:center;gap:8px;background:#E8F6F7;border-radius:10px;padding:8px 14px;margin-bottom:14px;font-size:0.76rem;color:var(--ocean-dark);font-weight:500;border:1px solid #B2DDE2;}
+  .extras-block2{background:#FFF8F0;border:1px solid #F5DFC0;border-radius:12px;padding:10px 14px;margin-bottom:14px;}
+  .ex-label{font-size:0.68rem;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;}
+  html[lang="ar"] .ex-label{font-size:0.78rem;text-transform:none;letter-spacing:0;}
+  .ex-item{font-size:0.78rem;color:#78350F;display:flex;gap:6px;padding:2px 0;}
+  .ex-item::before{content:'✦';color:var(--coral);}
+  .activities-note{display:flex;align-items:flex-start;gap:8px;background:#E8F5F0;border:1px solid #A7D8CC;border-radius:10px;padding:9px 13px;margin-bottom:8px;font-size:0.76rem;color:#065645;font-weight:500;}
+
+  /* pricing */
+  .pricing-section{border-top:1px solid var(--sand-dark);padding:18px 26px 22px;background:#FAFAF8;}
+  .ps-label{font-size:0.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:14px;}
+  html[lang="ar"] .ps-label{font-size:0.78rem;text-transform:none;letter-spacing:0;}
+  .base-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--ocean-dark),var(--ocean));color:white;border-radius:10px;padding:7px 16px;font-family:'DM Mono',monospace;font-size:0.92rem;font-weight:500;margin-bottom:14px;}
+  .bb-label{font-size:0.68rem;opacity:0.72;font-family:'Jost',sans-serif;}
+  html[lang="ar"] .bb-label{font-family:'Cairo',sans-serif;font-size:0.75rem;}
+  .card-inputs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .ci-grp{display:flex;flex-direction:column;gap:4px;flex:1;min-width:105px;}
+  .ci-grp label{font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+  html[lang="ar"] .ci-grp label{font-size:0.75rem;text-transform:none;letter-spacing:0;}
+  .ci-grp input{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Mono',monospace;font-size:0.82rem;font-weight:500;color:var(--ink);background:white;outline:none;width:100%;transition:border-color 0.2s;}
+  .ci-grp input:focus{border-color:var(--ocean);}
+  .breakdown{width:100%;}
+  .bd-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:0.82rem;border-bottom:1px dashed #E5DDD2;}
+  .bd-row:last-of-type{border-bottom:none;}
+  .bd-row.total{border-top:2px solid var(--ink);border-bottom:none;padding-top:10px;margin-top:6px;font-weight:700;font-size:0.98rem;}
+  .bd-row.profit{color:var(--ocean);font-weight:600;}
+  .bd-label{color:var(--muted);}
+  .bd-value{font-family:'DM Mono',monospace;font-weight:600;color:var(--ink);}
+  .bd-row.total .bd-value{color:var(--ocean-dark);font-size:1.08rem;}
+
+  /* notes */
+  .notes-card{background:white;border:1px solid var(--border);border-radius:20px;padding:28px 32px;margin-top:44px;box-shadow:var(--shadow);}
+  .notes-card h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--ocean-dark);margin-bottom:18px;}
+  html[lang="ar"] .notes-card h2{font-family:'Cairo',sans-serif;}
+  .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px;}
+  .note-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--sand);border-radius:10px;font-size:0.8rem;color:var(--ink);line-height:1.5;border:1px solid var(--sand-dark);}
+  .note-item::before{content:'◈';color:var(--coral);font-size:1rem;flex-shrink:0;}
+  html[lang="ar"] .note-item{font-family:'Cairo',sans-serif;font-size:0.85rem;}
+
+  @media(max-width:768px){header,.currency-bar,main{padding-left:20px;padding-right:20px;}.cards-grid{grid-template-columns:1fr;}.header-left h1{font-size:2rem;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-dots"></div>
+  <div class="header-inner">
+    <div class="header-left">
+      <h1>🏝️ <em><span class="en">Maldives</span><span class="ar">المالديف</span></em> — <span class="en">DMC Packages</span><span class="ar">باقات DMC</span></h1>
+      <p><span class="en">Eid Al-Adha 2025 · Honeymoon &amp; Family Programs · All prices per person in JOD</span><span class="ar">عروض عيد الأضحى ٢٠٢٥ · برامج شهر عسل وعائلية · الأسعار للشخص بالدينار الأردني</span></p>
+    </div>
+    <div class="header-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('ar')">AR</button>
+      </div>
+      <div class="header-badge">🐑 عروض عيد الأضحى</div>
+    </div>
+  </div>
+</header>
+
+<div class="currency-bar">
+  <span class="cb-label"><span class="en">Currency</span><span class="ar">العملة</span></span>
+  <div class="toggle-group">
+    <button class="toggle-btn active" onclick="setCurrency('JOD')">JOD</button>
+    <button class="toggle-btn" onclick="setCurrency('USD')">USD</button>
+  </div>
+  <span class="cb-label" style="margin-left:14px"><span class="en">1 JOD =</span><span class="ar">١ دينار =</span></span>
+  <div class="rate-group">
+    <input id="rateInput" type="number" step="0.01" value="1.41" oninput="recalcAll()">
+    <span>USD</span>
+  </div>
+</div>
+
+<main>
+  <div class="global-panel">
+    <h2>⚙️ <span class="en">Global Pricing Parameters</span><span class="ar">معاملات التسعير العامة</span></h2>
+    <div class="inp-grp">
+      <label><span class="en">Int'l Ticket / Person (JOD)</span><span class="ar">تذكرة دولية / شخص (دينار)</span></label>
+      <input type="number" id="g_ticket" value="0" step="10" oninput="recalcAll()">
+      <span class="hint"><span class="en">Round-trip international airfare</span><span class="ar">تذكرة ذهاب وعودة للشخص</span></span>
+    </div>
+    <div class="inp-grp">
+      <label><span class="en">Profit / Person (JOD)</span><span class="ar">الربح / شخص (دينار)</span></label>
+      <input type="number" id="g_profit" value="0" step="5" oninput="recalcAll()">
+      <span class="hint"><span class="en">Your agency margin per person</span><span class="ar">هامش ربح الوكالة للشخص</span></span>
+    </div>
+    <div class="inp-grp">
+      <label><span class="en">Visa Cost / Person (JOD)</span><span class="ar">تكلفة التأشيرة / شخص (دينار)</span></label>
+      <input type="number" id="g_visa" value="0" step="5" oninput="recalcAll()">
+      <span class="hint"><span class="en">Maldives visa (usually free on arrival)</span><span class="ar">تأشيرة المالديف (عادةً مجانية عند الوصول)</span></span>
+    </div>
+  </div>
+
+  <div class="section-title"><span class="en">Package Programs</span><span class="ar">برامج الباقات</span></div>
+  <div class="cards-grid" id="cardsGrid"></div>
+
+  <div class="notes-card">
+    <h2>📋 <span class="en">Important Notes</span><span class="ar">ملاحظات هامة</span></h2>
+    <div class="notes-grid" id="notesGrid"></div>
+  </div>
+</main>
+
+<script>
+const notes=[
+  {en:'If the speedboat/transfer size doesn\'t match your group, please notify us in advance.',ar:'إذا كان حجم القارب السريع لا يتناسب مع عددكم والأمتعة، يرجى إبلاغنا مسبقاً.'},
+  {en:'Prices vary by group size.',ar:'مع ملاحظة اختلاف الأسعار حسب حجم المجموعة.'},
+  {en:'City/resort tax paid directly to hotel by guest: 10 MVR per room per night.',ar:'يتم دفع ضريبة المدينة/المنتجع من قبل العميل مباشرة للفندق.'},
+  {en:'Single room accommodates up to 2 adults with breakfast.',ar:'الغرفة الواحدة تتسع لـ ٢ كبار مع الإفطار.'},
+  {en:'Cancellation/refund policy depends on the resort\'s individual policy.',ar:'الإلغاء أو الاسترجاع يعتمد على سياسة المنتجع.'},
+  {en:'The company does not guarantee refunds or modifications if the resort rejects the request.',ar:'الشركة لا تضمن استرجاعاً أو تعديلاً في حالة رفض المنتجع.'},
+  {en:'Domestic/seaplane tickets are non-refundable after booking confirmation.',ar:'تذاكر الطيران الداخلي غير قابلة للاسترجاع بعد تأكيد الحجز.'},
+  {en:'Resort check-in: 2:00 PM · Check-out: 12:00 PM.',ar:'دخول المنتجع الساعة ٢ عصراً والخروج الساعة ١٢ ظهراً.'},
+  {en:'All listed daily activities are optional and paid separately to the DMC.',ar:'جميع الأنشطة اليومية المذكورة اختيارية وتُدفع بشكل منفصل للـ DMC.'},
+  {en:'International flights are excluded from all package prices.',ar:'الرحلات الدولية غير مشمولة في جميع أسعار الباقات.'},
+  {en:'Transfer to resort is included — speedboat as per resort location.',ar:'التوصيل للمنتجع مشمول — قارب سريع حسب موقع المنتجع.'},
+  {en:'Maldives is generally visa-free on arrival for most nationalities (30 days).',ar:'المالديف عادةً لا تتطلب تأشيرة مسبقة لمعظم الجنسيات (٣٠ يوماً).'},
+];
+
+const packages=[
+  {id:'mdv1',ref:'Ref No 493085',stars:4,theme:'ocean',nights:4,isHoneymoon:true,isEconomy:true,basePriceJOD:700,
+   title:{en:'Maldives — 4 Nights Economy Honeymoon',ar:'المالديف — ٤ ليالي شهر عسل اقتصادي'},
+   pax:{en:'Honeymoon · 2 Adults',ar:'شهر عسل · ٢ بالغين'},
+   resort:{name:'Fihalhohi Maldives Hotel',detail:{en:'Beach Villa with Beach Swimming Pool · Breakfast included',ar:'فيلا بحوض سباحة على الشاطئ · شامل الإفطار'},nights:4},
+   transfer:{en:'Speedboat transfer included (airport ↔ resort)',ar:'التوصيل بالقارب السريع مشمول (المطار ↔ المنتجع)'},
+   extras:{en:['Speedboat transfer complimentary'],ar:['التوصيل بالقارب السريع مجاناً']},
+  },
+  {id:'mdv2',ref:'Ref No 493097',stars:5,theme:'deep',nights:4,isHoneymoon:false,isEconomy:false,basePriceJOD:618,
+   title:{en:'Maldives — 4 Nights Family (5★)',ar:'المالديف — ٤ ليالي عائلي ٥ نجوم'},
+   pax:{en:'Family · 4 Adults',ar:'عائلي · ٤ بالغين'},
+   resort:{name:'Kandima Maldives Hotel',detail:{en:'Studio Sky x2 · Breakfast included',ar:'استوديو سكاي ٢ · شامل الإفطار'},nights:4},
+   transfer:{en:'Speedboat transfer included (airport ↔ resort)',ar:'التوصيل بالقارب السريع مشمول (المطار ↔ المنتجع)'},
+   extras:{en:['Speedboat transfer complimentary'],ar:['التوصيل بالقارب السريع مجاناً']},
+  },
+  {id:'mdv3',ref:'Ref No 493091',stars:4,theme:'coral',nights:4,isHoneymoon:false,isEconomy:false,basePriceJOD:530,
+   title:{en:'Maldives — 4 Nights Family (Overwater Villa)',ar:'المالديف — ٤ ليالي عائلي (فيلا فوق الماء)'},
+   pax:{en:'Family · 4 Adults',ar:'عائلي · ٤ بالغين'},
+   resort:{name:'Noi Maldives Resort',detail:{en:'Overwater Villa Deluxe with Private Pool · Breakfast included',ar:'فيلا دوبلكس فوق الماء مع مسبح خاص · شامل الإفطار'},nights:4},
+   transfer:{en:'Speedboat transfer included (airport ↔ resort)',ar:'التوصيل بالقارب السريع مشمول (المطار ↔ المنتجع)'},
+   extras:{en:['Speedboat transfer complimentary'],ar:['التوصيل بالقارب السريع مجاناً']},
+  },
+  {id:'mdv4',ref:'Ref No 493093',stars:5,theme:'sand',nights:4,isHoneymoon:true,isEconomy:false,basePriceJOD:726,
+   title:{en:'Maldives — 4 Nights Honeymoon (5★)',ar:'المالديف — ٤ ليالي شهر عسل ٥ نجوم'},
+   pax:{en:'Honeymoon · 2 Adults',ar:'شهر عسل · ٢ بالغين'},
+   resort:{name:'Noi Maldives Resort',detail:{en:'Overwater Villa Deluxe with Private Pool · Breakfast included',ar:'فيلا دوبلكس فوق الماء مع مسبح خاص · شامل الإفطار'},nights:4},
+   transfer:{en:'Speedboat transfer included (airport ↔ resort)',ar:'التوصيل بالقارب السريع مشمول (المطار ↔ المنتجع)'},
+   extras:{en:['Speedboat transfer complimentary'],ar:['التوصيل بالقارب السريع مجاناً']},
+  },
+];
+
+let currency='JOD';
+function setLang(l){
+  document.getElementById('htmlRoot').setAttribute('lang',l);
+  document.getElementById('htmlRoot').setAttribute('dir',l==='ar'?'rtl':'ltr');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent===l.toUpperCase()));
+}
+function setCurrency(c){currency=c;document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));recalcAll();}
+function fmt(jod){return currency==='USD'?'$'+(jod*(parseFloat(document.getElementById('rateInput').value)||1.41)).toFixed(0):jod.toFixed(0)+' JOD';}
+function getGlobals(){return{ticket:parseFloat(document.getElementById('g_ticket').value)||0,profit:parseFloat(document.getElementById('g_profit').value)||0,visa:parseFloat(document.getElementById('g_visa').value)||0};}
+function recalcAll(){packages.forEach(p=>recalcCard(p));}
+function recalcCard(pkg){
+  const g=getGlobals();
+  const ticket=parseFloat(document.getElementById(`${pkg.id}_ticket`).value)||g.ticket;
+  const profit=parseFloat(document.getElementById(`${pkg.id}_profit`).value)||g.profit;
+  const visa=parseFloat(document.getElementById(`${pkg.id}_visa`).value)||g.visa;
+  const total=pkg.basePriceJOD+ticket+profit+visa;
+  document.getElementById(`${pkg.id}_bb`).textContent=fmt(pkg.basePriceJOD);
+  document.getElementById(`${pkg.id}_base`).textContent=fmt(pkg.basePriceJOD);
+  document.getElementById(`${pkg.id}_tkt`).textContent=fmt(ticket);
+  document.getElementById(`${pkg.id}_pft`).textContent=fmt(profit);
+  document.getElementById(`${pkg.id}_vis`).textContent=fmt(visa);
+  document.getElementById(`${pkg.id}_tot`).textContent=fmt(total);
+}
+function stars(n){return'★'.repeat(n)+'☆'.repeat(5-n);}
+
+function renderCards(){
+  document.getElementById('cardsGrid').innerHTML=packages.map(pkg=>`
+    <div class="pkg-card">
+      <div class="card-top ${pkg.theme}">
+        <div class="ct-ref">${pkg.ref}</div>
+        <div class="ct-title"><span class="en">${pkg.title.en}</span><span class="ar">${pkg.title.ar}</span></div>
+        <div class="ct-stars">${stars(pkg.stars)}</div>
+        <div class="ct-tags">
+          <span class="ct-tag">🌙 ${pkg.nights} <span class="en">Nights</span><span class="ar">ليالي</span></span>
+          <span class="ct-tag"><span class="en">${pkg.pax.en}</span><span class="ar">${pkg.pax.ar}</span></span>
+          ${pkg.isHoneymoon?'<span class="ct-tag honey">💑 <span class="en">Honeymoon</span><span class="ar">شهر عسل</span></span>':''}
+          ${pkg.isEconomy?'<span class="ct-tag"><span class="en">Economy</span><span class="ar">اقتصادي</span></span>':''}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="resort-block">
+          <div class="rb-label">🌊 <span class="en">Resort & Accommodation</span><span class="ar">المنتجع والإقامة</span></div>
+          <div class="resort-row">
+            <div class="resort-city"><span class="en">Mali</span><span class="ar">مالي</span><br><small>${pkg.resort.nights}N</small></div>
+            <div>
+              <div class="ri-name">${pkg.resort.name}</div>
+              <div class="ri-detail"><span class="en">${pkg.resort.detail.en}</span><span class="ar">${pkg.resort.detail.ar}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="transfer-note">🚤 <strong><span class="en">Transfer:</span><span class="ar">التوصيل:</span></strong>&nbsp;<span class="en">${pkg.transfer.en}</span><span class="ar">${pkg.transfer.ar}</span></div>
+        <div class="extras-block2">
+          <div class="ex-label">🎁 <span class="en">Extras & Gifts</span><span class="ar">الهدايا والخدمات الإضافية</span></div>
+          ${pkg.extras.en.map((e,i)=>`<div class="ex-item"><span class="en">${e}</span><span class="ar">${pkg.extras.ar[i]||e}</span></div>`).join('')}
+        </div>
+        <div class="activities-note">🗺️ <span><strong><span class="en">Optional Activities:</span><span class="ar">الأنشطة الاختيارية:</span></strong> <span class="en">Snorkeling, dolphin watching, sunset cruise, diving, fishing, island hopping — all available through DMC at additional cost.</span><span class="ar">الغطس، مشاهدة الدلافين، رحلة الغروب، الغوص، الصيد، التنقل بين الجزر — متاحة عبر الـ DMC بتكلفة إضافية.</span></span></div>
+      </div>
+      <div class="pricing-section">
+        <div class="ps-label">💰 <span class="en">Price Calculator (per person)</span><span class="ar">حاسبة السعر (للشخص)</span></div>
+        <div class="base-badge">
+          <span class="bb-label"><span class="en">DMC Base Price / Person</span><span class="ar">سعر DMC الأساسي / شخص</span></span>
+          <strong id="${pkg.id}_bb">${fmt(pkg.basePriceJOD)}</strong>
+        </div>
+        <div class="card-inputs">
+          <div class="ci-grp"><label><span class="en">Int'l Ticket (JOD)</span><span class="ar">تذكرة دولية (دينار)</span></label><input type="number" id="${pkg.id}_ticket" placeholder="Global / عام" step="10" oninput="recalcCard(packages.find(p=>p.id==='${pkg.id}'))"></div>
+          <div class="ci-grp"><label><span class="en">Profit (JOD)</span><span class="ar">الربح (دينار)</span></label><input type="number" id="${pkg.id}_profit" placeholder="Global / عام" step="5" oninput="recalcCard(packages.find(p=>p.id==='${pkg.id}'))"></div>
+          <div class="ci-grp"><label><span class="en">Visa (JOD)</span><span class="ar">التأشيرة (دينار)</span></label><input type="number" id="${pkg.id}_visa" placeholder="Global / عام" step="5" oninput="recalcCard(packages.find(p=>p.id==='${pkg.id}'))"></div>
+        </div>
+        <div class="breakdown">
+          <div class="bd-row"><span class="bd-label"><span class="en">DMC Resort Package (incl. speedboat)</span><span class="ar">باقة DMC (المنتجع + القارب السريع)</span></span><span class="bd-value" id="${pkg.id}_base">${fmt(pkg.basePriceJOD)}</span></div>
+          <div class="bd-row"><span class="bd-label"><span class="en">International Ticket</span><span class="ar">التذكرة الدولية</span></span><span class="bd-value" id="${pkg.id}_tkt">—</span></div>
+          <div class="bd-row profit"><span class="bd-label"><span class="en">Profit Margin</span><span class="ar">هامش الربح</span></span><span class="bd-value" id="${pkg.id}_pft">—</span></div>
+          <div class="bd-row"><span class="bd-label"><span class="en">Visa</span><span class="ar">التأشيرة</span></span><span class="bd-value" id="${pkg.id}_vis">—</span></div>
+          <div class="bd-row total"><span><span class="en">Total per Person</span><span class="ar">الإجمالي للشخص</span></span><span class="bd-value" id="${pkg.id}_tot">${fmt(pkg.basePriceJOD)}</span></div>
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('notesGrid').innerHTML=notes.map(n=>`<div class="note-item"><span class="en">${n.en}</span><span class="ar">${n.ar}</span></div>`).join('');
+  recalcAll();
+}
+document.getElementById('rateInput').addEventListener('input',recalcAll);
+renderCards();
+</script>
+</body>
+</html>

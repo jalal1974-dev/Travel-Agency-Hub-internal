@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Istanbul Packages — AL JUDE Pricing Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+:root {
+  --navy:#0a1628;--navy-mid:#112240;--navy-light:#1a3a6b;
+  --gold:#c9a84c;--gold-light:#e8c87a;--card-bg:#0f1e38;
+  --border:rgba(201,168,76,0.25);--white:#f8f6f0;--grey:#8a9bb5;
+  --green:#27ae60;--red:#e74c3c;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#070f1e,#1a3a6b);border-bottom:2px solid var(--gold);
+  padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.6);}
+header h1{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-light);}
+header p{font-size:.72rem;color:var(--grey);font-family:'DM Mono',monospace;margin-top:2px;}
+.period-badge{background:rgba(201,168,76,.15);border:1px solid var(--gold);color:var(--gold-light);
+  padding:4px 12px;border-radius:20px;font-size:.72rem;font-family:'DM Mono',monospace;}
+
+/* CONTROLS */
+.controls{background:var(--navy-mid);border-bottom:1px solid var(--border);padding:18px 24px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;align-items:end;}
+.ctrl-group{display:flex;flex-direction:column;gap:5px;}
+.ctrl-group label{font-size:.68rem;font-weight:600;color:var(--gold);text-transform:uppercase;
+  letter-spacing:1px;font-family:'DM Mono',monospace;}
+.ctrl-group select,.ctrl-group input{background:var(--card-bg);border:1px solid var(--border);
+  color:var(--white);padding:9px 11px;border-radius:8px;font-size:.86rem;
+  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;width:100%;}
+.ctrl-group select:focus,.ctrl-group input:focus{border-color:var(--gold);}
+.ctrl-group select option{background:var(--navy-mid);}
+.calc-btn{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);
+  border:none;padding:10px 20px;border-radius:8px;font-weight:700;font-size:.88rem;
+  cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;align-self:flex-end;height:40px;}
+.calc-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,.4);}
+
+/* SUMMARY */
+.summary-bar{background:linear-gradient(90deg,rgba(201,168,76,.1),rgba(26,58,107,.3));
+  border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
+.sum-item{display:flex;flex-direction:column;gap:1px;}
+.sum-item .lbl{font-size:.64rem;color:var(--grey);text-transform:uppercase;letter-spacing:1px;font-family:'DM Mono',monospace;}
+.sum-item .val{font-size:.95rem;font-weight:700;color:var(--gold-light);font-family:'DM Mono',monospace;}
+
+/* SEARCH */
+.search-bar{padding:14px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  background:var(--navy-mid);border-bottom:1px solid var(--border);}
+.search-bar input{background:var(--card-bg);border:1px solid var(--border);color:var(--white);
+  padding:9px 13px;border-radius:8px;font-size:.86rem;font-family:'DM Sans',sans-serif;
+  outline:none;flex:1;min-width:180px;transition:border-color .2s;}
+.search-bar input:focus{border-color:var(--gold);}
+.filter-btns{display:flex;gap:7px;flex-wrap:wrap;}
+.filt-btn{background:var(--card-bg);border:1px solid var(--border);color:var(--grey);
+  padding:7px 13px;border-radius:20px;font-size:.78rem;cursor:pointer;transition:all .2s;
+  font-family:'DM Sans',sans-serif;}
+.filt-btn.active,.filt-btn:hover{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:600;}
+
+.hotel-count{padding:10px 24px;font-size:.78rem;color:var(--grey);font-family:'DM Mono',monospace;}
+.hotel-count span{color:var(--gold);font-weight:700;}
+
+/* POLICY */
+.policy-bar{background:rgba(201,168,76,.06);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;margin:0 24px 16px;font-size:.74rem;color:var(--grey);line-height:1.7;}
+.policy-bar strong{color:var(--gold);}
+
+/* HOTEL GRID */
+.hotel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;padding:0 24px 30px;}
+
+/* HOTEL CARD */
+.hotel-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;transition:all .25s;display:flex;flex-direction:column;}
+.hotel-card:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4);}
+.hotel-card.new-hotel{border-left:3px solid var(--green);}
+
+.card-top{padding:13px 14px 10px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.hotel-name{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--white);line-height:1.3;flex:1;}
+.new-badge{background:var(--green);color:#fff;font-size:.58rem;font-weight:700;
+  padding:1px 5px;border-radius:5px;font-family:'DM Mono',monospace;vertical-align:middle;margin-left:4px;}
+.hotel-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.stars{color:var(--gold);font-size:.72rem;letter-spacing:1px;}
+.loc-badge{background:rgba(201,168,76,.12);color:var(--gold);font-size:.63rem;
+  font-family:'DM Mono',monospace;padding:2px 7px;border-radius:8px;
+  border:1px solid rgba(201,168,76,.3);text-transform:uppercase;}
+.blackout{background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.3);color:#ff8a80;
+  font-size:.65rem;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:5px;margin-top:3px;}
+
+/* PRICE BOXES */
+.price-row{padding:11px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-bottom:1px solid var(--border);}
+.price-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;padding:8px 6px;text-align:center;transition:all .2s;}
+.price-box.selected{background:rgba(201,168,76,.13);border-color:var(--gold);}
+.price-box .rt{font-size:.6rem;color:var(--grey);text-transform:uppercase;letter-spacing:.8px;
+  font-family:'DM Mono',monospace;margin-bottom:3px;}
+.price-box .dmc{font-size:.68rem;color:#5a7a9a;font-family:'DM Mono',monospace;margin-bottom:2px;}
+.price-box .fp{font-size:.95rem;font-weight:700;color:var(--gold-light);font-family:'DM Mono',monospace;}
+.price-box .fp.jod{color:#7ec8e3;}
+.price-box .fp2{font-size:.7rem;color:#5a8aaa;font-family:'DM Mono',monospace;}
+.price-box .na{font-size:.72rem;color:#3a4a5a;font-family:'DM Mono',monospace;}
+
+/* BREAKDOWN */
+.breakdown{padding:9px 14px;border-bottom:1px solid var(--border);display:none;flex-direction:column;gap:3px;}
+.breakdown.open{display:flex;}
+.bd-row{display:flex;justify-content:space-between;font-size:.73rem;color:var(--grey);font-family:'DM Mono',monospace;}
+.bd-row.total{color:var(--gold-light);font-weight:700;border-top:1px solid var(--border);padding-top:4px;margin-top:2px;}
+
+/* FOOTER */
+.card-footer{padding:9px 14px;display:flex;gap:8px;margin-top:auto;}
+.wa-btn{flex:1;background:#25d366;color:#fff;border:none;padding:8px 10px;border-radius:8px;
+  font-size:.78rem;font-weight:600;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:5px;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.wa-btn:hover{background:#20bd5a;transform:translateY(-1px);}
+.bd-btn{background:transparent;border:1px solid var(--border);color:var(--grey);
+  padding:8px 11px;border-radius:8px;font-size:.75rem;cursor:pointer;transition:all .2s;
+  font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.bd-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+.no-results{text-align:center;padding:50px 20px;color:var(--grey);font-size:.95rem;grid-column:1/-1;}
+
+@media(max-width:600px){
+  header,.controls,.search-bar,.summary-bar{padding:12px 14px;}
+  .hotel-grid,.hotel-count,.policy-bar{padding-left:14px;padding-right:14px;}
+  .hotel-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🕌 Istanbul Packages Dashboard</h1>
+    <p>AL JUDE Travel & Tourism · Venus DMC · Internal Pricing Tool</p>
+  </div>
+  <span class="period-badge" id="periodBadge">01 MAY – 31 MAY 2026</span>
+</header>
+
+<div class="controls">
+  <div class="ctrl-group">
+    <label>📅 Period</label>
+    <select id="periodSel" onchange="onPeriodChange()">
+      <option value="may">May 2026 — V.352 (01.05–31.05)</option>
+      <option value="jun">June 2026 — V.355 (01.06–30.06)</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <label>🌙 Nights</label>
+    <select id="nightsSel" onchange="calculate()">
+      <option value="3">3 Nights</option>
+      <option value="4">4 Nights</option>
+      <option value="5" selected>5 Nights</option>
+      <option value="6">6 Nights</option>
+      <option value="7">7 Nights</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <label>🛏 Room Type</label>
+    <select id="roomSel" onchange="calculate()">
+      <option value="dbl">DBL — per person in double</option>
+      <option value="sgl">SGL — single room</option>
+      <option value="xtr">DBL + Extra Bed — p.p</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <label>✈️ Ticket Price</label>
+    <input type="number" id="ticketAmt" value="199" min="0" step="1" oninput="calculate()">
+  </div>
+  <div class="ctrl-group">
+    <label>✈️ Ticket Currency</label>
+    <select id="ticketCurr" onchange="calculate()">
+      <option value="usd">USD $</option>
+      <option value="jod">JOD د.أ</option>
+      <option value="eur">EUR €</option>
+      <option value="sar">SAR ﷼</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <label>💰 Fixed Profit</label>
+    <input type="number" id="profitFix" value="20" min="0" step="1" oninput="calculate()">
+  </div>
+  <div class="ctrl-group">
+    <label>📊 Profit %</label>
+    <input type="number" id="profitPct" value="0" min="0" max="100" step="0.5" oninput="calculate()">
+  </div>
+  <div class="ctrl-group">
+    <label>💱 USD → JOD</label>
+    <input type="number" id="rateJOD" value="0.709" step="0.001" min="0.1" oninput="calculate()">
+  </div>
+  <div class="ctrl-group">
+    <label>💱 USD → EUR</label>
+    <input type="number" id="rateEUR" value="0.92" step="0.001" min="0.1" oninput="calculate()">
+  </div>
+  <div class="ctrl-group">
+    <label>💱 USD → SAR</label>
+    <input type="number" id="rateSAR" value="3.75" step="0.01" min="0.1" oninput="calculate()">
+  </div>
+  <div class="ctrl-group">
+    <label>🏷 Show Prices In</label>
+    <select id="outCurr" onchange="calculate()">
+      <option value="usd">USD $</option>
+      <option value="jod">JOD د.أ</option>
+      <option value="both">Both (USD + JOD)</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <label>&nbsp;</label>
+    <button class="calc-btn" onclick="calculate()">⚡ Calculate</button>
+  </div>
+</div>
+
+<div class="summary-bar">
+  <div class="sum-item"><span class="lbl">Period</span><span class="val" id="sPeriod">May 2026</span></div>
+  <div class="sum-item"><span class="lbl">Nights</span><span class="val" id="sNights">5N</span></div>
+  <div class="sum-item"><span class="lbl">Room</span><span class="val" id="sRoom">DBL p.p</span></div>
+  <div class="sum-item"><span class="lbl">Ticket</span><span class="val" id="sTicket">$199</span></div>
+  <div class="sum-item"><span class="lbl">Profit</span><span class="val" id="sProfit">$20</span></div>
+  <div class="sum-item"><span class="lbl">Rate</span><span class="val" id="sRate">1$=0.709 JOD</span></div>
+  <div class="sum-item"><span class="lbl">Hotels</span><span class="val" id="sCount">—</span></div>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍  Search hotel name or location…" oninput="renderCards()">
+  <div class="filter-btns">
+    <button class="filt-btn active" onclick="setF('all',this)">All</button>
+    <button class="filt-btn" onclick="setF('3',this)">3★</button>
+    <button class="filt-btn" onclick="setF('4',this)">4★</button>
+    <button class="filt-btn" onclick="setF('5',this)">5★</button>
+    <button class="filt-btn" onclick="setF('FATIH',this)">Fatih</button>
+    <button class="filt-btn" onclick="setF('TAKSIM',this)">Taksim</button>
+    <button class="filt-btn" onclick="setF('SISLI',this)">Şişli</button>
+    <button class="filt-btn" onclick="setF('BESIKTAS',this)">Beşiktaş</button>
+    <button class="filt-btn" onclick="setF('ISTIKLAL',this)">İstiklal</button>
+  </div>
+</div>
+
+<div class="hotel-count" id="hotelCount">Loading…</div>
+
+<div class="policy-bar">
+  <strong>👶 Children:</strong> 0–5 FREE &nbsp;|&nbsp; 6–11: 50% of per-person rate (1st child/room only) &nbsp;|&nbsp;
+  <strong>📋 Terms:</strong> Rates per person, BB basis, incl. VAT. Incl. R/T transfer + Sapanca & Masukiye tour. Valid: JA, FJR & RJ flights. Check-in 14:00 / out 12:00. Free cancellation 24h+. Eid/Christmas: non-refundable.
+</div>
+
+<div class="hotel-grid" id="hotelGrid"></div>
+
+<script>
+// =============================================================
+// DATA — May 2026 (V.352) — prices per person for total stay in USD
+// includes hotel + R/T transfer + Sapanca & Masukiye Tour
+// columns: dbl, sgl, xtr (DBL+Extra Bed p.p)
+// =============================================================
+const DATA = {
+  may: {
+    3:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:60,sgl:79,xtr:50},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:69,sgl:127,xtr:70},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:72,sgl:133,xtr:65},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:75,sgl:109,xtr:75},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:76,sgl:142,xtr:76},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:82,sgl:154,xtr:75},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:82,sgl:139,xtr:80},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:85,sgl:145,xtr:77},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:96,sgl:181,xtr:92},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:96,sgl:181,xtr:89},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:126,sgl:241,xtr:109},
+      {n:"REGARD SISLI HOTEL",s:4,l:"SISLI",dbl:97,sgl:184,xtr:100},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:99,sgl:178,xtr:91},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:112,sgl:214,xtr:100},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:114,sgl:217,xtr:101},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:117,sgl:223,xtr:104},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:118,sgl:226,xtr:109},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:120,sgl:229,xtr:110},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:120,sgl:229,xtr:105},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:120,sgl:229,xtr:115},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:121,sgl:231,xtr:121},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:122,sgl:217,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:131,sgl:234,xtr:122},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:131,sgl:252,xtr:116},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:136,sgl:250,xtr:123},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:139,sgl:268,xtr:128},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:138,sgl:267,xtr:121},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:143,sgl:276,xtr:130},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:147,sgl:267,xtr:133},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:156,sgl:302,xtr:145},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:165,sgl:320,xtr:145},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:165,sgl:320,xtr:145},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:165,sgl:320,xtr:145},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:166,sgl:323,xtr:175},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:187,sgl:329,xtr:178},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:192,sgl:338,xtr:168},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:192,sgl:373,xtr:174},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:192,sgl:373,xtr:178},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:211,sgl:411,xtr:187},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:230,sgl:450,xtr:182,bo:"Blackout: May 18–22"},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:262,sgl:462,xtr:222},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:382,sgl:718,xtr:317},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:426,sgl:842,xtr:346},
+    ],
+    4:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:76,sgl:102,xtr:63},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:88,sgl:166,xtr:90},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:92,sgl:174,xtr:83},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:96,sgl:142,xtr:97},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:98,sgl:186,xtr:98},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:106,sgl:202,xtr:97},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:106,sgl:182,xtr:103},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:110,sgl:190,xtr:99},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:124,sgl:238,xtr:119},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:124,sgl:238,xtr:115},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:164,sgl:318,xtr:142},
+      {n:"REGARD SISLI HOTEL",s:4,l:"SISLI",dbl:126,sgl:242,xtr:130},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:128,sgl:234,xtr:118},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:146,sgl:282,xtr:130},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:148,sgl:286,xtr:131},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:152,sgl:294,xtr:135},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:154,sgl:298,xtr:142},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:156,sgl:302,xtr:143},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:156,sgl:302,xtr:137},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:156,sgl:302,xtr:150},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:158,sgl:305,xtr:158},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:160,sgl:286,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:171,sgl:309,xtr:160},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:171,sgl:333,xtr:152},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:178,sgl:330,xtr:161},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:182,sgl:354,xtr:167},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:181,sgl:352,xtr:158},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:187,sgl:364,xtr:170},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:193,sgl:352,xtr:174},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:205,sgl:400,xtr:190},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:217,sgl:423,xtr:190},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:217,sgl:423,xtr:190},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:217,sgl:423,xtr:190},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:219,sgl:427,xtr:230},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:246,sgl:435,xtr:233},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:252,sgl:447,xtr:221},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:252,sgl:494,xtr:229},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:252,sgl:494,xtr:234},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:278,sgl:545,xtr:246},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:303,sgl:596,xtr:240,bo:"Blackout: May 18–22"},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:346,sgl:612,xtr:292},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:506,sgl:954,xtr:419},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:565,sgl:1119,xtr:458},
+    ],
+    5:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:93,sgl:125,xtr:77},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:108,sgl:205,xtr:110},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:113,sgl:215,xtr:102},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:118,sgl:175,xtr:118},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:120,sgl:230,xtr:120},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:130,sgl:250,xtr:118},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:130,sgl:225,xtr:127},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:135,sgl:235,xtr:122},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:153,sgl:295,xtr:147},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:153,sgl:295,xtr:142},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:203,sgl:395,xtr:175},
+      {n:"REGARD SISLI HOTEL",s:4,l:"SISLI",dbl:155,sgl:300,xtr:160},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:158,sgl:290,xtr:145},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:180,sgl:350,xtr:160},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:183,sgl:355,xtr:162},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:188,sgl:365,xtr:167},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:190,sgl:370,xtr:175},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:193,sgl:375,xtr:177},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:193,sgl:375,xtr:168},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:193,sgl:375,xtr:185},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:195,sgl:379,xtr:195},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:197,sgl:355,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:212,sgl:384,xtr:197},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:212,sgl:414,xtr:187},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:220,sgl:410,xtr:198},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:225,sgl:440,xtr:207},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:224,sgl:438,xtr:195},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:232,sgl:453,xtr:210},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:239,sgl:438,xtr:215},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:254,sgl:497,xtr:235},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:268,sgl:527,xtr:235},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:268,sgl:527,xtr:235},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:268,sgl:527,xtr:235},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:271,sgl:532,xtr:286},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:305,sgl:541,xtr:289},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:313,sgl:556,xtr:274},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:313,sgl:615,xtr:284},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:313,sgl:615,xtr:290},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:345,sgl:679,xtr:305},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:377,sgl:743,xtr:297,bo:"Blackout: May 18–22"},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:431,sgl:763,xtr:363},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:630,sgl:1190,xtr:521},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:703,sgl:1397,xtr:571},
+    ],
+    6:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:109,sgl:148,xtr:90},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:127,sgl:244,xtr:130},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:133,sgl:256,xtr:120},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:139,sgl:208,xtr:140},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:142,sgl:274,xtr:142},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:154,sgl:298,xtr:140},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:154,sgl:268,xtr:150},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:160,sgl:280,xtr:144},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:181,sgl:352,xtr:174},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:181,sgl:352,xtr:168},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:241,sgl:472,xtr:208},
+      {n:"REGARD SISLI HOTEL",s:4,l:"SISLI",dbl:184,sgl:358,xtr:190},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:187,sgl:346,xtr:172},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:214,sgl:418,xtr:190},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:217,sgl:424,xtr:192},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:223,sgl:436,xtr:198},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:226,sgl:442,xtr:208},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:229,sgl:448,xtr:210},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:229,sgl:448,xtr:200},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:229,sgl:448,xtr:220},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:231,sgl:453,xtr:232},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:234,sgl:423,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:252,sgl:459,xtr:234},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:252,sgl:494,xtr:223},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:262,sgl:490,xtr:236},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:268,sgl:526,xtr:246},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:267,sgl:524,xtr:232},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:276,sgl:542,xtr:250},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:285,sgl:524,xtr:256},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:302,sgl:594,xtr:280},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:320,sgl:630,xtr:280},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:320,sgl:630,xtr:280},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:320,sgl:630,xtr:280},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:323,sgl:636,xtr:341},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:364,sgl:647,xtr:345},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:373,sgl:665,xtr:327},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:373,sgl:736,xtr:339},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:373,sgl:736,xtr:346},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:411,sgl:813,xtr:364},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:450,sgl:890,xtr:354},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:515,sgl:913,xtr:433},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:753,sgl:1426,xtr:624},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:842,sgl:1674,xtr:683},
+    ],
+    7:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:126,sgl:171,xtr:103},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:147,sgl:283,xtr:150},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:154,sgl:297,xtr:138},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:161,sgl:241,xtr:162},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:164,sgl:318,xtr:164},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:178,sgl:346,xtr:162},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:178,sgl:311,xtr:173},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:185,sgl:325,xtr:166},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:210,sgl:409,xtr:201},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:210,sgl:409,xtr:194},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:280,sgl:549,xtr:241},
+      {n:"REGARD SISLI HOTEL",s:4,l:"SISLI",dbl:213,sgl:416,xtr:220},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:217,sgl:402,xtr:199},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:248,sgl:486,xtr:220},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:252,sgl:493,xtr:222},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:259,sgl:507,xtr:229},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:262,sgl:514,xtr:241},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:266,sgl:521,xtr:243},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:266,sgl:521,xtr:232},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:266,sgl:521,xtr:255},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:268,sgl:527,xtr:269},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:272,sgl:492,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:292,sgl:534,xtr:272},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:292,sgl:575,xtr:258},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:304,sgl:570,xtr:274},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:311,sgl:612,xtr:285},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:310,sgl:609,xtr:269},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:320,sgl:630,xtr:290},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:330,sgl:609,xtr:297},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:351,sgl:692,xtr:325},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:372,sgl:733,xtr:325},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:372,sgl:733,xtr:325},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:372,sgl:733,xtr:325},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:375,sgl:740,xtr:396},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:423,sgl:753,xtr:401},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:434,sgl:774,xtr:380},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:434,sgl:857,xtr:393},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:434,sgl:857,xtr:402},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:478,sgl:947,xtr:423},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:523,sgl:1036,xtr:412},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:599,sgl:1064,xtr:504},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:877,sgl:1662,xtr:726},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:981,sgl:1951,xtr:795},
+    ]
+  },
+  jun: {
+    3:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:60,sgl:79,xtr:50},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:69,sgl:127,xtr:64},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:72,sgl:133,xtr:65},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:75,sgl:109,xtr:75},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:76,sgl:142,xtr:76},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:82,sgl:154,xtr:75},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:82,sgl:139,xtr:80},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:85,sgl:145,xtr:77},
+      {n:"STYLE SISLI HOTEL",s:4,l:"SISLI",dbl:93,sgl:175,xtr:77,nw:true},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:96,sgl:181,xtr:92},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:96,sgl:181,xtr:89},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:126,sgl:241,xtr:109},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:100,sgl:181,xtr:92},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:112,sgl:214,xtr:100},
+      {n:"SORRISO ISTANBUL HOTEL",s:4,l:"FATIH",dbl:115,sgl:220,xtr:102,nw:true},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:118,sgl:226,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:127,sgl:243,xtr:128},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:118,sgl:226,xtr:109},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:120,sgl:229,xtr:110},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:120,sgl:229,xtr:105},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:120,sgl:229,xtr:110},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:121,sgl:231,xtr:121},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:126,sgl:241,xtr:112},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:127,sgl:244,xtr:112},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:136,sgl:250,xtr:123},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:138,sgl:267,xtr:121},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:143,sgl:276,xtr:130},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:146,sgl:282,xtr:134},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:148,sgl:286,xtr:135},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:147,sgl:267,xtr:133},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:158,sgl:305,xtr:146},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:166,sgl:323,xtr:146},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:166,sgl:323,xtr:146},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:171,sgl:332,xtr:179},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:174,sgl:338,xtr:151},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:183,sgl:355,xtr:168},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:183,sgl:355,xtr:172},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:193,sgl:341,xtr:169},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:198,sgl:385,xtr:185},
+      {n:"ELITE WORLD ISTANBUL (CLASSIC)",s:5,l:"TAKSIM",dbl:209,sgl:391,xtr:186,nw:true},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:211,sgl:411,xtr:187},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:228,sgl:411,xtr:193},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:256,sgl:503,xtr:200},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:349,sgl:653,xtr:298},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:376,sgl:742,xtr:316},
+    ],
+    4:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:76,sgl:102,xtr:63},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:88,sgl:166,xtr:82},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:92,sgl:174,xtr:83},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:96,sgl:142,xtr:97},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:98,sgl:186,xtr:98},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:106,sgl:202,xtr:97},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:106,sgl:182,xtr:103},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:110,sgl:190,xtr:99},
+      {n:"STYLE SISLI HOTEL",s:4,l:"SISLI",dbl:120,sgl:230,xtr:99,nw:true},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:124,sgl:238,xtr:119},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:124,sgl:238,xtr:115},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:164,sgl:318,xtr:142},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:130,sgl:238,xtr:119},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:146,sgl:282,xtr:130},
+      {n:"SORRISO ISTANBUL HOTEL",s:4,l:"FATIH",dbl:150,sgl:290,xtr:133,nw:true},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:154,sgl:298,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:166,sgl:321,xtr:168},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:154,sgl:298,xtr:142},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:156,sgl:302,xtr:143},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:156,sgl:302,xtr:137},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:156,sgl:302,xtr:143},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:158,sgl:305,xtr:158},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:164,sgl:318,xtr:146},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:166,sgl:322,xtr:146},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:178,sgl:330,xtr:161},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:181,sgl:352,xtr:158},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:187,sgl:364,xtr:170},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:191,sgl:372,xtr:175},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:194,sgl:378,xtr:177},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:193,sgl:352,xtr:174},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:207,sgl:404,xtr:191},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:219,sgl:427,xtr:191},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:219,sgl:427,xtr:191},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:225,sgl:439,xtr:236},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:228,sgl:447,xtr:198},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:240,sgl:470,xtr:221},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:240,sgl:470,xtr:226},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:254,sgl:451,xtr:223},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:260,sgl:510,xtr:243},
+      {n:"ELITE WORLD ISTANBUL (CLASSIC)",s:5,l:"TAKSIM",dbl:276,sgl:518,xtr:245,nw:true},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:278,sgl:545,xtr:246},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:301,sgl:545,xtr:254},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:339,sgl:667,xtr:263},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:462,sgl:868,xtr:394},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:498,sgl:986,xtr:418},
+    ],
+    5:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:93,sgl:125,xtr:77},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:108,sgl:205,xtr:100},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:113,sgl:215,xtr:102},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:118,sgl:175,xtr:118},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:120,sgl:230,xtr:120},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:130,sgl:250,xtr:118},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:130,sgl:225,xtr:127},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:135,sgl:235,xtr:122},
+      {n:"STYLE SISLI HOTEL",s:4,l:"SISLI",dbl:148,sgl:285,xtr:122,nw:true},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:153,sgl:295,xtr:147},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:153,sgl:295,xtr:142},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:203,sgl:395,xtr:175},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:160,sgl:295,xtr:147},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:180,sgl:350,xtr:160},
+      {n:"SORRISO ISTANBUL HOTEL",s:4,l:"FATIH",dbl:185,sgl:360,xtr:163,nw:true},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:190,sgl:370,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:205,sgl:399,xtr:207},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:190,sgl:370,xtr:175},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:193,sgl:375,xtr:177},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:193,sgl:375,xtr:168},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:193,sgl:375,xtr:177},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:195,sgl:379,xtr:195},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:203,sgl:395,xtr:180},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:205,sgl:400,xtr:180},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:220,sgl:410,xtr:198},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:224,sgl:438,xtr:195},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:232,sgl:453,xtr:210},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:237,sgl:463,xtr:217},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:240,sgl:470,xtr:218},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:239,sgl:438,xtr:215},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:256,sgl:502,xtr:236},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:271,sgl:532,xtr:236},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:271,sgl:532,xtr:236},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:278,sgl:547,xtr:292},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:283,sgl:556,xtr:245},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:298,sgl:586,xtr:274},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:298,sgl:586,xtr:280},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:315,sgl:561,xtr:276},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:323,sgl:635,xtr:301},
+      {n:"ELITE WORLD ISTANBUL (CLASSIC)",s:5,l:"TAKSIM",dbl:342,sgl:645,xtr:304,nw:true},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:345,sgl:679,xtr:305},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:374,sgl:679,xtr:315},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:421,sgl:832,xtr:327},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:576,sgl:1082,xtr:490},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:620,sgl:1230,xtr:520},
+    ],
+    6:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:109,sgl:148,xtr:90},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:127,sgl:244,xtr:118},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:133,sgl:256,xtr:120},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:139,sgl:208,xtr:140},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:142,sgl:274,xtr:142},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:154,sgl:298,xtr:140},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:154,sgl:268,xtr:150},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:160,sgl:280,xtr:144},
+      {n:"STYLE SISLI HOTEL",s:4,l:"SISLI",dbl:175,sgl:340,xtr:144,nw:true},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:181,sgl:352,xtr:174},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:181,sgl:352,xtr:168},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:241,sgl:472,xtr:208},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:190,sgl:352,xtr:174},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:214,sgl:418,xtr:190},
+      {n:"SORRISO ISTANBUL HOTEL",s:4,l:"FATIH",dbl:220,sgl:430,xtr:194,nw:true},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:226,sgl:441,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:243,sgl:477,xtr:246},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:226,sgl:442,xtr:208},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:229,sgl:448,xtr:210},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:229,sgl:448,xtr:200},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:229,sgl:448,xtr:210},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:231,sgl:453,xtr:232},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:241,sgl:472,xtr:214},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:244,sgl:478,xtr:214},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:262,sgl:490,xtr:236},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:267,sgl:524,xtr:232},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:276,sgl:542,xtr:250},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:282,sgl:554,xtr:258},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:286,sgl:562,xtr:260},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:285,sgl:524,xtr:256},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:305,sgl:600,xtr:282},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:323,sgl:636,xtr:282},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:323,sgl:636,xtr:282},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:332,sgl:654,xtr:349},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:338,sgl:665,xtr:291},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:355,sgl:701,xtr:327},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:355,sgl:701,xtr:334},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:376,sgl:671,xtr:329},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:385,sgl:760,xtr:359},
+      {n:"ELITE WORLD ISTANBUL (CLASSIC)",s:5,l:"TAKSIM",dbl:408,sgl:771,xtr:362,nw:true},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:411,sgl:813,xtr:364},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:447,sgl:813,xtr:376},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:503,sgl:996,xtr:390},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:689,sgl:1296,xtr:586},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:742,sgl:1473,xtr:622},
+    ],
+    7:[
+      {n:"YALTA HOTEL",s:3,l:"FATIH",dbl:126,sgl:171,xtr:103},
+      {n:"MONOPOL HOTEL",s:3,l:"TAKSIM",dbl:147,sgl:283,xtr:136},
+      {n:"GRAND LIZA HOTEL",s:3,l:"FATIH",dbl:154,sgl:297,xtr:138},
+      {n:"OZBEK HOTEL",s:3,l:"FATIH",dbl:161,sgl:241,xtr:162},
+      {n:"GRAND ONS",s:3,l:"FATIH",dbl:164,sgl:318,xtr:164},
+      {n:"HAMIT HOTEL",s:3,l:"FATIH",dbl:178,sgl:346,xtr:162},
+      {n:"SIM HOTEL",s:3,l:"FATIH",dbl:178,sgl:311,xtr:173},
+      {n:"GRAND ANT HOTEL",s:3,l:"FATIH",dbl:185,sgl:325,xtr:166},
+      {n:"STYLE SISLI HOTEL",s:4,l:"SISLI",dbl:203,sgl:395,xtr:166,nw:true},
+      {n:"VATAN ASUR / MARMARAY HOTEL",s:4,l:"FATIH",dbl:210,sgl:409,xtr:201},
+      {n:"BRISTOL HOTEL (STD)",s:4,l:"TAKSIM",dbl:210,sgl:409,xtr:194},
+      {n:"BRISTOL HOTEL (DELUXE)",s:4,l:"TAKSIM",dbl:280,sgl:549,xtr:241},
+      {n:"GRAND EMIN HOTEL",s:3,l:"FATIH",dbl:220,sgl:409,xtr:201},
+      {n:"ICON ISTANBUL HOTEL (DELUXE)",s:4,l:"SISLI",dbl:248,sgl:486,xtr:220},
+      {n:"SORRISO ISTANBUL HOTEL",s:4,l:"FATIH",dbl:255,sgl:500,xtr:225,nw:true},
+      {n:"GRAND DURMAZ HOTEL (ECONOMY)",s:4,l:"FATIH",dbl:262,sgl:513,xtr:null},
+      {n:"GRAND DURMAZ HOTEL (STD)",s:4,l:"FATIH",dbl:282,sgl:555,xtr:286},
+      {n:"CARTOON TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:262,sgl:514,xtr:241},
+      {n:"DORA PERA HOTEL",s:4,l:"TAKSIM",dbl:266,sgl:521,xtr:243},
+      {n:"THE BIANCHO HOTEL PERA",s:4,l:"TAKSIM",dbl:266,sgl:521,xtr:232},
+      {n:"NEVI HOTEL",s:4,l:"ISTIKLAL",dbl:266,sgl:521,xtr:243},
+      {n:"CHER HOTEL (DELUXE)",s:5,l:"TAKSIM",dbl:268,sgl:527,xtr:269},
+      {n:"TAKSIM EXPRESS HOTEL",s:4,l:"TAKSIM",dbl:280,sgl:549,xtr:248},
+      {n:"CRESTIUM TAKSIM PRIVE HOTEL",s:4,l:"TAKSIM",dbl:283,sgl:556,xtr:248},
+      {n:"GRAND YAVUZ SULTAN AHMET",s:4,l:"FATIH",dbl:304,sgl:570,xtr:274},
+      {n:"GONEN TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:310,sgl:609,xtr:269},
+      {n:"GOLDEN AGE HOTEL",s:4,l:"TAKSIM",dbl:320,sgl:630,xtr:290},
+      {n:"FOUR SIDES TAKSIM HOTEL",s:4,l:"TAKSIM",dbl:327,sgl:644,xtr:300},
+      {n:"KONAK HOTEL (SUPERIOR)",s:4,l:"TAKSIM",dbl:332,sgl:654,xtr:302},
+      {n:"PIYA SPORT HOTEL",s:4,l:"FATIH",dbl:330,sgl:609,xtr:297},
+      {n:"METROPOLITAN HOTEL TAKSIM",s:4,l:"TAKSIM",dbl:354,sgl:699,xtr:327},
+      {n:"AVANTGARD URBAN SISLI",s:4,l:"SISLI",dbl:375,sgl:740,xtr:327},
+      {n:"AVANTGARD URBAN TAKSIM",s:4,l:"TAKSIM",dbl:375,sgl:740,xtr:327},
+      {n:"ARTS HOTEL TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:386,sgl:761,xtr:405},
+      {n:"THE CRATON HOTEL (SUPERIOR)",s:5,l:"SISLI",dbl:392,sgl:774,xtr:338},
+      {n:"WYNDHAM OLD CITY (ex.CELAL AGA)",s:5,l:"FATIH",dbl:413,sgl:816,xtr:380},
+      {n:"RING STONE BOSPHORUS (STD CITY VIEW)",s:4,l:"ISTIKLAL",dbl:413,sgl:816,xtr:388},
+      {n:"OTTOMAN'S LIFE DELUXE (STD+TERRACE)",s:5,l:"FATIH",dbl:437,sgl:781,xtr:382},
+      {n:"TITANIC CITY TAKSIM (SUPERIOR)",s:4,l:"TAKSIM",dbl:448,sgl:886,xtr:417},
+      {n:"ELITE WORLD ISTANBUL (CLASSIC)",s:5,l:"TAKSIM",dbl:475,sgl:898,xtr:421,nw:true},
+      {n:"POINT HOTEL",s:5,l:"TAKSIM",dbl:478,sgl:947,xtr:423},
+      {n:"CROWNE PLAZA OLD CITY HOTEL",s:5,l:"FATIH",dbl:520,sgl:947,xtr:437},
+      {n:"RENAISSANCE POLAT BOSPHORUS (DELUXE)",s:5,l:"BESIKTAS",dbl:585,sgl:1160,xtr:453},
+      {n:"DIVAN HOTEL (SUPERIOR CITY VIEW)",s:5,l:"TAKSIM",dbl:802,sgl:1511,xtr:682},
+      {n:"CVK PARK BOSPHORUS (SUPERIOR EVERGREEN)",s:5,l:"TAKSIM",dbl:864,sgl:1717,xtr:724},
+    ]
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let activeFilter='all', computed=[];
+
+function g(id){return document.getElementById(id);}
+function gv(id){return g(id).value;}
+function gf(id){return parseFloat(g(id).value)||0;}
+
+// Convert any currency to USD
+function toUSD(amt, curr){
+  const jod=gf('rateJOD'), eur=gf('rateEUR'), sar=gf('rateSAR');
+  if(curr==='jod') return amt/jod;
+  if(curr==='eur') return amt/eur;
+  if(curr==='sar') return amt/sar;
+  return amt; // already USD
+}
+
+function fmtUSD(v){return '$'+Math.round(v).toLocaleString();}
+function fmtJOD(v){return (v*gf('rateJOD')).toFixed(2)+' JOD';}
+function fmtOut(v){
+  const oc=gv('outCurr');
+  if(oc==='usd') return fmtUSD(v);
+  if(oc==='jod') return fmtJOD(v);
+  return fmtUSD(v)+' / '+fmtJOD(v);
+}
+
+function onPeriodChange(){
+  const p=gv('periodSel');
+  g('periodBadge').textContent = p==='may'?'01 MAY – 31 MAY 2026':'01 JUN – 30 JUN 2026';
+  calculate();
+  renderTours();
+}
+
+function setF(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.filt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+function calculate(){
+  const period=gv('periodSel'), nights=parseInt(gv('nightsSel')), rt=gv('roomSel');
+  const ticketUSD=toUSD(gf('ticketAmt'), gv('ticketCurr'));
+  const profFix=gf('profitFix'), profPct=gf('profitPct');
+  const hotels=DATA[period][nights];
+
+  computed=hotels.map(h=>{
+    const rooms={};
+    ['dbl','sgl','xtr'].forEach(r=>{
+      const base=h[r];
+      if(base===null||base===undefined){rooms[r]=null;return;}
+      const sub=base+ticketUSD+profFix;
+      rooms[r]=sub*(1+profPct/100);
+    });
+    return{...h, rooms, ticketUSD, profFix, profPct, rt, nights};
+  });
+
+  // summary
+  const roomLabels={dbl:'DBL p.p',sgl:'SGL',xtr:'DBL+Xtra'};
+  g('sPeriod').textContent=period==='may'?'May 2026':'June 2026';
+  g('sNights').textContent=nights+'N';
+  g('sRoom').textContent=roomLabels[rt];
+  g('sTicket').textContent=(gv('ticketCurr')==='usd'?'$':gv('ticketCurr').toUpperCase()+' ')+gf('ticketAmt');
+  const pf=profFix>0?'$'+profFix:'', pp=profPct>0?profPct+'%':'';
+  g('sProfit').textContent=(pf&&pp?pf+' + '+pp:pf||pp||'None');
+  g('sRate').textContent='1$='+gf('rateJOD')+' JOD';
+
+  renderCards();
+}
+
+function renderCards(){
+  const search=g('searchInput').value.toLowerCase().trim();
+  const oc=gv('outCurr');
+
+  let list=computed.filter(h=>{
+    if(search && !h.n.toLowerCase().includes(search) && !h.l.toLowerCase().includes(search)) return false;
+    if(activeFilter==='all') return true;
+    if(['3','4','5'].includes(activeFilter)) return String(h.s)===activeFilter;
+    return h.l===activeFilter;
+  });
+
+  g('sCount').textContent=list.length;
+  g('hotelCount').innerHTML=`Showing <span>${list.length}</span> of ${computed.length} hotels`;
+
+  const grid=g('hotelGrid');
+  if(!list.length){grid.innerHTML='<div class="no-results">🔍 No hotels match.</div>';return;}
+
+  grid.innerHTML=list.map(h=>{
+    const stars='★'.repeat(h.s)+'☆'.repeat(5-h.s);
+    const newBadge=h.nw?`<span class="new-badge">NEW JUN</span>`:'';
+    const boNote=h.bo?`<div class="blackout">⚠️ ${h.bo}</div>`:'';
+
+    function pBox(rt,label){
+      const val=h.rooms[rt];
+      const isSel=rt===h.rt?'selected':'';
+      const dmc=h[rt];
+      if(val===null||val===undefined) return `<div class="price-box ${isSel}"><div class="rt">${label}</div><div class="na">N/A</div></div>`;
+      let disp='';
+      if(oc==='usd') disp=`<div class="fp">${fmtUSD(val)}</div>`;
+      else if(oc==='jod') disp=`<div class="fp jod">${fmtJOD(val)}</div>`;
+      else disp=`<div class="fp">${fmtUSD(val)}</div><div class="fp2">${fmtJOD(val)}</div>`;
+      return `<div class="price-box ${isSel}"><div class="rt">${label}</div><div class="dmc">DMC: $${dmc}</div>${disp}</div>`;
+    }
+
+    const selVal=h.rooms[h.rt];
+    const waMsg=buildWA(h,selVal,oc);
+    const uid=h.n.replace(/[^a-z0-9]/gi,'_');
+
+    return `<div class="hotel-card${h.nw?' new-hotel':''}">
+      <div class="card-top">
+        <div><div class="hotel-name">${h.n}${newBadge}</div>${boNote}</div>
+        <div class="hotel-meta"><div class="stars">${stars}</div><div class="loc-badge">${h.l}</div></div>
+      </div>
+      <div class="price-row">
+        ${pBox('dbl','👥 DBL p.p')}
+        ${pBox('sgl','👤 SGL')}
+        ${pBox('xtr','🛏 +Extra')}
+      </div>
+      <div class="breakdown" id="bd_${uid}">
+        <div class="bd-row"><span>Hotel (DMC incl. transfer+tour):</span><span>$${h[h.rt]||0}</span></div>
+        <div class="bd-row"><span>Charter Ticket:</span><span>$${Math.round(h.ticketUSD)}</span></div>
+        <div class="bd-row"><span>Fixed Profit:</span><span>$${h.profFix}</span></div>
+        ${h.profPct>0?`<div class="bd-row"><span>% Profit (${h.profPct}%):</span><span>included in total</span></div>`:''}
+        <div class="bd-row total"><span>TOTAL (per person):</span><span>${selVal!==null?fmtOut(selVal):'N/A'}</span></div>
+      </div>
+      <div class="card-footer">
+        <button class="wa-btn" onclick="sendWA('${encodeURIComponent(waMsg)}')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </button>
+        <button class="bd-btn" onclick="toggleBD('bd_${uid}',this)">🔍 Breakdown</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildWA(h, finalUSD, oc){
+  const period=gv('periodSel')==='may'?'May 2026':'June 2026';
+  const rtLabel={dbl:'Double Room (per person)',sgl:'Single Room',xtr:'Double + Extra Bed (per person)'};
+  const priceStr=finalUSD!==null?fmtOut(finalUSD):'Contact us';
+  return `🕌 Istanbul Package — AL JUDE Travel\n\n`+
+    `🏨 ${h.n} (${h.s}★ — ${h.l})\n`+
+    `📅 Period: ${period}\n`+
+    `🌙 Duration: ${h.nights} Nights\n`+
+    `🛏 Room: ${rtLabel[h.rt]}\n`+
+    `✅ Includes: Hotel BB + R/T Airport Transfer + Sapanca & Masukiye Day Tour\n\n`+
+    `💰 Package Price (p.p): ${priceStr}\n\n`+
+    `👶 Children: 0–5 FREE | 6–11: 50% off\n\n`+
+    `To confirm please send:\n• No. of adults\n• No. of children + ages\n• Travel date\n\n`+
+    `AL JUDE Travel & Tourism\n📞 +962 777 066 005`;
+}
+
+function sendWA(msg){window.open('https://wa.me/962777066005?text='+msg,'_blank');}
+
+function toggleBD(id,btn){
+  const el=g(id);
+  el.classList.toggle('open');
+  btn.textContent=el.classList.contains('open')?'✖ Close':'🔍 Breakdown';
+}
+
+// Init
+calculate();
+
+function sendWATour(msg){window.open('https://wa.me/962777066005?text='+msg,'_blank');}
+
+
+
+// ═══ ISTANBUL TOURS DATA ═══
+const CITY_TOURS = [
+  {name:'Historic Istanbul Tour',nameAr:'جولة إسطنبول التاريخية',dur:'Full-Day',
+   sic:20,sic_e:null,pvt:130,pvt_e:110,
+   desc:'Hagia Sophia • Blue Mosque • Hippodrome • Topkapi • Pierre Loti • Turkish Lunch'},
+  {name:'Şile & Ağva Tour',nameAr:'جولة شيلي وأغفا (البحر الأسود)',dur:'Full-Day',
+   sic:20,sic_e:15,pvt:200,pvt_e:170,
+   desc:'Çamlıca Tower • Ağva Beach (Black Sea) • Şile Village • Zoo • Göksu River'},
+  {name:'Sapanca & Maşukiye Tour',nameAr:'جولة سابانجا وماشوكية',dur:'Full-Day',
+   sic:15,sic_e:10,pvt:180,pvt_e:150,
+   desc:'Sapanca Lake • Maşukiye Village • Waterfalls • Tuzla Marina • Zipline & ATV'},
+  {name:'Bursa Tour',nameAr:'جولة بورصا',dur:'Full-Day',
+   sic:25,sic_e:20,pvt:300,pvt_e:240,
+   desc:'Marmara Sea Cruise • Yalova • Uludağ Mountain • Green Mosque • Cable Car'},
+  {name:'Izmit Tour',nameAr:'جولة إزميت',dur:'Full-Day',
+   sic:20,sic_e:15,pvt:180,pvt_e:150,
+   desc:'Sukay Park • Upside Down House • ATV Safari • Moon View Point • Special Zoo'},
+  {name:"Princes' Island Tour",nameAr:'جولة جزر الأمراء',dur:'Full-Day',
+   sic:20,sic_e:15,pvt:80,pvt_e:50,
+   desc:'Marmara Sea Cruise • Büyükada Island • Ottoman Palaces • Electric Car Tour'},
+  {name:'Arabic Night Cruise',nameAr:'رحلة ليلية عربية',dur:'Evening',
+   sic:20,sic_e:15,pvt:80,pvt_e:50,
+   desc:'Arabic Shows & Entertainment • Oriental Dinner • Bosphorus Cruise'},
+  {name:'Turkish Night Cruise',nameAr:'رحلة ليلية تركية',dur:'Evening',
+   sic:40,sic_e:null,pvt:80,pvt_e:50,
+   desc:'Turkish Shows & Entertainment • Dinner with Soft Drinks'},
+  {name:'Florya & Pierre Loti Tour',nameAr:'جولة فلوريا وبيير لوتي',dur:'Full-Day',
+   sic:null,sic_e:null,pvt:130,pvt_e:110,
+   desc:'Sultan Eyüp Mosque • Pierre Loti Cable Car • Miniaturk • Florya Aquarium & Beach'},
+  {name:'Bosphorus & Florya Tour',nameAr:'جولة البوسفور وفلوريا',dur:'Half-Day',
+   sic:null,sic_e:null,pvt:130,pvt_e:110,
+   desc:'Bosphorus Cruise • Florya Aquarium & Beach • Shopping'},
+  {name:'Rafting Adventure',nameAr:'مغامرة الرافتينج',dur:'Full-Day',
+   sic:null,sic_e:null,pvt:140,pvt_e:120,
+   desc:"Çamlıca Mosque • Maiden's Tower • Üsküdar Beach • Bosphorus Rafting"},
+  {name:'Istanbul City Tour (European)',nameAr:'جولة إسطنبول الأوروبية',dur:'Full-Day',
+   sic:null,sic_e:null,pvt:130,pvt_e:110,
+   desc:'Hagia Sophia • Blue Mosque • Hippodrome • Grand Bazaar • Topkapi Palace'},
+  {name:'Istanbul City Tour (EU+Asia)',nameAr:'جولة إسطنبول أوروبية وآسيوية',dur:'Full-Day',
+   sic:null,sic_e:null,pvt:140,pvt_e:120,
+   desc:"Çamlıca Mosque • Maiden's Tower • Hagia Sophia • Blue Mosque • Topkapi"},
+  {name:'Eskişehir City Tour',nameAr:'جولة إسكيشهير',dur:'Full-Day',
+   sic:null,sic_e:null,pvt:450,pvt_e:420,
+   desc:"Porsuk River • Sazova Park (Turkey's Disneyland) • Odunpazarı Ottoman Houses"},
+  {name:'Luxury Yacht Cruise (2hr)',nameAr:'رحلة يخت فاخرة (ساعتان)',dur:'2 Hours',
+   sic:null,sic_e:null,pvt:300,pvt_e:260,
+   desc:'2 Hours Luxury Yacht • Special name on Bosphorus Bridge • Private transfer'},
+];
+
+const CITY_TRANSFERS = [
+  {type:'Regular SIC — Istanbul Airport (per pax)',price:10,cat:'SIC'},
+  {type:'ECO Private VITO (≤5) — Istanbul Airport',price:70,cat:'ECO'},
+  {type:'PREMIUM Private VITO (≤5) — Istanbul Airport',price:95,cat:'PREM'},
+  {type:'ROYAL PLATINUM Maybach (≤5) — Istanbul Airport',price:110,cat:'VIP'},
+  {type:'ECO Private VITO (≤5) — Sabiha Gökçen Airport',price:90,cat:'ECO'},
+  {type:'PREMIUM Private VITO (≤5) — Sabiha Gökçen Airport',price:115,cat:'PREM'},
+  {type:'ROYAL PLATINUM Maybach (≤5) — Sabiha Gökçen Airport',price:145,cat:'VIP'},
+  {type:'ECO Private SIPRINTER (≤12) — Istanbul Airport',price:95,cat:'ECO'},
+  {type:'PREMIUM Private SIPRINTER (≤12) — Istanbul Airport',price:155,cat:'PREM'},
+  {type:'ECO Private SIPRINTER (≤12) — Sabiha Gökçen',price:105,cat:'ECO'},
+  {type:'PREMIUM Private SIPRINTER (≤12) — Sabiha Gökçen',price:165,cat:'PREM'},
+];
+
+const TOUR_PACKAGES = {
+  may: [
+    {n:'5 Tour Package',tours:'Historic Istanbul + Sapanca + Arabic Night + Bursa + Princes Island',prem:65,eco:45},
+    {n:'4 Tour Package',tours:'Sapanca + Arabic Night + Bursa + Princes Island',prem:55,eco:40},
+    {n:'3 Tour Package',tours:'Sapanca + Arabic Night + Bursa',prem:45,eco:35},
+    {n:'2 Tour Package',tours:'Sapanca + Arabic Night',prem:30,eco:25},
+  ],
+  jun: [
+    {n:'5 Tour Package',tours:'Historic Istanbul + Arabic Night + Bursa + Princes Island + Sapanca',prem:70,eco:50},
+    {n:'4 Tour Package',tours:'Historic Istanbul + Bursa + Princes Island + Sapanca',prem:60,eco:45},
+    {n:'3 Tour Package',tours:'Historic Istanbul + Bursa + Sapanca',prem:40,eco:30},
+    {n:'2 Tour Package',tours:'Historic Istanbul + Sapanca',prem:30,eco:20},
+  ],
+};
+
+
+
+function tourFinalPrice(dmc) {
+  if (dmc === null || dmc === undefined) return null;
+  const fp  = parseFloat(document.getElementById('tourProfit').value)    || 0;
+  const pp  = parseFloat(document.getElementById('tourProfitPct').value) || 0;
+  return Math.round((dmc + fp) * (1 + pp / 100));
+}
+
+function renderTours() {
+  const tbody = document.getElementById('toursTableBody');
+  if (!tbody) return;
+  const na  = '<span style="color:#555;font-size:10px">N/A</span>';
+  const orb = '<span style="color:#a0a8b8;font-size:10px">O.R.B</span>';
+
+  tbody.innerHTML = CITY_TOURS.map((t, i) => {
+    const sicF  = tourFinalPrice(t.sic);
+    const pvtF  = tourFinalPrice(t.pvt);
+    const pvtEF = tourFinalPrice(t.pvt_e);
+    const bg = i % 2 === 0 ? 'background:rgba(255,255,255,0.015)' : '';
+
+    const waMsg = encodeURIComponent(
+      '🗺️ Tour Offer — AL JUDE Travel\n\n' +
+      '📍 ' + t.name + '\n' +
+      (t.nameAr ? t.nameAr + '\n' : '') +
+      '⏱️ ' + t.dur + '\n\n' +
+      '✅ ' + t.desc + '\n\n' +
+      (sicF  !== null ? '👥 SIC (Group): $' + sicF  + ' per person\n' : '') +
+      (pvtF  !== null ? '🚌 Private (≤5 pax): $' + pvtF + '\n' : '') +
+      (pvtEF !== null ? '🚌 Private Economy: $' + pvtEF + '\n' : '') +
+      '\n📞 +962 777 066 005 | الجود للسياحة والسفر'
+    );
+
+    const sicDmc  = t.sic  !== null ? '$' + t.sic  : (t.pvt === null ? orb : na);
+    const sicYour = sicF   !== null ? '<span style="background:rgba(34,197,94,0.15);color:#22c55e;font-weight:800;border-radius:5px;padding:2px 7px;">$' + sicF + '</span>' : (t.pvt === null ? orb : na);
+    const pvtDmc  = t.pvt  !== null ? '$' + t.pvt  : orb;
+    const pvtYour = pvtF   !== null ? '<span style="background:rgba(245,158,11,0.15);color:#f59e0b;font-weight:800;border-radius:5px;padding:2px 7px;">$' + pvtF  + '</span>' : orb;
+
+    return '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);' + bg + '">' +
+      '<td style="padding:8px 10px;">' +
+        '<div style="font-weight:700;color:#e8e0d0;font-size:11px;">' + t.name + '</div>' +
+        (t.nameAr ? '<div style="color:#a0a8b8;font-size:10px;">' + t.nameAr + '</div>' : '') +
+        '<div style="color:#606880;font-size:9px;margin-top:3px;line-height:1.5;">' + t.desc + '</div>' +
+      '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#a0a8b8;font-size:10px;white-space:nowrap;">' + t.dur + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;">'  + sicDmc  + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">'                                + sicYour + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;">'  + pvtDmc  + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">'                                + pvtYour + '</td>' +
+      '<td style="padding:8px 6px;text-align:center;">' +
+        '<button onclick="sendWATour(\'' + waMsg + '\')" ' +
+        'style="background:#25d366;border:none;border-radius:6px;padding:4px 8px;color:white;cursor:pointer;font-size:12px;">💬</button>' +
+      '</td>' +
+    '</tr>';
+  }).join('');
+
+  // Transfers
+  const tgrid = document.getElementById('transfersGrid');
+  if (tgrid) {
+    const cc = {ECO:'#60a5fa',PREM:'#f59e0b',VIP:'#c084fc',BUS:'#22c55e',SIC:'#a0a8b8',ORB:'#555'};
+    tgrid.innerHTML = CITY_TRANSFERS.map(t => {
+      if (t.price === null) return (
+        '<div style="background:#111e35;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;">' +
+        '<div style="color:#a0a8b8;font-size:10px;">' + t.type + '</div>' +
+        '<div style="color:#555;font-weight:700;">O.R.B</div></div>'
+      );
+      const col = cc[t.cat] || '#a0a8b8';
+      return (
+        '<div style="background:#111e35;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px;display:flex;justify-content:space-between;align-items:center;">' +
+        '<div><div style="color:#e8e0d0;font-size:10px;">' + t.type + '</div>' +
+        '<div style="font-size:9px;color:' + col + ';font-weight:700;margin-top:2px;">' + t.cat + '</div></div>' +
+        '<div style="color:' + col + ';font-weight:800;font-size:15px;white-space:nowrap;margin-right:6px;">$' + t.price + '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  // Tour packages (Istanbul only)
+  const pkgWrap = document.getElementById('tourPackagesWrap');
+  if (pkgWrap && typeof TOUR_PACKAGES !== "undefined" && TOUR_PACKAGES) {
+    pkgWrap.style.display = 'block';
+    // Detect current period
+    const mayBtn = document.getElementById('tab-may');
+    const period = (mayBtn && mayBtn.classList.contains('active')) ? 'may' : 'jun';
+    const pkgs = TOUR_PACKAGES[period] || TOUR_PACKAGES.may;
+    const pgrid = document.getElementById('tourPackagesGrid');
+    if (pgrid) {
+      pgrid.innerHTML = pkgs.map(p => {
+        const pF = tourFinalPrice(p.prem);
+        const eF = tourFinalPrice(p.eco);
+        return (
+          '<div style="background:#111e35;border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:12px;">' +
+          '<div style="color:#c9a84c;font-weight:800;font-size:12px;margin-bottom:4px;">📦 ' + p.n + '</div>' +
+          '<div style="color:#a0a8b8;font-size:10px;margin-bottom:8px;">' + p.tours + '</div>' +
+          '<div style="display:flex;gap:10px;">' +
+            '<div style="flex:1;background:rgba(34,197,94,0.1);border-radius:6px;padding:6px;text-align:center;">' +
+              '<div style="font-size:9px;color:#22c55e;">Premium</div>' +
+              '<div style="font-size:11px;color:#a0a8b8;text-decoration:line-through;">$' + p.prem + '</div>' +
+              '<div style="font-size:16px;font-weight:800;color:#22c55e;">$' + pF + '</div>' +
+            '</div>' +
+            '<div style="flex:1;background:rgba(96,165,250,0.1);border-radius:6px;padding:6px;text-align:center;">' +
+              '<div style="font-size:9px;color:#60a5fa;">Economy</div>' +
+              '<div style="font-size:11px;color:#a0a8b8;text-decoration:line-through;">$' + p.eco + '</div>' +
+              '<div style="font-size:16px;font-weight:800;color:#60a5fa;">$' + eF + '</div>' +
+            '</div>' +
+          '</div></div>'
+        );
+      }).join('');
+    }
+  }
+}
+
+
+// Init tours
+renderTours();
+</script>
+
+<!-- ═══ TOURS & EXCURSIONS SECTION ═══ -->
+<div id="tours-section" style="background:#0a1628;border-top:2px solid rgba(201,168,76,0.3);padding:20px 20px 40px;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="background:#111e35;border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+      <div style="color:#c9a84c;font-size:14px;font-weight:800;">🗺️ Daily Excursions, Tours & Transfers</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <label style="font-size:11px;color:#a0a8b8;">💰 Tour Profit (USD/person):</label>
+        <input type="number" id="tourProfit" value="5" min="0" step="1"
+          style="width:65px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:5px 8px;color:#e8e0d0;font-family:Cairo,sans-serif;font-size:13px;outline:none;"
+          oninput="renderTours()">
+        <label style="font-size:11px;color:#a0a8b8;">📊 Profit (%):</label>
+        <input type="number" id="tourProfitPct" value="0" min="0" max="100" step="5"
+          style="width:55px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:5px 8px;color:#e8e0d0;font-family:Cairo,sans-serif;font-size:13px;outline:none;"
+          oninput="renderTours()">
+        <button onclick="renderTours()" style="background:#c9a84c;color:#0a1628;border:none;border-radius:8px;padding:6px 14px;font-family:Cairo,sans-serif;font-size:12px;font-weight:800;cursor:pointer;">🔄 Update Tours</button>
+      </div>
+      <div style="font-size:10px;color:#a0a8b8;margin-right:auto;">Your price = DMC price + profit × (1+%)</div>
+    </div>
+
+    <h3 style="color:#c9a84c;font-size:13px;font-weight:800;margin-bottom:10px;">🗺️ Daily Excursions</h3>
+    <div style="overflow-x:auto;margin-bottom:24px;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead>
+          <tr style="background:rgba(201,168,76,0.12);">
+            <th style="padding:8px 10px;text-align:right;color:#c9a84c;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">الجولة / Tour</th>
+            <th style="padding:8px 6px;text-align:center;color:#a0a8b8;border-bottom:1px solid rgba(201,168,76,0.2);white-space:nowrap;">Duration</th>
+            <th style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">SIC<br><span style="font-size:9px;font-weight:400;color:#a0a8b8;">DMC $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#22c55e;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">SIC<br><span style="font-size:9px;font-weight:400;color:#a0a8b8;">Your $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">Private<br><span style="font-size:9px;font-weight:400;color:#a0a8b8;">DMC $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#f59e0b;font-weight:700;border-bottom:1px solid rgba(201,168,76,0.2);">Private<br><span style="font-size:9px;font-weight:400;color:#a0a8b8;">Your $</span></th>
+            <th style="padding:8px 6px;text-align:center;color:#a0a8b8;border-bottom:1px solid rgba(201,168,76,0.2);">WA</th>
+          </tr>
+        </thead>
+        <tbody id="toursTableBody"></tbody>
+      </table>
+    </div>
+
+    <div id="tourPackagesWrap" style="display:block;margin-bottom:24px;">
+      <h3 style="color:#c9a84c;font-size:13px;font-weight:800;margin-bottom:10px;">📦 Tour Packages</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;" id="tourPackagesGrid"></div>
+    </div>
+
+    <h3 style="color:#c9a84c;font-size:13px;font-weight:800;margin-bottom:10px;">🚗 Transfer Rates (USD)</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px;" id="transfersGrid"></div>
+  </div>
+</div>
+
+</body>
+</html>

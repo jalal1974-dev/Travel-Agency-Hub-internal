@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Georgia & Russia Travel Packages Dashboard — 7 Packages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.6.0/tabler-icons.min.css">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --surface2: #F1EEE8;
+    --border: #E2DDD5;
+    --border2: #CBC5BB;
+    --text: #1A1714;
+    --text2: #6B6560;
+    --text3: #9E9890;
+    --accent: #1B4F72;
+    --accent-light: #EAF1F8;
+    --accent-border: #A8C7E0;
+    --gold: #C9952A;
+    --gold-light: #FDF6E8;
+    --gold-border: #EDD38A;
+    --green: #1E6B47;
+    --green-light: #E8F4EE;
+    --green-border: #A0D4B8;
+    --amber: #8B5A0A;
+    --amber-light: #FEF3E2;
+    --amber-border: #F0C97A;
+    --red: #8B2020;
+    --red-light: #FDEAEA;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--accent);
+    color: #fff;
+    padding: 28px 40px 24px;
+    border-bottom: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .site-header::after {
+    content: '';
+    position: absolute;
+    right: 80px; top: 40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .header-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+  .header-titles h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .header-titles p { font-size: 13px; opacity: 0.7; }
+  .header-meta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+
+  /* ── Controls bar ── */
+  .controls-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .controls-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .ctrl-label { font-size: 12px; color: var(--text2); font-weight: 500; white-space: nowrap; }
+  .ctrl-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ctrl-input input[type=number] {
+    width: 90px;
+    height: 34px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 0 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .ctrl-input input[type=number]:focus { border-color: var(--accent); }
+  .divider { width: 1px; height: 28px; background: var(--border); }
+  .currency-toggle {
+    display: flex;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 2px;
+    gap: 2px;
+  }
+  .cur-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+    color: var(--text2);
+    transition: all 0.15s;
+  }
+  .cur-btn.active {
+    background: var(--surface);
+    color: var(--accent);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .info-pill {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 20px;
+    border: 1px solid var(--accent-border);
+    font-weight: 500;
+    margin-left: auto;
+  }
+
+  /* ── Main layout ── */
+  .main { max-width: 1200px; margin: 0 auto; padding: 32px 40px 60px; }
+
+  /* ── Package grid ── */
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .pkg-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .pkg-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    transition: background 0.2s;
+  }
+  .pkg-card:hover { border-color: var(--border2); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .pkg-card:hover::before { background: var(--accent); }
+  .pkg-card.active { border-color: var(--accent); box-shadow: var(--shadow-md); }
+  .pkg-card.active::before { background: var(--accent); }
+  .pkg-num {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .pkg-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+  .pkg-arabic {
+    font-size: 13px;
+    color: var(--text2);
+    direction: rtl;
+    text-align: right;
+    margin-bottom: 8px;
+  }
+  .pkg-sub {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .fly-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 10px; }
+  .fly-chip {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    font-weight: 500;
+  }
+  .fly-chip.gold {
+    background: var(--gold-light);
+    color: var(--gold);
+    border-color: var(--gold-border);
+  }
+  .pkg-price-from { font-size: 11px; color: var(--text2); padding-top: 8px; border-top: 1px solid var(--border); }
+  .pkg-price-from strong { font-size: 16px; font-weight: 600; color: var(--accent); }
+  .click-hint {
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  /* ── Detail panel ── */
+  .detail-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    animation: slideIn 0.2s ease-out;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .detail-header {
+    background: linear-gradient(135deg, #1B4F72 0%, #154060 100%);
+    padding: 20px 24px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .detail-header-left {}
+  .detail-pkg-num { font-size: 11px; opacity: 0.6; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+  .detail-title { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; margin-bottom: 2px; }
+  .detail-arabic { font-size: 14px; opacity: 0.7; direction: rtl; }
+  .detail-sub { font-size: 13px; opacity: 0.65; margin-top: 4px; }
+  .close-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .close-btn:hover { background: rgba(255,255,255,0.2); }
+
+  /* ── Tabs ── */
+  .tabs-bar {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    background: var(--surface);
+  }
+  .tab-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px 16px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--text2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; padding: 22px 24px; }
+  .tab-content.active { display: block; }
+
+  /* ── Pricing table ── */
+  .table-wrap { overflow-x: auto; }
+  .pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 680px;
+  }
+  .pricing-table th {
+    background: var(--surface2);
+    padding: 9px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .pricing-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .pricing-table tr:last-child td { border-bottom: none; }
+  .pricing-table tr:hover td { background: var(--bg); }
+  .hotel-stars { color: var(--gold); font-size: 11px; }
+  .meal-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--green-light);
+    color: var(--green);
+    border: 1px solid var(--green-border);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .meal-badge.no-meal {
+    background: var(--surface2);
+    color: var(--text2);
+    border-color: var(--border);
+  }
+  .meal-badge.full-meal {
+    background: var(--gold-light);
+    color: var(--gold);
+    border-color: var(--gold-border);
+  }
+  .price-val { font-weight: 600; color: var(--text); }
+  .total-val { font-weight: 700; color: var(--accent); font-size: 14px; }
+  .table-note {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text2);
+    padding: 8px 12px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    line-height: 1.5;
+  }
+
+  /* ── Itinerary ── */
+  .itin-day {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .itin-day:hover { border-color: var(--border2); }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    background: var(--surface2);
+    cursor: pointer;
+    user-select: none;
+  }
+  .day-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text2);
+    min-width: 48px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .day-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-free { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
+  .badge-optional { background: var(--amber-light); color: var(--amber); border: 1px solid var(--amber-border); }
+  .day-title-text { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+  .day-loc { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 3px; margin-left: auto; }
+  .chevron { font-size: 14px; color: var(--text3); transition: transform 0.2s; flex-shrink: 0; }
+  .chevron.open { transform: rotate(180deg); }
+  .day-body {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+    display: none;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .day-body.open { display: block; }
+
+  /* ── Info tab ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .info-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  .info-card-label { font-size: 11px; color: var(--text2); font-weight: 500; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .info-card-val { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.35; }
+  .section-heading {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 18px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .includes-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .includes-list li {
+    font-size: 13px;
+    color: var(--text2);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+  }
+  .includes-list li::before {
+    content: "✓";
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .not-includes-list li::before { content: "✕"; color: var(--red); }
+  .note-box {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .note-box.amber { background: var(--amber-light); color: var(--amber); border: 1px solid var(--amber-border); }
+  .note-box.green { background: var(--green-light); color: var(--green); border: 1px solid var(--green-border); }
+  .fly-days-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .fly-day-chip {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    font-weight: 600;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    text-align: center;
+    padding: 20px 40px 30px;
+    font-size: 12px;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .site-header { padding: 20px; }
+    .controls-bar { padding: 12px 16px; }
+    .main { padding: 20px 16px 40px; }
+    .header-titles h1 { font-size: 20px; }
+    .info-pill { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-titles">
+        <h1>Georgia, and combined with Russia &amp; Trabzon Packages &nbsp;·&nbsp; برامج جورجيا وروسيا وطرابزون</h1>
+        <p>7 packages · 8 days / 7 nights · Departing Amman · Prices include flights, hotel &amp; transport<br><span style="direction:rtl;display:block;margin-top:3px;font-size:12px;opacity:0.65">٧ برامج · ٨ أيام / ٧ ليالٍ · المغادرة من عمّان · الأسعار تشمل الطيران والفندق والمواصلات</span></p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="controls-bar">
+  <div class="controls-inner">
+    <div class="ctrl-label">Profit / person<br><span style="font-weight:400;direction:rtl;display:block">ربح / شخص</span></div>
+    <div class="ctrl-input">
+      <input type="number" id="profitInput" value="50" min="0" step="5" />
+      <span style="font-size:12px;color:var(--text2)" id="profitCurLabel">JOD</span>
+    </div>
+    <div class="divider"></div>
+    <div class="ctrl-label">Visa cost<br><span style="font-weight:400;direction:rtl;display:block">تكلفة الفيزا</span></div>
+    <div class="ctrl-input">
+      <input type="number" id="visaInput" value="0" min="0" step="5" />
+      <span style="font-size:12px;color:var(--text2)" id="visaCurLabel">JOD</span>
+    </div>
+    <div class="divider"></div>
+    <div class="currency-toggle">
+      <button class="cur-btn active" onclick="setCurrency('JOD',this)">JOD</button>
+      <button class="cur-btn" onclick="setCurrency('USD',this)">USD</button>
+    </div>
+    <div class="info-pill">&#9432;&nbsp; Click a package to view pricing &amp; itinerary &nbsp;·&nbsp; اضغط على البرنامج لعرض الأسعار والجدول</div>
+  </div>
+</div>
+
+<main class="main">
+  <div class="packages-grid" id="pkgGrid"></div>
+  <div id="detailPanel" style="display:none;margin-top:4px;"></div>
+</main>
+
+<footer class="site-footer">
+  All prices in JOD (Jordanian Dinar) · 1 JOD ≈ 1.41 USD · Prices include flights, hotel, and transport · Optional excursions paid directly to DMC on-site · Health insurance mandatory before travel · Infant price: 110 JOD
+  <br><span style="direction:rtl;display:block;margin-top:4px">جميع الأسعار بالدينار الأردني · ١ دينار ≈ ١.٤١ دولار · الأسعار تشمل الطيران والفندق والمواصلات · الرحلات الاختيارية تُدفع مباشرةً للمورّد · التأمين الصحي إلزامي قبل السفر · سعر الرضيع: ١١٠ دينار</span>
+</footer>
+
+<script>
+const JOD_USD = 1.41;
+let currency = 'JOD';
+let profit = 50;
+let visa = 0;
+let activeId = null;
+let activeTab = 'pricing';
+
+function fmt(jod) {
+  const v = currency === 'USD' ? Math.round(jod * JOD_USD) : Math.round(jod);
+  return (currency === 'USD' ? '$' : 'JD\u00A0') + v.toLocaleString();
+}
+function fmtTotal(base) { return fmt(base + profit + visa); }
+
+function setCurrency(c, btn) {
+  currency = c;
+  document.querySelectorAll('.cur-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('profitCurLabel').textContent = c;
+  document.getElementById('visaCurLabel').textContent = c;
+  renderAll();
+}
+
+const packages = [
+  {
+    id:1, title:"Batumi", arabic:"باتومي",
+    subtitle:"Amazon River & Forests · Kutaisi · Martvili",
+    subtitleAr:"نهر وغابات الامازون – كوتايسي – مارتفيلي",
+    flyDays:["Tuesday","Friday"], flyStyle:"",
+    route:"Amman ↔ Batumi", dates:"22.05 | 26.05 | 29.05",
+    accom:"All 7 nights in Batumi", visaFree:true, car:400,
+    itinerary:[
+      {day:"Day 1",type:"free",title:"Arrival & Turkish Border Excursion",loc:"Batumi",desc:"Airport pickup then excursion to Turkish border (Sarpi) passing Gonio Fortress and Sarpi Waterfall (20-min stop). Restaurant dinner then hotel check-in."},
+      {day:"Day 2",type:"free",title:"Makhuntseti & Kida Nature",loc:"Batumi",desc:"Makhuntseti & Kida: Ajara River, Makhuntseti Waterfalls, Queen Tamar Bridge. Activities: Rafting, zipline over the river. Lunch by the Black Sea (seafood). 3 km cable car panorama of Batumi."},
+      {day:"Day 3",type:"free",title:"Botanical Garden & Sea Cruise",loc:"Batumi",desc:"Batumi Botanical Garden, Boulevard walk, Ali & Nino sculpture, Alphabetic Tower, Batumi Eye. Sea cruise on a large yacht with music. Optional: parasailing, sea buggy. Dolphin show & May 26 Lake."},
+      {day:"Day 4",type:"optional",title:"Uzungol Lake (optional — extra cost)",loc:"Trabzon, Turkey",desc:"Free day OR optional trip to Uzungol Lake, Turkey — mountain lake scenery, then Trabzon Meidan Centre for shopping and leisure."},
+      {day:"Day 5",type:"free",title:"Amazon Forest Boat Tour",loc:"Poti / Amazon",desc:"Special Amazon Forest excursion in coastal city of Poti. 2-hour private boat tour through Georgian Amazon rivers deep into the jungle. Beautiful seating & lunch. Free time in this unique area."},
+      {day:"Day 6",type:"optional",title:"Kutaisi & Martvili (optional — extra cost)",loc:"Kutaisi",desc:"Love & Dinosaur Caves in Kutaisi. Then Martvili — stunning springs and Georgia's most beautiful nature scenery."},
+      {day:"Day 7",type:"optional",title:"Majakhela or Mtirala (optional — extra cost)",loc:"Majakhela / Mtirala",desc:"Free day OR BBQ in Majakhela countryside — rivers, waterfalls, mountains. OR Mtirala National Park — Shakvi Centre, hanging bridge (Batara Mtirala), National Park activities."},
+      {day:"Day 8",type:"free",title:"Departure",loc:"Batumi",desc:"Check out and transfer to airport for return flight."}
+    ],
+    hotels:[
+      {name:"Caerleon",stars:3,meal:"No Breakfast",d:479,s:699,c6:459,c2:399},
+      {name:"Marani",stars:3,meal:"Breakfast",d:499,s:719,c6:479,c2:399},
+      {name:"Skyline Batumi",stars:4,meal:"Breakfast",d:549,s:759,c6:529,c2:399},
+      {name:"Legacy",stars:4,meal:"Breakfast",d:569,s:769,c6:549,c2:399},
+      {name:"Batumi View Luxury",stars:4,meal:"Breakfast",d:599,s:789,c6:579,c2:399},
+      {name:"Wyn Residences",stars:4,meal:"Breakfast",d:629,s:819,c6:609,c2:399},
+      {name:"Steps Batumi",stars:5,meal:"Breakfast",d:649,s:899,c6:629,c2:399},
+      {name:"The Grandeur",stars:5,meal:"Breakfast",d:699,s:949,c6:679,c2:399},
+      {name:"Alliance Palace & Casino",stars:5,meal:"Breakfast",d:699,s:949,c6:679,c2:399},
+      {name:"JRW Welmond Hotel & Casino",stars:5,meal:"Breakfast",d:749,s:989,c6:729,c2:399}
+    ]
+  },
+  {
+    id:2, title:"Batumi & Tbilisi", arabic:"باتومي وتبليسي",
+    subtitle:"Batumi · Caucasus Mountains · Tbilisi",
+    subtitleAr:"باتومي – جبال القوقاز – تبليسي",
+    flyDays:["Tuesday","Friday"], flyStyle:"",
+    route:"Amman ↔ Batumi", dates:"22.05 | 26.05 | 29.05",
+    accom:"3 nights Batumi + 3 nights Tbilisi + 1 night Batumi", visaFree:true, car:400,
+    itinerary:[
+      {day:"Day 1",type:"free",title:"Arrival & Sarpi Border",loc:"Batumi",desc:"Airport pickup and excursion to Turkish border (Sarpi), Gonio Fortress, Sarpi Waterfall. Restaurant then hotel check-in."},
+      {day:"Day 2",type:"free",title:"Makhuntseti & Kida Nature",loc:"Batumi",desc:"Makhuntseti & Kida: Ajara River, waterfalls, Queen Tamar Bridge. Rafting, zipline. Lunch by Black Sea. 3 km cable car panorama."},
+      {day:"Day 3",type:"free",title:"Botanical Garden & Sea Cruise",loc:"Batumi",desc:"Botanical Garden, Boulevard, Ali & Nino, Alphabetic Tower, Batumi Eye. Yacht cruise. Dolphin show & May 26 Lake."},
+      {day:"Day 4",type:"free",title:"Travel to Tbilisi",loc:"Tbilisi",desc:"Breakfast then depart with guide to Tbilisi capital. Stop at waterfalls and nature en route. Check in upon arrival and overnight."},
+      {day:"Day 5",type:"free",title:"Old Tbilisi City Tour",loc:"Tbilisi",desc:"European Old Town, Peace Bridge, Tbilisi Waterfall, sulfur baths, cable car to Mother of Georgia statue. Lunch. Mtskheta city, Jvari (City of Love). Tbilisi Mall."},
+      {day:"Day 6",type:"optional",title:"Caucasus Mountains or Diamond Bridge (optional)",loc:"Tbilisi region",desc:"Free day OR Caucasus Mountains — Ananuri Lake, Gudauri, Kazbegi panorama (Gergeti Trinity Church). BBQ lunch in the open air. OR Tsalka Diamond Bridge — Georgia's newest attraction, transparent bridge between mountains."},
+      {day:"Day 7",type:"free",title:"Return to Batumi",loc:"Batumi",desc:"Return to Batumi for overnight and preparation for travel day."},
+      {day:"Day 8",type:"free",title:"Departure",loc:"Batumi",desc:"Check out and transfer to airport."}
+    ],
+    hotels:[
+      {name:"Carleone★★★ (Batumi) + Shine Palace★★★ (Tbilisi)",stars:3,meal:"No Breakfast",d:499,s:599,c6:479,c2:399},
+      {name:"Marani★★★ + Shine Palace★★★",stars:3,meal:"Breakfast",d:529,s:659,c6:509,c2:399},
+      {name:"Skyline★★★★ + Shine Palace★★★",stars:4,meal:"Breakfast",d:569,s:709,c6:549,c2:399},
+      {name:"Skyline★★★★ + Redline★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Legacy★★★★ + Green Tower★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Legacy★★★★ + Redline Marjan★★★★",stars:4,meal:"Breakfast",d:639,s:769,c6:619,c2:399},
+      {name:"Wyn Residences★★★★ + Carousel★★★★",stars:4,meal:"Breakfast",d:639,s:769,c6:619,c2:399},
+      {name:"Steps Batumi★★★★★ + Carousel Marjan★★★★",stars:5,meal:"Breakfast",d:669,s:819,c6:649,c2:399},
+      {name:"Batumi View Luxury★★★★ + Ramada★★★★",stars:4,meal:"Breakfast",d:689,s:819,c6:669,c2:399},
+      {name:"Steps Batumi★★★★★ + Lisi Panorama★★★★★",stars:5,meal:"Breakfast",d:709,s:889,c6:689,c2:399},
+      {name:"Steps Batumi★★★★★ + Royal Tulip★★★★★",stars:5,meal:"Breakfast",d:769,s:949,c6:749,c2:399},
+      {name:"Alliance Palace★★★★★ + Hualing Preference★★★★★",stars:5,meal:"Breakfast",d:779,s:959,c6:759,c2:399},
+      {name:"The Grandeur★★★★★ + Royal Tulip★★★★★",stars:5,meal:"Breakfast",d:789,s:969,c6:769,c2:399},
+      {name:"JRW Welmond★★★★★ + Royal Tulip★★★★★",stars:5,meal:"Breakfast",d:839,s:1019,c6:819,c2:399}
+    ]
+  },
+  {
+    id:3, title:"Golden Program", arabic:"البرنامج الذهبي",
+    subtitle:"Batumi · Borjomi · Bakuriani · Tbilisi",
+    subtitleAr:"باتومي – برجومي – باكورياني – تبليسي",
+    flyDays:["Tuesday","Friday"], flyStyle:"gold",
+    route:"Amman ↔ Batumi", dates:"22.05 | 26.05 | 29.05",
+    accom:"2 nights Batumi + 2 nights Borjomi + 2 nights Tbilisi + 1 night Batumi", visaFree:true, car:400,
+    itinerary:[
+      {day:"Day 1",type:"free",title:"Arrival & Batumi City Tour",loc:"Batumi",desc:"Airport pickup, city centre tour, hotel check-in."},
+      {day:"Day 2",type:"free",title:"Makhuntseti & Kida Nature",loc:"Batumi",desc:"Makhuntseti & Kida: Ajara River, waterfalls, Queen Tamar Bridge. Rafting, zipline. Lunch by Black Sea. Cable car panorama."},
+      {day:"Day 3",type:"free",title:"Travel to Borjomi",loc:"Borjomi",desc:"Breakfast then travel with guide to Borjomi. Hotel in the heart of the forests with spectacular views. Check-in and overnight."},
+      {day:"Day 4",type:"optional",title:"Borjomi National Park & Bakuriani (optional)",loc:"Borjomi + Bakuriani",desc:"Free day OR Borjomi National Park — river walk, mineral water tasting, cable car to mountain panorama, 4×4 jeep tour (2 hrs), Bakuriani panorama, horse riding, rafting."},
+      {day:"Day 5",type:"free",title:"Travel to Tbilisi",loc:"Tbilisi",desc:"Breakfast then travel to Tbilisi. City centre tour. Hotel check-in."},
+      {day:"Day 6",type:"free",title:"Old Tbilisi & Mtskheta",loc:"Tbilisi",desc:"Old European Town, Peace Bridge, Tbilisi Waterfall, sulfur baths, Mother of Georgia cable car. Lunch. Mtskheta, Jvari (City of Love). Tbilisi Mall."},
+      {day:"Day 7",type:"free",title:"Return to Batumi",loc:"Batumi",desc:"Return to Batumi for overnight."},
+      {day:"Day 8",type:"free",title:"Departure",loc:"Batumi",desc:"Check out and transfer to airport."}
+    ],
+    hotels:[
+      {name:"Carleone★★★ + Holiday Borjomi★★★★ + Shine Palace★★★",stars:3,meal:"No Breakfast",d:499,s:599,c6:479,c2:399},
+      {name:"Marani★★★ + Holiday Borjomi★★★★ + Shine Palace★★★",stars:3,meal:"Breakfast",d:529,s:659,c6:509,c2:399},
+      {name:"Skyline★★★★ + Holiday Borjomi★★★★ + Shine Palace★★★",stars:4,meal:"Breakfast",d:569,s:709,c6:549,c2:399},
+      {name:"Skyline★★★★ + Holiday Borjomi★★★★ + Redline★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Legacy★★★★ + Holiday Borjomi★★★★ + Green Tower★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Legacy★★★★ + Holiday Borjomi★★★★ + Carousel★★★★",stars:4,meal:"Breakfast",d:639,s:769,c6:619,c2:399},
+      {name:"Steps Batumi★★★★★ + Holiday Borjomi★★★★ + Carousel Marjan★★★★",stars:5,meal:"Breakfast",d:669,s:819,c6:649,c2:399},
+      {name:"Steps Batumi★★★★★ + Holiday Borjomi★★★★ + Royal Tulip★★★★★",stars:5,meal:"Breakfast",d:769,s:949,c6:749,c2:399},
+      {name:"JRW Welmond★★★★★ + Holiday Borjomi★★★★ + Royal Tulip★★★★★",stars:5,meal:"Breakfast",d:839,s:1019,c6:819,c2:399}
+    ]
+  },
+  {
+    id:4, title:"Batumi & Trabzon", arabic:"باتومي وطرابزون",
+    subtitle:"Batumi · Rize · Trabzon · Uzungol",
+    subtitleAr:"باتومي – ريزا – طرابزون – أوزونجول",
+    flyDays:["Tuesday","Friday"], flyStyle:"",
+    route:"Amman ↔ Batumi", dates:"22.05 | 26.05 | 29.05",
+    accom:"3 nights Batumi + 3 nights Trabzon + 1 night Batumi", visaFree:true, car:600,
+    itinerary:[
+      {day:"Day 1",type:"free",title:"Arrival & Sarpi Border",loc:"Batumi",desc:"Airport pickup, Sarpi border excursion, Gonio Fortress, Sarpi Waterfall. Restaurant then hotel check-in."},
+      {day:"Day 2",type:"free",title:"Batumi Boulevard & Sea Activities",loc:"Batumi",desc:"Ali & Nino sculpture, Alphabetic Tower, Batumi Eye. Sea cruise & activities (parasailing, sea buggy). Dolphin show, Aquarium, May 26 Lake. 3 km cable car."},
+      {day:"Day 3",type:"free",title:"Makhuntseti & Kida Nature",loc:"Batumi",desc:"Makhuntseti & Kida: Ajara River, waterfalls, Queen Tamar Bridge. Rafting, zipline. Lunch by Black Sea."},
+      {day:"Day 4",type:"free",title:"Rize, Turkey",loc:"Rize",desc:"Breakfast then drive to Rize, Turkey (1 hour). Panoramic Black Sea lunch. Rize square & Semal Mall shopping. Return to hotel."},
+      {day:"Day 5",type:"free",title:"Trabzon City Tour",loc:"Trabzon",desc:"Aya Sofya Mosque, Ataturk Palace, Botanical Garden, Sira Lake for lunch. Trabzon Meidan for shopping. Free time."},
+      {day:"Day 6",type:"optional",title:"Uzungol (optional — extra cost)",loc:"Uzungol",desc:"Tea factory, Turkish delight factory, Uzungol waterfalls, Uzungol Lake for lunch and free time for photography."},
+      {day:"Day 7",type:"free",title:"Return to Batumi",loc:"Batumi",desc:"Breakfast then return to Batumi. Hotel check-in and rest."},
+      {day:"Day 8",type:"free",title:"Departure",loc:"Batumi",desc:"Check out and transfer to Batumi airport."}
+    ],
+    hotels:[
+      {name:"Carleone★★★ (Batumi) + Queen Suite Seaside★★★★ (Trabzon)",stars:4,meal:"No Breakfast",d:499,s:599,c6:479,c2:399},
+      {name:"Marani★★★ + Queen Suite Seaside★★★★",stars:4,meal:"Breakfast",d:529,s:659,c6:509,c2:399},
+      {name:"Skyline★★★★ + Queen Suite Seaside★★★★",stars:4,meal:"Breakfast",d:579,s:759,c6:559,c2:399},
+      {name:"Skyline★★★★ + Aktash Lights★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Legacy★★★★ + Aktash Lights★★★★",stars:4,meal:"Breakfast",d:619,s:749,c6:599,c2:399},
+      {name:"Legacy★★★★ + Kuhla★★★★",stars:4,meal:"Breakfast",d:629,s:759,c6:609,c2:399},
+      {name:"Batumi View Luxury★★★★ + Kuhla★★★★",stars:4,meal:"Breakfast",d:639,s:769,c6:619,c2:399},
+      {name:"Wyn Residences★★★★ + Kuhla★★★★",stars:4,meal:"Breakfast",d:649,s:779,c6:629,c2:399},
+      {name:"Steps Batumi★★★★★ + Best Western★★★★★",stars:5,meal:"Breakfast",d:679,s:829,c6:659,c2:399},
+      {name:"Steps Batumi★★★★★ + Residence Inn by Marriott★★★★★",stars:5,meal:"Breakfast",d:699,s:879,c6:679,c2:399},
+      {name:"Steps Batumi★★★★★ + MovenPick★★★★★",stars:5,meal:"Breakfast",d:719,s:899,c6:699,c2:399},
+      {name:"Steps Batumi★★★★★ + Double Tree by Hilton★★★★★",stars:5,meal:"Breakfast",d:729,s:909,c6:709,c2:399},
+      {name:"Steps Batumi★★★★★ + Novotel★★★★★",stars:5,meal:"Breakfast",d:749,s:929,c6:729,c2:399},
+      {name:"The Grandeur★★★★★ + Residence Inn by Marriott★★★★★",stars:5,meal:"Breakfast",d:749,s:929,c6:729,c2:399},
+      {name:"JRW Welmond★★★★★ + Mercure★★★★★",stars:5,meal:"Breakfast",d:829,s:1009,c6:809,c2:399}
+    ]
+  },
+  {
+    id:5, title:"Trabzon from Batumi", arabic:"طرابزون من باتومي",
+    subtitle:"Rize · Trabzon · Uzungol · Hayder Nabi · Ayder",
+    subtitleAr:"ريزا – طرابزون – أوزونجول – حيدر نبي – أيدر",
+    flyDays:["Tuesday","Friday"], flyStyle:"",
+    route:"Amman ↔ Batumi (via border to Trabzon)", dates:"22.05 | 26.05 | 29.05",
+    accom:"All 7 nights in Trabzon", visaFree:true, car:600,
+    itinerary:[
+      {day:"Day 1",type:"free",title:"Arrival Batumi → Trabzon",loc:"Batumi → Trabzon",desc:"Pickup from Batumi airport, Sarpi border excursion. Cross border to Rize — panoramic Black Sea lunch. Rize Meidan & Semal Mall shopping. Then to Trabzon, hotel check-in."},
+      {day:"Day 2",type:"free",title:"Trabzon City Tour",loc:"Trabzon",desc:"Aya Sofya Mosque, famous Ataturk Palace, Ataturk Square. Shopping in popular bazaars and malls."},
+      {day:"Day 3",type:"free",title:"Uzungol Lake",loc:"Trabzon",desc:"Tea factory, Turkish delight factory, Uzungol waterfalls, Uzungol Lake. Balcony lunch overlooking the lake. Return to hotel."},
+      {day:"Day 4",type:"optional",title:"Hayder Nabi Plateau (optional)",loc:"Trabzon",desc:"Famous Hayder Nabi plateau at ~3,000 m above sea level. Stunning panoramic views. Sira (Sirajol) Lake and activities."},
+      {day:"Day 5",type:"free",title:"Ayder Highlands",loc:"Trabzon",desc:"Ayder highlands — textile factory, Valley of the Winds (rafting, zipline, swing), Ayder plateau and waterfalls, lunch, Ottoman bridges, Isket Oglu waterfalls."},
+      {day:"Day 6",type:"optional",title:"Zigana Mountains (optional)",loc:"Trabzon",desc:"Zigana highlands — bear safari, famous Turul glass overlook, Hemsi Koy village activities."},
+      {day:"Day 7",type:"optional",title:"Ordu City (optional)",loc:"Ordu",desc:"Ordu — hazelnut capital. Trabolu Fortress. Cable car to Boztepe summit. Sea cruise (weather permitting). City centre."},
+      {day:"Day 8",type:"free",title:"Departure via Batumi",loc:"Trabzon → Batumi",desc:"Check out and transfer to Batumi airport for return flight."}
+    ],
+    hotels:[
+      {name:"Queen Suite Seaside★★★★",stars:4,meal:"No Breakfast",d:479,s:629,c6:459,c2:399},
+      {name:"Queen Suite Seaside★★★★",stars:4,meal:"Breakfast",d:499,s:689,c6:479,c2:399},
+      {name:"Queen Suite Seaside★★★★",stars:4,meal:"Breakfast + Dinner",d:529,s:709,c6:509,c2:399},
+      {name:"Aktash Lights★★★★",stars:4,meal:"Breakfast",d:549,s:719,c6:529,c2:399},
+      {name:"Nazar Meidan★★★",stars:3,meal:"Breakfast",d:549,s:719,c6:529,c2:399},
+      {name:"Marvell City★★★★",stars:4,meal:"Breakfast",d:579,s:729,c6:559,c2:399},
+      {name:"Park Square Meidan★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Usta Park★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Kuhla★★★★+",stars:4,meal:"Breakfast",d:599,s:769,c6:579,c2:399},
+      {name:"Best Western★★★★★",stars:5,meal:"Breakfast",d:599,s:769,c6:579,c2:399},
+      {name:"MovenPick★★★★★",stars:5,meal:"Breakfast",d:629,s:829,c6:609,c2:399},
+      {name:"Panagia★★★★★",stars:5,meal:"Breakfast",d:639,s:839,c6:619,c2:399},
+      {name:"Residence Inn by Marriott★★★★★",stars:5,meal:"Breakfast",d:639,s:839,c6:619,c2:399},
+      {name:"Novotel★★★★★",stars:5,meal:"Breakfast",d:649,s:849,c6:629,c2:399},
+      {name:"Double Tree by Hilton★★★★★",stars:5,meal:"Breakfast",d:699,s:899,c6:679,c2:399},
+      {name:"Mercure★★★★★",stars:5,meal:"Breakfast",d:729,s:929,c6:709,c2:399}
+    ]
+  },
+  {
+    id:6, title:"Trabzon Direct", arabic:"طرابزون المباشرة",
+    subtitle:"Direct Flight · Rize · Trabzon · Uzungol · Hayder Nabi · Ayder",
+    subtitleAr:"ريزا – طرابزون – أوزونجول – حيدر نبي – أيدر (رحلة مباشرة)",
+    flyDays:["Monday","Wednesday","Saturday"], flyStyle:"",
+    route:"Amman ↔ Trabzon (Direct)", dates:"20.05 | 25.05 | 27.05 | 30.05",
+    accom:"All 7 nights in Trabzon", visaFree:true, car:600,
+    itinerary:[
+      {day:"Day 1",type:"free",title:"Arrival & City Orientation",loc:"Trabzon",desc:"Airport pickup, restaurant for dinner, SIM card purchase, city orientation tour. Hotel check-in."},
+      {day:"Day 2",type:"free",title:"Trabzon City Tour",loc:"Trabzon",desc:"Aya Sofya Mosque, famous Ataturk Palace, Ataturk Square. Shopping in popular bazaars and malls."},
+      {day:"Day 3",type:"free",title:"Rize & Ayder Highlands",loc:"Rize + Ayder",desc:"Drive to Rize via tea plantations. Zipline over Fartina River. Rafting on the Storm River. Ottoman bridges. Ayder plateau — lunch and magical scenery."},
+      {day:"Day 4",type:"free",title:"Hayder Nabi & Shopping",loc:"Hayder Nabi",desc:"Sira Lake (optional boat ride). Hayder Nabi plateau at ~3,000 m — unique panoramic views. Free time for lunch. Forum Mall shopping."},
+      {day:"Day 5",type:"free",title:"Uzungol",loc:"Uzungol",desc:"Tea factory, Turkish delight factory, Uzungol waterfalls, Uzungol Lake. Balcony lunch. Return to hotel."},
+      {day:"Day 6",type:"optional",title:"Ordu (optional)",loc:"Ordu",desc:"Ordu city — hazelnut capital. Trabolu Fortress. Cable car to Boztepe (optional). Sea cruise (weather permitting). City centre."},
+      {day:"Day 7",type:"optional",title:"Giresun or Himse Koy (optional)",loc:"Giresun / Himse Koy",desc:"Giresun province — water terraces, Kozaly waterfall, Blue Lake. OR Sumiala trip — Lemni Lake, Himse Koy village, Zigana mountains."},
+      {day:"Day 8",type:"free",title:"Departure",loc:"Airport",desc:"Check out and transfer to airport."}
+    ],
+    hotels:[
+      {name:"Queen Suite Seaside★★★★",stars:4,meal:"No Breakfast",d:479,s:629,c6:459,c2:399},
+      {name:"Queen Suite Seaside★★★★",stars:4,meal:"Breakfast",d:499,s:689,c6:479,c2:399},
+      {name:"Queen Suite Seaside★★★★",stars:4,meal:"Breakfast + Dinner",d:529,s:709,c6:509,c2:399},
+      {name:"Aktash Lights★★★★",stars:4,meal:"Breakfast",d:549,s:719,c6:529,c2:399},
+      {name:"Nazar Meidan★★★",stars:3,meal:"Breakfast",d:549,s:719,c6:529,c2:399},
+      {name:"Marvell City★★★★",stars:4,meal:"Breakfast",d:579,s:729,c6:559,c2:399},
+      {name:"Park Square Meidan★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Usta Park★★★★",stars:4,meal:"Breakfast",d:599,s:749,c6:579,c2:399},
+      {name:"Kuhla★★★★+",stars:4,meal:"Breakfast",d:599,s:769,c6:579,c2:399},
+      {name:"Best Western★★★★★",stars:5,meal:"Breakfast",d:599,s:769,c6:579,c2:399},
+      {name:"MovenPick★★★★★",stars:5,meal:"Breakfast",d:629,s:829,c6:609,c2:399},
+      {name:"Panagia★★★★★",stars:5,meal:"Breakfast",d:639,s:839,c6:619,c2:399},
+      {name:"Residence Inn by Marriott★★★★★",stars:5,meal:"Breakfast",d:639,s:839,c6:619,c2:399},
+      {name:"Novotel★★★★★",stars:5,meal:"Breakfast",d:649,s:849,c6:629,c2:399},
+      {name:"Double Tree by Hilton★★★★★",stars:5,meal:"Breakfast",d:699,s:899,c6:679,c2:399},
+      {name:"Mercure★★★★★",stars:5,meal:"Breakfast",d:729,s:929,c6:709,c2:399}
+    ]
+  },
+  {
+    id:7, title:"Batumi & Sochi", arabic:"باتومي وسوتشي",
+    subtitle:"Batumi · Sochi Russia · No Visa for Jordanian Passport",
+    subtitleAr:"باتومي – سوتشي – روسيا بدون فيزا للجواز الأردني",
+    flyDays:["Tuesday","Friday"], flyStyle:"gold",
+    route:"Amman ↔ Batumi + Internal flight Batumi ↔ Sochi (45 min)",
+    dates:"22.05 | 26.05 | 29.05",
+    accom:"3 nights Batumi + 3 nights Sochi + 1 night Batumi", visaFree:true, car:600,
+    visaNote:"Russia is visa-free for Jordanian passport holders (national ID number required).",
+    itinerary:[
+      {day:"Day 1",type:"free",title:"Arrival & Sarpi Border",loc:"Batumi",desc:"Airport pickup, excursion to Turkish border (Sarpi), Gonio Fortress, Sarpi Waterfall. Hotel check-in."},
+      {day:"Day 2",type:"free",title:"Makhuntseti & Kida Nature",loc:"Batumi",desc:"Makhuntseti & Kida — waterfalls, Queen Tamar Bridge, rafting, zipline. Lunch by Black Sea. Cable car panorama."},
+      {day:"Day 3",type:"free",title:"Botanical Garden & Sea Cruise",loc:"Batumi",desc:"Botanical Garden, Boulevard, Ali & Nino, Alphabetic Tower. Yacht cruise. Dolphin show & May 26 Lake."},
+      {day:"Day 4",type:"free",title:"Fly to Sochi, Russia",loc:"Sochi",desc:"Flight from Batumi to Adler airport (45 min, Russian airline). Currency exchange. City centre tour. Lunch at restaurant."},
+      {day:"Day 5",type:"optional",title:"Krasnaya Polyana & Rosa Khutor (optional)",loc:"Sochi",desc:"Akhshtyr Valley, Akhtsou Gorge, Raysky Ugolok (free tea tasting), Mzymta River panorama, Rubezh Yoga complex (tasting + lunch), Esto-Sadok, Rosa Khutor resort, cable car to 2,200 m, Olympic Park, Fountain show."},
+      {day:"Day 6",type:"free",title:"Sochi City Tour",loc:"Sochi",desc:"Riviera Park, sea port, Winter Theater square, mineral water spring, Stalin's dacha, honey tasting, Akhun Mountain & tower panorama, Ferris wheel view of city and sea."},
+      {day:"Day 7",type:"free",title:"Return to Batumi",loc:"Batumi",desc:"Fly back from Sochi to Batumi (45 min). Hotel check-in and rest."},
+      {day:"Day 8",type:"free",title:"Departure",loc:"Batumi",desc:"Check out and transfer to Batumi airport."}
+    ],
+    hotels:[
+      {name:"Steps Batumi★★★★★ + City Park Hotel (Marins Park)★★★★",stars:5,meal:"Breakfast",d:779,s:1149,c6:779,c2:599},
+      {name:"Steps Batumi★★★★★ + Mirror Family Resort★★★★",stars:5,meal:"Breakfast",d:779,s:1149,c6:779,c2:599},
+      {name:"Steps Batumi★★★★★ + Denart★★★★",stars:5,meal:"Breakfast",d:779,s:1149,c6:779,c2:599},
+      {name:"The Grandeur★★★★★ + City Park Hotel★★★★",stars:5,meal:"Breakfast",d:879,s:1249,c6:879,c2:599},
+      {name:"The Grandeur★★★★★ + Mirror Family Resort★★★★",stars:5,meal:"Breakfast",d:879,s:1249,c6:879,c2:599},
+      {name:"JRW Welmond★★★★★ + City Park Hotel★★★★",stars:5,meal:"Breakfast",d:979,s:1349,c6:979,c2:599},
+      {name:"JRW Welmond★★★★★ + Mirror Family Resort★★★★",stars:5,meal:"Breakfast",d:979,s:1349,c6:979,c2:599}
+    ]
+  }
+];
+
+function renderCards() {
+  const grid = document.getElementById('pkgGrid');
+  grid.innerHTML = packages.map(p => {
+    const min = Math.min(...p.hotels.map(h => h.d));
+    const active = activeId === p.id;
+    return `<div class="pkg-card${active?' active':''}" onclick="showDetail(${p.id})">
+      <div class="pkg-num">Program ${p.id} · البرنامج ${p.id}</div>
+      <div class="pkg-title">${p.title}</div>
+      <div class="pkg-arabic">${p.arabic}</div>
+      <div class="pkg-sub">${p.subtitle}</div>
+      <div class="fly-chips">${p.flyDays.map(d=>`<span class="fly-chip ${p.flyStyle}">${d}</span>`).join('')}</div>
+      <div class="pkg-price-from">From · من <strong>${fmtTotal(min)}</strong> / person · شخص
+        <span style="font-size:10px;color:var(--text3);display:block;margin-top:2px">${p.dates}</span>
+      </div>
+      ${!active?`<div class="click-hint"><span>&#9432;</span> Click to view pricing &amp; itinerary · اضغط للأسعار والجدول</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function showDetail(id) {
+  activeId = activeId === id ? null : id;
+  activeTab = 'pricing';
+  renderAll();
+  if (activeId) setTimeout(()=>{ document.getElementById('detailPanel').scrollIntoView({behavior:'smooth',block:'start'}); }, 50);
+}
+
+function closeDetail() { activeId = null; renderAll(); }
+function switchTab(t) { activeTab = t; renderDetail(); }
+
+function toggleDay(el) {
+  el.nextElementSibling.classList.toggle('open');
+  el.querySelector('.chevron').classList.toggle('open');
+}
+
+function mealClass(m) {
+  if (m === 'No Breakfast') return 'no-meal';
+  if (m.includes('+')) return 'full-meal';
+  return '';
+}
+
+function renderDetail() {
+  const panel = document.getElementById('detailPanel');
+  if (!activeId) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  const p = packages.find(x => x.id === activeId);
+
+  const tabs = [
+    {id:'pricing', label:'Pricing · الأسعار', icon:'ti-receipt'},
+    {id:'itinerary', label:'Itinerary · البرنامج', icon:'ti-calendar'},
+    {id:'info', label:'Details & Inclusions · التفاصيل', icon:'ti-info-circle'}
+  ];
+
+  const pricingHtml = `
+    <div class="table-wrap">
+    <table class="pricing-table">
+      <thead><tr>
+        <th>Hotel(s) · الفندق</th><th>Stars · النجوم</th><th>Meal · الوجبة</th>
+        <th>Double/Triple · دبل/تربل<br><span style="font-weight:400;text-transform:none;letter-spacing:0">per person · للشخص</span></th>
+        <th>Single · سنجل</th><th>Child 6–11 · طفل ٦-١١</th><th>Child 2–6 · طفل ٢-٦</th>
+        <th style="color:var(--accent)">Total · الإجمالي (dbl+profit${visa>0?'+visa':''})</th>
+      </tr></thead>
+      <tbody>
+      ${p.hotels.map(h=>`<tr>
+        <td style="max-width:220px;font-size:12px;font-weight:500;line-height:1.4">${h.name}</td>
+        <td><span style="color:var(--gold);font-size:12px">${'★'.repeat(h.stars)}</span></td>
+        <td><span class="meal-badge ${mealClass(h.meal)}">${h.meal}</span></td>
+        <td class="price-val">${fmt(h.d)}</td>
+        <td>${fmt(h.s)}</td>
+        <td>${fmt(h.c6)}</td>
+        <td>${fmt(h.c2)}</td>
+        <td class="total-val">${fmtTotal(h.d)}</td>
+      </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+    <div class="table-note">
+      ★ Infant · رضيع: ${fmt(110)} &nbsp;|&nbsp; Total · الإجمالي = base price + ${fmt(profit)} profit${visa>0?' + '+fmt(visa)+' visa cost':''}
+      &nbsp;|&nbsp; All base prices in JOD · جميع الأسعار بالدينار &nbsp;|&nbsp; Optional excursions paid separately to DMC on-site · الرحلات الاختيارية تُدفع للمورّد
+    </div>`;
+
+  const itinHtml = p.itinerary.map((d,i)=>`
+    <div class="itin-day">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-label">${d.day}</span>
+        <span class="day-badge ${d.type==='free'?'badge-free':'badge-optional'}">${d.type==='free'?'✓ Included · مشمول':'✦ Optional · اختياري'}</span>
+        <span class="day-title-text">${d.title}</span>
+        <span class="day-loc"><i class="ti ti-map-pin" style="font-size:12px"></i>${d.loc}</span>
+        <i class="ti ti-chevron-down chevron"></i>
+      </div>
+      <div class="day-body">${d.desc}</div>
+    </div>`).join('');
+
+  const infoHtml = `
+    <div class="info-grid">
+      <div class="info-card"><div class="info-card-label">Duration · المدة</div><div class="info-card-val">8 days / 7 nights · ٨ أيام / ٧ ليالٍ</div></div>
+      <div class="info-card"><div class="info-card-label">Flight Route · مسار الطيران</div><div class="info-card-val" style="font-size:13px">${p.route}</div></div>
+      <div class="info-card"><div class="info-card-label">Departure Dates · تواريخ المغادرة</div><div class="info-card-val" style="font-size:13px">${p.dates}</div></div>
+      <div class="info-card"><div class="info-card-label">Accommodation · الإقامة</div><div class="info-card-val" style="font-size:12px;line-height:1.4">${p.accom}</div></div>
+    </div>
+    <div class="section-heading">Flying Days · أيام المغادرة</div>
+    <div class="fly-days-row">${p.flyDays.map(d=>`<span class="fly-day-chip">${d}</span>`).join('')}</div>
+    <div class="section-heading" style="margin-top:18px">What's Included · ما يشمله البرنامج</div>
+    <ul class="includes-list">
+      <li>Round-trip flights (Amman ↔ destination) · تذاكر طيران ذهاباً وإياباً (عمّان ↔ الوجهة)</li>
+      <li>Airport transfers (arrival and departure) · استقبال وتوديع في المطار</li>
+      <li>Hotel accommodation for the full duration · إقامة فندقية طوال مدة البرنامج</li>
+      <li>Meals as specified per hotel option · وجبات حسب الفندق المختار</li>
+      <li>Arabic-speaking professional tour guide · مرشد سياحي محترف ناطق بالعربية</li>
+      <li>Daily tours 10:00 am – 7:00 pm in modern air-conditioned buses · جولات يومية ١٠ص–٧م بحافلات مكيّفة حديثة</li>
+      <li>30+ tourist sites inside and outside cities · أكثر من ٣٠ موقعاً سياحياً داخل المدن وخارجها</li>
+      ${p.id===7?'<li>Internal flight Batumi ↔ Sochi, Russia (45 min) · رحلة داخلية باتومي ↔ سوتشي روسيا (٤٥ دقيقة)</li>':''}
+    </ul>
+    <div class="section-heading" style="margin-top:18px">Not Included · غير مشمول</div>
+    <ul class="includes-list not-includes-list">
+      <li>Attraction entrance fees · رسوم دخول المعالم السياحية</li>
+      <li>Meals outside the hotel · الوجبات خارج الفندق</li>
+      <li>Optional excursion costs (paid directly to DMC on-site) · تكاليف الرحلات الاختيارية (تُدفع للمورّد مباشرةً)</li>
+      <li>Health insurance (mandatory before travel) · التأمين الصحي (إلزامي قبل السفر)</li>
+    </ul>
+    ${p.visaNote?`<div class="note-box green"><i class="ti ti-shield-check" style="font-size:16px;flex-shrink:0"></i>${p.visaNote}</div>`:''}
+    <div class="note-box amber" style="margin-top:8px"><i class="ti ti-car" style="font-size:16px;flex-shrink:0"></i>Private sedan car available upon request — add ${fmt(p.car)} to program price per group. · سيارة سيدان خاصة متاحة عند الطلب — أضف ${fmt(p.car)} للسعر لكل المجموعة.</div>`;
+
+  const tabContents = {pricing: pricingHtml, itinerary: itinHtml, info: infoHtml};
+
+  panel.innerHTML = `
+  <div class="detail-panel">
+    <div class="detail-header">
+      <div class="detail-header-left">
+        <div class="detail-pkg-num">Program ${p.id} · البرنامج ${p.id}</div>
+        <div class="detail-title">${p.title}</div>
+        <div class="detail-arabic">${p.arabic}</div>
+        <div class="detail-sub">${p.subtitle}</div>
+      </div>
+      <button class="close-btn" onclick="closeDetail()"><i class="ti ti-x"></i> Close · إغلاق</button>
+    </div>
+    <div class="tabs-bar">
+      ${tabs.map(t=>`<button class="tab-btn ${activeTab===t.id?'active':''}" onclick="switchTab('${t.id}')"><i class="ti ${t.icon}"></i>${t.label}</button>`).join('')}
+    </div>
+    ${tabs.map(t=>`<div class="tab-content ${activeTab===t.id?'active':''}">${tabContents[t.id]}</div>`).join('')}
+  </div>`;
+}
+
+function renderAll() {
+  profit = parseInt(document.getElementById('profitInput').value)||0;
+  visa = parseInt(document.getElementById('visaInput').value)||0;
+  renderCards();
+  renderDetail();
+}
+
+document.getElementById('profitInput').addEventListener('input', renderAll);
+document.getElementById('visaInput').addEventListener('input', renderAll);
+renderAll();
+</script>
+</body>
+</html>

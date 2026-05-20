@@ -47,17 +47,20 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
     const iframe = iframeRef.current;
     if (!iframe) return;
     setPrinting(true);
-    // Use postMessage to trigger print inside the iframe
-    // (direct contentWindow.print() is blocked for sandboxed iframes in some browsers)
     try {
       iframe.contentWindow?.postMessage("aljude:print", "*");
     } catch {
-      // Fallback: open in new tab with ?print=1 to auto-trigger print dialog
       const src = iframe.src;
       if (src) window.open(src + (src.includes("?") ? "&" : "?") + "print=1", "_blank");
     }
     setTimeout(() => setPrinting(false), 2000);
   }, []);
+
+  const handleWordDownload = useCallback(() => {
+    if (!currentPage) return;
+    // Opens the word export URL — browser will download the .doc file automatically
+    window.location.href = `/api/pages/${currentPage.slug}/word`;
+  }, [currentPage]);
 
   const iframeSrc = currentPage ? `/api/pages/${currentPage.slug}` : "";
 
@@ -233,12 +236,13 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
             </div>
           )}
 
-          {/* Print Controls */}
+          {/* Print / Export Controls */}
           <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Print / PDF */}
             <button
               onClick={handlePrint}
               disabled={printing || !currentPage}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 background: printing
                   ? "rgba(37,99,235,0.3)"
@@ -252,14 +256,40 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
               }}
               title="طباعة / تصدير PDF — البيانات الداخلية مخفية تلقائياً"
             >
-              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M6 9H4.5a2 2 0 0 1-2-2V3h15v4a2 2 0 0 1-2 2H14" />
                 <rect x="6" y="11" width="8" height="5" rx="1" />
                 <path d="M6 3V1h8v2" />
               </svg>
-              {printing ? "جاري الطباعة..." : "طباعة / PDF"}
+              {printing ? "..." : "طباعة / PDF"}
             </button>
 
+            {/* Word download */}
+            <button
+              onClick={handleWordDownload}
+              disabled={!currentPage}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all"
+              style={{
+                background: !currentPage
+                  ? "rgba(21,128,61,0.2)"
+                  : "linear-gradient(135deg, #15803d, #166534)",
+                color: "white",
+                fontFamily: "Cairo, Tajawal, Arial, sans-serif",
+                border: "1px solid rgba(34,197,94,0.3)",
+                boxShadow: !currentPage ? "none" : "0 2px 10px rgba(21,128,61,0.3)",
+                cursor: !currentPage ? "not-allowed" : "pointer",
+                opacity: !currentPage ? 0.6 : 1,
+              }}
+              title="تحميل كملف Word — البيانات الداخلية مخفية والشعار مضمّن"
+            >
+              {/* W icon */}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 12l1.5 6 1.5-4.5 1.5 4.5L14 12" stroke="white" strokeWidth="1.5" fill="none"/>
+              </svg>
+              تحميل Word
+            </button>
+
+            {/* Security badge */}
             <div
               className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs"
               style={{
@@ -268,12 +298,12 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
                 color: "rgba(34,197,94,0.8)",
                 fontFamily: "Cairo, Tajawal, Arial, sans-serif",
               }}
-              title="البيانات المالية الداخلية مخفية تلقائياً عند الطباعة"
+              title="البيانات المالية الداخلية مخفية تلقائياً في الطباعة والتصدير"
             >
               <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0 1 10 0v2a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2zm8-2v2H7V7a3 3 0 0 1 6 0z" clipRule="evenodd" />
               </svg>
-              <span>مؤمّن للطباعة</span>
+              <span>مؤمّن</span>
             </div>
           </div>
         </header>

@@ -4,9 +4,9 @@ import fs from "fs/promises";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PUBLIC_DIR = path.resolve(__dirname, "../../public/dashboards");
+const PUBLIC_DIR = path.resolve(__dirname, "../public/dashboards");
 
-const PRINT_CSS = `
+const PRINT_INJECT = `
 <style id="aljude-print-control">
 /* ===== AL JUDE Print Security CSS — hides all internal financial data ===== */
 @media print {
@@ -64,6 +64,20 @@ const PRINT_CSS = `
   }
 }
 </style>
+<script>
+/* AL JUDE — PostMessage print bridge */
+window.addEventListener('message', function(e) {
+  if (e.data === 'aljude:print') {
+    window.print();
+  }
+});
+/* Also support ?print=1 in URL for direct tab printing */
+if (new URLSearchParams(window.location.search).get('print') === '1') {
+  window.addEventListener('load', function() {
+    setTimeout(function() { window.print(); }, 800);
+  });
+}
+</script>
 `;
 
 const PAGES = [
@@ -210,11 +224,11 @@ router.get("/pages/:slug", requireAuth, async (req, res) => {
   try {
     let html = await fs.readFile(path.join(PUBLIC_DIR, page.file), "utf-8");
 
-    // Inject print CSS before </head>
+    // Inject print CSS + postMessage bridge before </head>
     if (html.includes("</head>")) {
-      html = html.replace("</head>", `${PRINT_CSS}\n</head>`);
+      html = html.replace("</head>", `${PRINT_INJECT}\n</head>`);
     } else {
-      html = PRINT_CSS + html;
+      html = PRINT_INJECT + html;
     }
 
     res.setHeader("Content-Type", "text/html; charset=utf-8");

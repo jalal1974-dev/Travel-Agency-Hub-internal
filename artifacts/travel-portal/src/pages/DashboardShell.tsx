@@ -45,9 +45,17 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
 
   const handlePrint = useCallback(() => {
     const iframe = iframeRef.current;
-    if (!iframe?.contentWindow) return;
+    if (!iframe) return;
     setPrinting(true);
-    iframe.contentWindow.print();
+    // Use postMessage to trigger print inside the iframe
+    // (direct contentWindow.print() is blocked for sandboxed iframes in some browsers)
+    try {
+      iframe.contentWindow?.postMessage("aljude:print", "*");
+    } catch {
+      // Fallback: open in new tab with ?print=1 to auto-trigger print dialog
+      const src = iframe.src;
+      if (src) window.open(src + (src.includes("?") ? "&" : "?") + "print=1", "_blank");
+    }
     setTimeout(() => setPrinting(false), 2000);
   }, []);
 

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إندونيسيا وبالي – باقات DMC | Indonesia & Bali DMC</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700;900&family=Outfit:wght@300;400;500;600&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--jungle:#1a472a;--rice:#52b788;--rice-light:#95d5b2;--lava:#e85d04;--gold:#f4a261;--night:#080f17;--night2:#0d1b2a;--card:#111f2e;--card2:#162537;--white:#e8f4f8;--muted:#7a9ab5;--accent:#06d6a0;--border:rgba(6,214,160,0.15);--pink:#e040fb;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Cairo','Outfit',sans-serif;background:var(--night);color:var(--white);min-height:100vh;overflow-x:hidden;direction:rtl;}
+  header{position:relative;overflow:hidden;padding:56px 40px 56px;text-align:center;background:linear-gradient(160deg,#080f17 0%,#0d2b1a 40%,#1a472a 100%);}
+  header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(82,183,136,.12) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(232,93,4,.08) 0%,transparent 50%);}
+  header::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2306d6a0' fill-opacity='0.03'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40z'/%3E%3C/g%3E%3C/svg%3E");}
+  .hi{position:relative;z-index:1;}
+  .h-ar{font-family:'Cairo',sans-serif;font-size:clamp(44px,7vw,88px);font-weight:900;line-height:1;background:linear-gradient(135deg,#fff 30%,var(--rice-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .h-en{font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2vw,22px);font-weight:700;color:var(--rice-light);opacity:.7;letter-spacing:4px;margin-top:4px;}
+  .h-sub{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.8;}
+  .wave{position:absolute;bottom:-1px;left:0;right:0;height:44px;}
+  .wave svg{display:block;width:100%;height:100%;}
+
+  /* TABS */
+  .tabs{background:var(--card);border-bottom:1px solid var(--border);padding:0 40px;display:flex;gap:4px;overflow-x:auto;}
+  .tbtn{padding:13px 18px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s;}
+  .tbtn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .tbtn:hover{color:var(--white);}
+
+  /* STRIP */
+  .calc-strip{background:var(--card2);border-bottom:1px solid var(--border);padding:13px 40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .cg{display:flex;align-items:center;gap:8px;}
+  .cl{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-align:center;}
+  .cl b{display:block;font-family:'Cairo',sans-serif;font-size:12px;color:var(--white);font-weight:700;}
+  .calc-strip input,.calc-strip select{background:var(--night2);border:1px solid var(--border);color:var(--white);padding:7px 11px;border-radius:7px;font-family:'Cairo','Outfit',sans-serif;font-size:13px;outline:none;direction:ltr;transition:border .2s;}
+  .calc-strip input:focus,.calc-strip select:focus{border-color:var(--accent);}
+  .calc-strip input{width:100px;}
+  .sep{color:var(--border);font-size:18px;}
+  .opt-note{margin-right:auto;background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.25);color:var(--gold);font-size:11px;padding:6px 14px;border-radius:20px;}
+
+  .main{padding:36px 40px;max-width:1600px;margin:0 auto;}
+  .tpanel{display:none;}.tpanel.active{display:block;}
+  .stitle{font-family:'Cairo',sans-serif;font-size:19px;font-weight:700;color:var(--rice);margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+  .stitle::before{content:'';flex:1;height:1px;background:var(--border);}
+  .stitle .en{font-family:'Outfit',sans-serif;font-size:12px;font-weight:400;opacity:.6;margin-right:8px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:26px;}
+
+  /* CARD */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;}
+  .card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px var(--accent);}
+  .band{padding:20px 22px 16px;position:relative;overflow:hidden;}
+  .band.bali-only{background:linear-gradient(135deg,#0d3b55,#1a1a6e);}
+  .band.multi-city{background:linear-gradient(135deg,#2d0b3a,#1a1040);}
+  .band.honeymoon{background:linear-gradient(135deg,#5c0a3a,#200820);}
+  .band.family{background:linear-gradient(135deg,#0d3320,#1a2a0a);}
+  .band::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.03);border-radius:50%;}
+  .bref{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1);font-size:10px;color:rgba(255,255,255,.4);padding:3px 8px;border-radius:5px;direction:ltr;}
+  .btype-ar{font-family:'Cairo',sans-serif;font-size:11px;font-weight:600;opacity:.7;margin-bottom:2px;}
+  .btype-en{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.5;margin-bottom:6px;}
+  .bname-ar{font-family:'Cairo',sans-serif;font-size:19px;font-weight:800;line-height:1.2;}
+  .bname-en{font-family:'Cormorant Garamond',serif;font-size:12px;opacity:.6;margin-top:3px;}
+  .bmeta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+  .badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:4px 9px;border-radius:14px;font-size:11px;font-weight:500;}
+  .badge.stars{color:#fbbf24;}.badge.fl{color:var(--accent);}
+
+  .cbody{padding:16px 20px;flex:1;}
+  .sh{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+  .sh .ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;letter-spacing:0;color:var(--white);}
+
+  .rbar{background:var(--night2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:12px;direction:ltr;}
+  .rcity{color:var(--accent);font-weight:600;}
+
+  .hrow{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+  .hrow:last-child{border-bottom:none;}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .d-bali{background:var(--accent);}.d-bon{background:var(--lava);}.d-jak{background:var(--gold);}
+  .hinfo{flex:1;min-width:0;}
+  .hcities{display:flex;justify-content:space-between;align-items:center;}
+  .hcity-ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;}
+  .hcity-en{font-size:10px;color:var(--muted);}
+  .hname{font-size:12px;color:var(--muted);margin-top:2px;}
+  .hdet{font-size:11px;color:var(--muted);opacity:.7;}
+  .hn{background:var(--night2);border:1px solid var(--border);color:var(--accent);font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+
+  .tlist{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+  .tblock{background:var(--night2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;}
+  .tloc{font-size:11px;font-weight:600;color:var(--rice);margin-bottom:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .tloc .ar{font-family:'Cairo',sans-serif;font-size:12px;}
+  .otag{font-size:9px;color:var(--gold);background:rgba(244,162,97,.1);border:1px solid rgba(244,162,97,.25);padding:2px 7px;border-radius:10px;font-weight:600;}
+  .titems{display:flex;flex-wrap:wrap;gap:4px;}
+  .ti{font-size:10px;background:rgba(6,214,160,.07);border:1px solid rgba(6,214,160,.15);color:var(--muted);padding:3px 8px;border-radius:8px;}
+
+  .gifts{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+  .gift{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--pink);background:rgba(224,64,251,.07);border:1px solid rgba(224,64,251,.18);padding:3px 9px;border-radius:10px;}
+  .gift::before{content:'✦';font-size:8px;}
+
+  .irow{display:flex;flex-wrap:wrap;gap:5px;}
+  .ich{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);background:rgba(82,183,136,.07);border:1px solid rgba(82,183,136,.18);padding:3px 9px;border-radius:10px;}
+  .ich::before{content:'✓';color:var(--rice);font-size:9px;font-weight:700;}
+
+  .pwrap{background:var(--night2);border-top:1px solid var(--border);padding:16px 20px;}
+  .prow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+  .plbl{color:var(--muted);font-size:11px;display:flex;flex-direction:column;gap:1px;}
+  .plbl .ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;color:var(--white);}
+  .pval{font-weight:600;color:var(--white);direction:ltr;}
+  .pval.base{color:var(--accent);font-size:14px;}
+  .pin{background:var(--card);border:1px solid var(--border);color:var(--white);padding:5px 10px;border-radius:6px;font-size:12px;width:95px;text-align:left;font-family:'Outfit',sans-serif;outline:none;direction:ltr;}
+  .pin:focus{border-color:var(--accent);}
+  .div{height:1px;background:var(--border);margin:10px 0;}
+  .trow{display:flex;justify-content:space-between;align-items:flex-end;padding-top:8px;}
+  .tlbl{font-size:11px;color:var(--muted);}
+  .tlbl .ar{font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;color:var(--white);display:block;}
+  .talt{font-size:11px;color:var(--muted);margin-top:3px;}
+  .tnum{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--gold);text-align:left;direction:ltr;}
+
+  .nwrap{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:26px 30px;margin-top:44px;}
+  .ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:14px;}
+  .nitem{display:flex;gap:10px;padding:10px 13px;background:var(--night2);border-radius:9px;border-right:3px solid var(--rice);font-size:11px;color:var(--muted);line-height:1.6;}
+  .nitem .ar{font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;color:var(--white);display:block;margin-bottom:2px;}
+  .nitem::before{content:'◆';color:var(--rice);flex-shrink:0;font-size:8px;margin-top:4px;}
+  @media(max-width:680px){.main{padding:20px;}.calc-strip,.tabs{padding:12px 16px;}header{padding:36px 20px 40px;}.opt-note{display:none;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hi">
+    <div class="h-ar">إندونيسيا وجزيرة بالي</div>
+    <div class="h-en">INDONESIA & BALI ISLAND</div>
+    <p class="h-sub">
+      8 باقات DMC · 7-8 ليالي · الأسعار بالدينار الأردني للشخص · الطيران الدولي غير مشمول · الطيران الداخلي مشمول<br>
+      <span style="opacity:.6;font-size:12px">8 DMC Packages · 7-8 Nights · JOD per person · Intl flights excluded · Internal flights included</span>
+    </p>
+  </div>
+  <div class="wave"><svg viewBox="0 0 1440 44" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,22 C480,44 960,0 1440,22 L1440,44 L0,44 Z" fill="#080f17"/></svg></div>
+</header>
+
+<div class="tabs">
+  <button class="tbtn active" onclick="switchTab('all',this)">🌴 جميع الباقات · All</button>
+  <button class="tbtn" onclick="switchTab('bali',this)">بالي فقط · Bali Only</button>
+  <button class="tbtn" onclick="switchTab('multi',this)">✈ متعدد المدن · Multi-City</button>
+  <button class="tbtn" onclick="switchTab('honey',this)">💑 شهر عسل · Honeymoon</button>
+  <button class="tbtn" onclick="switchTab('family',this)">👨‍👩‍👧 عائلي · Family</button>
+</div>
+
+<div class="calc-strip">
+  <div class="cg"><div class="cl"><b>العملة</b>Currency</div>
+    <select id="currency" onchange="recalcAll()"><option value="JOD">دينار أردني – JOD</option><option value="USD">دولار أمريكي – USD</option></select></div>
+  <span class="sep">|</span>
+  <div class="cg"><div class="cl"><b>سعر الصرف</b>JOD → USD</div>
+    <input type="number" id="usdRate" value="1.41" step="0.01" min="0.5" onchange="recalcAll()"></div>
+  <span class="sep">|</span>
+  <div class="cg"><div class="cl"><b>تأشيرة / شخص</b>Visa JOD/person</div>
+    <input type="number" id="globalVisa" value="0" step="1" min="0" onchange="recalcAll()" placeholder="0"></div>
+  <div class="opt-note">✦ جميع الجولات اختيارية وتُدفع للـ DMC &nbsp;·&nbsp; All tours optional</div>
+</div>
+
+<main class="main">
+  <div class="tpanel active" id="tab-all"><div class="stitle"><span class="en">All 8 Packages</span>جميع الباقات الثمانية</div><div class="grid" id="g-all"></div></div>
+  <div class="tpanel" id="tab-bali"><div class="stitle"><span class="en">Bali Island Only</span>بالي فقط</div><div class="grid" id="g-bali"></div></div>
+  <div class="tpanel" id="tab-multi"><div class="stitle"><span class="en">Multi-City</span>متعدد المدن</div><div class="grid" id="g-multi"></div></div>
+  <div class="tpanel" id="tab-honey"><div class="stitle"><span class="en">Honeymoon</span>باقات شهر العسل</div><div class="grid" id="g-honey"></div></div>
+  <div class="tpanel" id="tab-family"><div class="stitle"><span class="en">Family</span>الباقات العائلية</div><div class="grid" id="g-family"></div></div>
+
+  <div class="nwrap">
+    <div class="stitle"><span class="en">Important Notes</span>ملاحظات هامة</div>
+    <div class="ngrid">
+      <div class="nitem"><span class="ar">حجم السيارة</span>If vehicle doesn't suit group/luggage, notify DMC in advance.</div>
+      <div class="nitem"><span class="ar">الأسعار حسب الحجم</span>Prices vary by group size — confirm with DMC.</div>
+      <div class="nitem"><span class="ar">ضريبة المدينة</span>City tax 10 IDR/room/night paid directly at hotel.</div>
+      <div class="nitem"><span class="ar">سعة الغرفة</span>Standard room fits 2 adults with breakfast.</div>
+      <div class="nitem"><span class="ar">الإلغاء والاسترجاع</span>Cancellation/refund per hotel policy — no guarantee.</div>
+      <div class="nitem"><span class="ar">الطيران الداخلي</span>Internal flights: Bali ↔ Jakarta · 20 kg baggage/person. Non-refundable.</div>
+      <div class="nitem"><span class="ar">أوقات الفنادق</span>Check-in 2:00 PM · Check-out 12:00 PM.</div>
+      <div class="nitem"><span class="ar">مدة الجولة</span>Tour day = 8 hours only. Entry tickets not included.</div>
+      <div class="nitem"><span class="ar">الجولات اختيارية</span>All activities are OPTIONAL — paid separately to DMC.</div>
+      <div class="nitem"><span class="ar">مصاريف الجولات</span>All tours include fuel and driver expenses.</div>
+      <div class="nitem"><span class="ar">شريحة الاتصال</span>SIM card included in all packages.</div>
+      <div class="nitem"><span class="ar">استقبال بالورد</span>Complimentary flower welcome upon arrival.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const PKG=[
+  {id:'p1',ref:'493390',stars:5,nights:8,typeAr:'بالي · عائلي · 4 بالغين',typeEn:'Bali Family 5★ · 4 Adults',band:'family',cat:['bali','family'],nameAr:'جزيرة بالي – فيلات راما بيتش',nameEn:'Bali Island – Rama Beach Villas',route:['Bali Island'],fl:false,
+   hotels:[{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Rama Beach Villas & Resort',det:'ديلوكس · إفطار',n:5},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Aloft Bali Seminyak',det:'Aloft Room · إفطار',n:3}],
+   tours:[{ar:'بالي',en:'Bali',items:['شواطئ تانجونج بينوا · نشاطات بحرية','شاطئ نوسادوا','شاطئ بانداوا','غروب شمس جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · كيلنكينج · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['كوتا بيتش · عالم السفاري · حديقة الطيور · تاناه لوت · كنتماني']},{ar:'بالي',en:'Bali',items:['أوبود · مصنع الفضة والذهب · حديقة الحيوان · مزارع القهوة · حديقة القرود']},{ar:'بالي',en:'Bali',items:['استكشاف شواطئ كوتا · غروب الشمس · ركوب الأمواج']}],
+   gifts:['استقبال بالورد'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM'],base:313},
+  {id:'p2',ref:'493338',stars:4,nights:7,typeAr:'بالي · شهر عسل 4★',typeEn:'Bali Honeymoon 4★',band:'honeymoon',cat:['bali','honey'],nameAr:'جزيرة بالي – أريادوتا',nameEn:'Bali Island – Aryaduta',route:['Bali Island'],fl:false,
+   hotels:[{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Aryaduta Bali',det:'سوبيريور · إفطار',n:5},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Monoloco Seminyak Bay',det:'فيلا 1 غرفة مع مسبح · إفطار',n:2}],
+   tours:[{ar:'بالي',en:'Bali',items:['تانجونج بينوا · نشاطات بحرية','نوسادوا','بانداوا','غروب جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · كيلنكينج · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['شواطئ كوتا · غروب · ركوب أمواج · نوسا دوا · بادانج بادانج']},{ar:'بالي',en:'Bali',items:['أوبود · مصنع الفضة والذهب · حديقة الحيوان · مزارع القهوة']},{ar:'بالي',en:'Bali',items:['كنتماني · ينابيع كبريتية · رحلة بحيرة بالقارب']}],
+   gifts:['استقبال بالورد','تزيين غرفة شهر العسل','إفطار عائم في المسبح'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM'],base:311},
+  {id:'p3',ref:'493365',stars:5,nights:7,typeAr:'بالي · عائلي 5★',typeEn:'Bali Family 5★',band:'family',cat:['bali','family'],nameAr:'جزيرة بالي – ديسكفري كارتيكا',nameEn:'Bali – Discovery Kartika Plaza',route:['Bali Island'],fl:false,
+   hotels:[{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Discovery Kartika Plaza – Kuta',det:'ديلوكس على الحديقة · إفطار',n:4},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Monteigo Seminyak Resort',det:'ديلوكس · إفطار',n:3}],
+   tours:[{ar:'بالي',en:'Bali',items:['تانجونج بينوا','نوسادوا','بانداوا','غروب جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['كنتماني · ينابيع كبريتية · رحلة بحيرة']},{ar:'بالي',en:'Bali',items:['أوبود · مصنع الفضة والذهب · حديقة الحيوان · مزارع القهوة']},{ar:'بالي',en:'Bali',items:['شواطئ كوتا · نوسا دوا · بادانج بادانج']}],
+   gifts:['استقبال بالورد'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM'],base:277},
+  {id:'p4',ref:'493359',stars:4,nights:7,typeAr:'بالي · عائلي 4★',typeEn:'Bali Family 4★',band:'family',cat:['bali','family'],nameAr:'جزيرة بالي – بينتانغ ريزورت',nameEn:'Bali – Bintang Resort',route:['Bali Island'],fl:false,
+   hotels:[{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Bintang Bali Resort',det:'Special 2BR · إفطار',n:4},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Komaneka at Keramas Beach',det:'ديلوكس · إفطار',n:3}],
+   tours:[{ar:'بالي',en:'Bali',items:['تانجونج بينوا','نوسادوا','بانداوا','غروب جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['كنتماني · ينابيع كبريتية']},{ar:'بالي',en:'Bali',items:['أوبود · مصنع الفضة والذهب · حديقة الحيوان']},{ar:'بالي',en:'Bali',items:['شواطئ كوتا · نوسا دوا · بادانج بادانج']}],
+   gifts:['استقبال بالورد'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM'],base:225},
+  {id:'p5',ref:'493355',stars:5,nights:7,typeAr:'بالي · شهر عسل 5★',typeEn:'Bali Honeymoon 5★',band:'honeymoon',cat:['bali','honey'],nameAr:'جزيرة بالي – سانور بيتش',nameEn:'Bali – Sanur Beach Hotel',route:['Bali Island'],fl:false,
+   hotels:[{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Bali Beach Hotel Sanur',det:'ديلوكس إطلالة بحر · إفطار',n:5},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Komaneka at Keramas Beach',det:'فيلا 1 غرفة مع مسبح · إفطار',n:2}],
+   tours:[{ar:'بالي',en:'Bali',items:['تانجونج بينوا','نوسادوا','بانداوا','غروب جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['كنتماني · ينابيع · رحلة بحيرة']},{ar:'بالي',en:'Bali',items:['أوبود · مصنع فضة وذهب · حديقة الحيوان · مزارع القهوة']},{ar:'بالي',en:'Bali',items:['شواطئ كوتا · نوسا دوا · بادانج بادانج']}],
+   gifts:['استقبال بالورد','عشاء رومانسي على شاطئ جمبران','تزيين غرفة شهر العسل','إفطار عائم في المسبح'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM'],base:540},
+  {id:'p6',ref:'493000',stars:4,nights:8,typeAr:'متعدد المدن · شهر عسل اقتصادي',typeEn:'Multi-City · Economical Honeymoon',band:'honeymoon',cat:['multi','honey'],nameAr:'بونشاك الجبل – بالي – جاكرتا',nameEn:'Bonchak – Bali – Jakarta',route:['Bonchak','Bali','Jakarta'],fl:true,
+   hotels:[{ar:'بونشاك الجبل',en:'Bonchak Mountain',dot:'d-bon',name:'Pesona Alam Bonchak',det:'ديلوكس على الجبل · إفطار',n:2},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Trabi Bali Kuta Beach Hotel',det:'TRIBE Comfort Balcony 1K · إفطار',n:3},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Villas Vaspa Tandia',det:'فيلا مع مسبح · إفطار',n:2},{ar:'جاكرتا',en:'Jakarta',dot:'d-jak',name:'Novotel Jakarta Cikini',det:'ديلوكس · إفطار',n:1}],
+   tours:[{ar:'بونشاك',en:'Bonchak',items:['تامان سفاري · عروض الفيلة والدلافين والكابوي']},{ar:'بالي',en:'Bali',items:['تانجونج بينوا','نوسادوا','بانداوا','غروب جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['كنتماني · ينابيع · رحلة بحيرة']}],
+   gifts:['استقبال بالورد','إفطار عائم في المسبح','تزيين غرفة شهر العسل'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM','طيران داخلي (شخصان · 20 كجم)'],base:535},
+  {id:'p7',ref:'493029',stars:4,nights:8,typeAr:'متعدد المدن · عائلي 4★',typeEn:'Multi-City · Family 4★',band:'family',cat:['multi','family'],nameAr:'بونشاك الجبل – بالي – جاكرتا',nameEn:'Bonchak – Bali – Jakarta',route:['Bonchak','Bali','Jakarta'],fl:true,
+   hotels:[{ar:'بونشاك الجبل',en:'Bonchak Mountain',dot:'d-bon',name:'Pesona Alam Bonchak',det:'ديلوكس على الجبل · إفطار',n:3},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Rama Beach Villas & Resort',det:'ديلوكس · إفطار',n:4},{ar:'جاكرتا',en:'Jakarta',dot:'d-jak',name:'Novotel Jakarta Cikini',det:'ديلوكس · إفطار',n:1}],
+   tours:[{ar:'بونشاك',en:'Bonchak',items:['تامان سفاري · عروض الفيلة والدلافين']},{ar:'بونشاك',en:'Bonchak',items:['باراسيلنغ · الجبل الأخضر · بحيرة الألوان السبعة']},{ar:'بالي',en:'Bali',items:['تانجونج بينوا · نشاطات بحرية','نوسادوا','بانداوا','غروب جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['كنتماني · ينابيع · رحلة بحيرة']}],
+   gifts:['استقبال بالورد'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM','طيران داخلي (4 أشخاص · 20 كجم)'],base:483},
+  {id:'p8',ref:'493017',stars:5,nights:8,typeAr:'متعدد المدن · شهر عسل فاخر 5★',typeEn:'Multi-City · Luxury Honeymoon 5★',band:'honeymoon',cat:['multi','honey'],nameAr:'بونشاك الجبل – بالي – جاكرتا',nameEn:'Bonchak – Bali – Jakarta',route:['Bonchak','Bali','Jakarta'],fl:true,
+   hotels:[{ar:'بونشاك الجبل',en:'Bonchak Mountain',dot:'d-bon',name:'Le Eminence Hotel & Resort',det:'Junior Suite إطلالة جبل · إفطار',n:2},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Discovery Kartika Plaza – Kuta',det:'ديلوكس على الحديقة · إفطار',n:3},{ar:'جزيرة بالي',en:'Bali Island',dot:'d-bali',name:'Waka Gangga Hotel Bali',det:'فيلا مع مسبح خاص · إفطار',n:2},{ar:'جاكرتا',en:'Jakarta',dot:'d-jak',name:'Windham Casablanca Jakarta',det:'Grand Orban Deluxe · إفطار',n:1}],
+   tours:[{ar:'بونشاك',en:'Bonchak',items:['تامان سفاري · عروض الفيلة والدلافين']},{ar:'بونشاك',en:'Bonchak',items:['باراسيلنغ · الجبل الأخضر · بحيرة الألوان السبعة']},{ar:'بالي',en:'Bali',items:['تانجونج بينوا · نشاطات بحرية','نوسادوا','بانداوا','غروب جمبران']},{ar:'بالي',en:'Bali',items:['نوسا بينيدا · خليج الكريستال · مغامرات تحت الماء']},{ar:'بالي',en:'Bali',items:['كنتماني · ينابيع · رحلة بحيرة']}],
+   gifts:['استقبال بالورد','إفطار عائم في المسبح','تزيين غرفة شهر العسل','عشاء رومانسي على شاطئ جمبران'],
+   inc:['استقبال وتوديع','إفطار شامل','سائق خاص','ضرائب وخدمة','إمكانية التعديل','شريحة SIM','طيران داخلي (شخصان · 20 كجم)'],base:641},
+];
+function gc(){return document.getElementById('currency').value;}
+function gr(){return parseFloat(document.getElementById('usdRate').value)||1.41;}
+function gv(){return parseFloat(document.getElementById('globalVisa').value)||0;}
+function sy(){return gc()==='USD'?'$':'د.أ';}
+function fm(j){return gc()==='USD'?(j*gr()).toFixed(0):j.toFixed(0);}
+function af(j){return gc()==='JOD'?'≈ $'+(j*gr()).toFixed(0):'≈ د.أ '+j.toFixed(0);}
+function tj(p){const t=parseFloat(document.getElementById('ticket_'+p.id)?.value)||0;const pr=parseFloat(document.getElementById('profit_'+p.id)?.value)||0;return p.base+gv()+t+pr;}
+function upd(id){const p=PKG.find(x=>x.id===id);const t=tj(p);['tot_','alt_','bas_'].forEach((pre,i)=>{const e=document.getElementById(pre+id);if(e)e.textContent=i===0?sy()+' '+fm(t):i===1?af(t):sy()+' '+fm(p.base);});}
+function recalcAll(){PKG.forEach(p=>upd(p.id));}
+function switchTab(name,btn){document.querySelectorAll('.tpanel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tbtn').forEach(x=>x.classList.remove('active'));document.getElementById('tab-'+name).classList.add('active');btn.classList.add('active');}
+function rc(p){
+  const st='★'.repeat(p.stars)+'☆'.repeat(5-p.stars);
+  const rt=p.route.map((c,i)=>(i>0?'<span style="color:var(--muted);margin:0 4px">✈</span>':'')+`<span class="rcity">${c}</span>`).join('');
+  const hs=p.hotels.map(h=>`<div class="hrow"><div class="dot ${h.dot}"></div><div class="hinfo"><div class="hcities"><span class="hcity-ar">${h.ar}</span><span class="hcity-en">${h.en}</span></div><div class="hname">${h.name}</div><div class="hdet">${h.det}</div></div><div class="hn">${h.n} ليلة</div></div>`).join('');
+  const ts=p.tours.map(t=>`<div class="tblock"><div class="tloc"><span class="ar">${t.ar}</span><span style="opacity:.5;font-size:10px">${t.en}</span><span class="otag">اختياري · Optional</span></div><div class="titems">${t.items.map(i=>`<span class="ti">${i}</span>`).join('')}</div></div>`).join('');
+  const gs=p.gifts.map(g=>`<div class="gift">${g}</div>`).join('');
+  const ic=p.inc.map(i=>`<div class="ich">${i}</div>`).join('');
+  const flBadge=p.fl?`<span class="badge fl">✈ طيران داخلي · Internal Flight</span>`:'';
+  return `<div class="card"><div class="band ${p.band}"><div class="bref">Ref #${p.ref}</div><div class="btype-ar">${p.typeAr}</div><div class="btype-en">${p.typeEn}</div><div class="bname-ar">${p.nameAr}</div><div class="bname-en">${p.nameEn}</div><div class="bmeta"><span class="badge stars">${st}</span><span class="badge">🌙 ${p.nights} ليالي</span>${flBadge}</div></div>
+  <div class="cbody"><div class="sh"><span class="ar">المسار</span> Route</div><div class="rbar">${rt}</div>
+  <div class="sh"><span class="ar">الإقامة</span> Accommodation</div>${hs}
+  <div class="sh" style="margin-top:12px"><span class="ar">الجولات (اختيارية)</span> Optional Tours</div><div class="tlist">${ts}</div>
+  ${gs?`<div class="sh" style="margin-top:12px"><span class="ar">هدايا مجانية</span> Complimentary Gifts</div><div class="gifts">${gs}</div>`:''}
+  <div class="sh" style="margin-top:12px"><span class="ar">يشمل البرنامج</span> Includes</div><div class="irow">${ic}</div></div>
+  <div class="pwrap"><div class="sh" style="margin-bottom:12px"><span class="ar">حاسبة السعر / شخص</span> Price Calculator / Person</div>
+  <div class="prow"><div class="plbl"><span class="ar">سعر DMC (فنادق + مواصلات)</span>Base DMC Price</div><span class="pval base" id="bas_${p.id}">${sy()} ${fm(p.base)}</span></div>
+  <div class="prow"><div class="plbl"><span class="ar">تذكرة الطيران الدولي ذ+إ</span>Int'l Round-Trip Ticket</div><input class="pin" type="number" id="ticket_${p.id}" placeholder="د.أ / JOD" min="0" step="1" onchange="upd('${p.id}')"></div>
+  <div class="prow"><div class="plbl"><span class="ar">تكلفة التأشيرة</span>Visa Cost</div><span class="pval" style="color:var(--muted);font-size:11px">← من الشريط أعلاه</span></div>
+  <div class="prow"><div class="plbl"><span class="ar">هامش الربح</span>Profit / Margin</div><input class="pin" type="number" id="profit_${p.id}" placeholder="د.أ / JOD" min="0" step="1" onchange="upd('${p.id}')"></div>
+  <div class="div"></div>
+  <div class="trow"><div><div class="tlbl"><span class="ar">إجمالي سعر البيع للشخص</span>Total Selling Price / Person</div><div class="talt" id="alt_${p.id}"></div></div>
+  <div class="tnum" id="tot_${p.id}">${sy()} ${fm(p.base)}</div></div></div></div>`;
+}
+function renderGrids(){
+  document.getElementById('g-all').innerHTML=PKG.map(rc).join('');
+  document.getElementById('g-bali').innerHTML=PKG.filter(p=>p.cat.includes('bali')).map(rc).join('');
+  document.getElementById('g-multi').innerHTML=PKG.filter(p=>p.cat.includes('multi')).map(rc).join('');
+  document.getElementById('g-honey').innerHTML=PKG.filter(p=>p.cat.includes('honey')).map(rc).join('');
+  document.getElementById('g-family').innerHTML=PKG.filter(p=>p.cat.includes('family')).map(rc).join('');
+  recalcAll();
+}
+renderGrids();
+</script>
+</body>
+</html>

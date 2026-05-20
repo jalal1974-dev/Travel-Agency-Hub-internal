@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✈️ داشبورد أسعار الشارتر — الجود للسياحة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060e1c; --bg2:#0b1527; --bg3:#0f1e35; --panel:#111f38; --panel2:#162540;
+  --blue:#1e40af; --blue2:#3b82f6; --blue3:#93c5fd;
+  --orange:#ea580c; --orange2:#f97316; --gold:#fbbf24;
+  --green:#10b981; --green2:#6ee7b7;
+  --red:#ef4444; --purple:#a78bfa; --teal:#2dd4bf;
+  --white:#f0f6ff; --muted:rgba(147,197,253,0.5);
+  --border:rgba(59,130,246,0.15); --border2:rgba(255,255,255,0.07);
+  --mono:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#040b18,#0b1a30,#0f2040);border-bottom:2px solid rgba(59,130,246,0.3);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:200;box-shadow:0 4px 30px rgba(0,0,0,.5);}
+.hdr-logo{width:42px;height:42px;background:linear-gradient(135deg,var(--orange),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 14px rgba(234,88,12,.4);}
+.hdr h1{font-size:16px;font-weight:800;line-height:1.2;}
+.hdr h1 small{font-size:10px;font-weight:400;color:var(--muted);display:block;letter-spacing:1.5px;}
+.pill{background:rgba(59,130,246,.12);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--blue3);font-family:var(--mono);}
+
+/* RATES BAR */
+.rates{background:var(--bg2);border-bottom:1px solid var(--border);padding:9px 22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.rates label{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;}
+.rgrp{display:flex;align-items:center;gap:5px;}
+.rinp{background:var(--panel);border:1px solid var(--border2);color:var(--white);border-radius:6px;padding:5px 7px;font-size:12px;font-family:var(--mono);width:75px;outline:none;text-align:center;}
+.rinp:focus{border-color:var(--blue2);}
+.rdiv{width:1px;height:20px;background:var(--border);}
+.rlbl{font-size:10px;color:var(--muted);}
+
+/* GLOBAL CONTROLS */
+.gctrl{background:var(--bg3);border-bottom:1px solid var(--border);padding:12px 22px;}
+.gctrl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px;margin-bottom:10px;}
+.sbox{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:9px 11px;}
+.slbl{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:4px;}
+.sinp{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:6px;padding:6px 8px;color:var(--white);font-family:'Cairo',sans-serif;font-size:12px;outline:none;}
+.sinp:focus{border-color:var(--blue2);}
+.sinp option{background:var(--panel);}
+.togrow{display:flex;border:1px solid var(--border2);border-radius:7px;overflow:hidden;}
+.tog{padding:6px 10px;border:none;background:var(--panel);color:var(--muted);cursor:pointer;font-size:11px;font-family:'Cairo',sans-serif;font-weight:600;border-left:1px solid var(--border2);transition:all .15s;}
+.tog:first-child{border-left:none;}
+.tog.on{background:var(--blue);color:white;}
+.tog.on-gold{background:var(--gold);color:#0a1628;}
+.tog.on-green{background:var(--green);color:white;}
+
+.formula{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.18);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--blue3);line-height:2;margin-bottom:9px;}
+.formula b{color:var(--white);}
+.bigbtn{background:linear-gradient(135deg,var(--orange),var(--orange2));color:white;border:none;border-radius:9px;padding:10px 24px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;}
+.bigbtn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,88,12,.4);}
+
+/* TABS */
+.tabs{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;}
+.tab{padding:11px 18px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s;}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(251,191,36,.05);}
+.tab:hover:not(.active){color:var(--white);background:rgba(255,255,255,.04);}
+
+/* ADJUST BAR */
+.adjbar{background:rgba(234,88,12,.06);border:1px solid rgba(234,88,12,.2);border-radius:10px;padding:11px 14px;margin-bottom:14px;display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;}
+.adjlbl{font-size:10px;color:var(--orange2);font-weight:700;margin-bottom:4px;}
+.adjinp{background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:6px 9px;color:var(--white);font-family:var(--mono);font-size:12px;width:80px;outline:none;}
+.adjbtn{background:var(--orange);color:white;border:none;border-radius:7px;padding:7px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
+.adjbtn:hover{opacity:.88;}
+.adjbtn.reset{background:var(--panel);color:var(--muted);border:1px solid var(--border);}
+
+/* CONTENT */
+.content{padding:18px 22px 70px;}
+.sec-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sec-hdr h2{font-size:13px;font-weight:800;color:var(--gold);}
+.sec-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* DESTINATION GRID */
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;}
+
+/* DESTINATION CARD */
+.dcard{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow .2s,transform .2s;}
+.dcard:hover{box-shadow:0 8px 28px rgba(0,0,0,.35);transform:translateY(-2px);}
+.dcard.inactive{opacity:.4;border-style:dashed;}
+
+.dc-head{background:linear-gradient(135deg,#0b1a30,#1e3a8a);padding:12px 15px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.dc-flag{font-size:1.7rem;}
+.dc-name{font-size:14px;font-weight:800;color:white;}
+.dc-en{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px;}
+.dc-country{font-size:10px;color:rgba(255,255,255,.5);}
+.dc-badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
+.stog{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:'Cairo',sans-serif;}
+.stog.on{background:rgba(16,185,129,.2);color:var(--green);border:1px solid rgba(16,185,129,.35);}
+.stog.off{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+
+.dc-body{padding:12px 15px;}
+
+/* AIRLINE SECTION */
+.al-sec{margin-bottom:10px;border-bottom:1px solid var(--border2);padding-bottom:10px;}
+.al-sec:last-child{border:none;margin-bottom:0;padding-bottom:0;}
+.al-hdr{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.al-logo{font-size:16px;}
+.al-name{font-size:12px;font-weight:700;color:var(--orange2);}
+.al-tag{font-size:10px;color:var(--muted);background:rgba(255,255,255,.06);border-radius:4px;padding:1px 6px;}
+
+/* PKG ROW */
+.col-heads{display:grid;grid-template-columns:1.4fr 1fr 0.9fr 0.9fr 0.9fr;gap:5px;padding:3px 0 5px;border-bottom:1px solid var(--border2);margin-bottom:5px;}
+.col-heads span{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;text-align:center;}
+.col-heads span:first-child{text-align:right;}
+
+.pkg-row{display:grid;grid-template-columns:1.4fr 1fr 0.9fr 0.9fr 0.9fr;gap:5px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;border-radius:6px;transition:background .12s;}
+.pkg-row:hover{background:rgba(59,130,246,.06);}
+.pkg-row.selected{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);}
+.pkg-row:last-child{border-bottom:none;}
+.pr-dur{font-size:11px;color:var(--white);font-weight:600;}
+.pr-days{font-size:9px;color:var(--muted);margin-top:1px;}
+.pr-base{font-size:10px;color:var(--muted);text-align:center;font-family:var(--mono);}
+.pr-jod{font-size:12px;font-weight:700;color:var(--gold);text-align:center;font-family:var(--mono);}
+.pr-usd{font-size:10px;color:var(--green);text-align:center;font-family:var(--mono);}
+.pr-sar{font-size:10px;color:var(--purple);text-align:center;font-family:var(--mono);}
+.pr-na{font-size:11px;color:var(--red);text-align:center;opacity:.7;}
+
+/* ONE WAY PRICES */
+.ow-box{background:rgba(30,64,175,.12);border:1px solid rgba(59,130,246,.2);border-radius:7px;padding:7px 10px;margin:5px 0;font-size:10px;}
+.ow-title{color:var(--blue3);font-weight:700;margin-bottom:5px;}
+.ow-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.ow-item{background:rgba(255,255,255,.04);border-radius:5px;padding:4px 6px;text-align:center;}
+.ow-route{color:var(--muted);font-size:9px;margin-bottom:2px;}
+.ow-price{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--blue3);}
+
+/* FLIGHTS TABLE (detailed) */
+.fl-box{background:rgba(0,0,0,.2);border:1px solid var(--border2);border-radius:7px;padding:8px 10px;margin:5px 0;}
+.fl-title{font-size:10px;color:var(--blue3);font-weight:700;margin-bottom:6px;}
+.fl-row{display:flex;justify-content:space-between;align-items:center;padding:5px 7px;background:rgba(255,255,255,.03);border-radius:5px;margin-bottom:4px;gap:6px;}
+.fl-left{flex:1;}
+.fl-route{font-size:11px;font-weight:700;color:var(--white);}
+.fl-time{font-size:9px;color:var(--muted);margin-top:1px;}
+.fl-luggage{font-size:9px;color:var(--green);margin-top:1px;}
+.fl-days-sm{font-size:9px;color:var(--muted);}
+.fl-price{font-family:var(--mono);font-weight:700;color:var(--orange2);font-size:12px;flex-shrink:0;}
+
+/* CALC RESULT */
+.calc-box{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);border-radius:10px;padding:11px 14px;margin-top:10px;}
+.calc-title{font-size:11px;color:var(--gold);font-weight:800;margin-bottom:8px;display:flex;justify-content:space-between;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;}
+.cbox{border-radius:8px;padding:8px 6px;text-align:center;}
+.cbox.jod{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);}
+.cbox.usd{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);}
+.cbox.sar{background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.25);}
+.cbox-lbl{font-size:9px;font-weight:700;margin-bottom:2px;}
+.cbox.jod .cbox-lbl{color:var(--gold);}
+.cbox.usd .cbox-lbl{color:var(--green);}
+.cbox.sar .cbox-lbl{color:var(--purple);}
+.cbox-val{font-family:var(--mono);font-size:14px;font-weight:800;}
+.cbox.jod .cbox-val{color:var(--gold);}
+.cbox.usd .cbox-val{color:var(--green);}
+.cbox.sar .cbox-val{color:var(--purple);}
+.cbox-sub{font-size:9px;color:var(--muted);margin-top:1px;font-family:var(--mono);}
+
+.pax-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-top:1px solid rgba(255,255,255,.07);margin-top:7px;font-size:11px;}
+.pax-lbl{color:var(--muted);}
+.pax-val{font-family:var(--mono);font-weight:700;color:var(--gold);}
+
+.bd-note{font-size:9px;color:var(--muted);margin-top:6px;background:rgba(0,0,0,.2);border-radius:5px;padding:5px 8px;line-height:1.8;}
+.bd-note b{color:var(--white);}
+
+.wa-btn{width:100%;background:#25d366;border:none;border-radius:8px;padding:8px;color:white;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;}
+.wa-btn:hover{opacity:.9;}
+
+/* CARD FOOTER */
+.dc-foot{padding:9px 14px;background:rgba(0,0,0,.2);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;}
+.foot-prices{display:flex;gap:10px;flex-wrap:wrap;}
+.fp{display:flex;flex-direction:column;}
+.fp .fl{font-size:9px;color:var(--muted);font-family:var(--mono);}
+.fp .fv{font-size:12px;font-weight:800;font-family:var(--mono);}
+.fp .fv.jod{color:var(--gold);}
+.fp .fv.usd{color:var(--green);}
+.fp .fv.sar{color:var(--purple);}
+
+/* OUTPUT TABLE */
+.out-table{width:100%;border-collapse:collapse;font-size:11px;}
+.out-table th{background:var(--panel2);color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:9px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);white-space:nowrap;}
+.out-table td{padding:9px 10px;border-bottom:1px solid var(--border2);vertical-align:middle;}
+.out-table tr:hover td{background:rgba(59,130,246,.04);}
+.td-dest{font-weight:700;font-size:12px;}
+.td-al{font-size:10px;color:var(--orange2);}
+.td-pkg{font-size:10px;color:var(--muted);}
+.td-days{font-size:10px;color:var(--muted);}
+.td-jod{font-family:var(--mono);font-weight:700;color:var(--gold);}
+.td-usd{font-family:var(--mono);font-weight:700;color:var(--green);}
+.td-sar{font-family:var(--mono);font-weight:700;color:var(--purple);}
+.td-total{font-family:var(--mono);font-size:10px;color:var(--muted);}
+.na-cell{font-size:10px;color:var(--red);opacity:.7;}
+
+/* PAX TAB */
+.pax-form{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.pax-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px;margin-bottom:12px;}
+.pax-result-box{background:var(--panel2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:14px;}
+.pax-res-hdr{background:linear-gradient(135deg,var(--blue),#1e3a8a);padding:11px 14px;font-weight:800;font-size:13px;}
+.pax-res-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border2);font-size:12px;}
+.prl{color:var(--muted);}
+.prv{font-family:var(--mono);font-weight:700;}
+.pax-grand{background:rgba(251,191,36,.08);border-top:2px solid var(--gold);padding:13px 14px;display:flex;justify-content:space-between;align-items:center;}
+.grand-lbl{font-size:11px;color:var(--muted);}
+.grand-val{font-family:var(--mono);font-size:20px;font-weight:800;color:var(--gold);}
+.grand-sub{font-family:var(--mono);font-size:11px;color:var(--green);}
+.grand-sar{font-family:var(--mono);font-size:11px;color:var(--purple);}
+
+/* BOTTOM BAR */
+.btmbar{position:fixed;bottom:0;left:0;right:0;background:#040c1a;border-top:1px solid var(--border);padding:7px 22px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;z-index:150;}
+.bb{font-size:10px;color:var(--muted);font-family:var(--mono);}
+.bb b{color:var(--gold);}
+.bb-pax{background:var(--orange);color:white;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:800;}
+
+.no-res{text-align:center;padding:40px;color:var(--muted);font-size:13px;grid-column:1/-1;}
+@media(max-width:640px){
+  .dgrid{grid-template-columns:1fr;}
+  .gctrl-grid{grid-template-columns:1fr 1fr;}
+  .hdr,.rates,.gctrl,.content{padding-left:13px;padding-right:13px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:11px;">
+    <div class="hdr-logo">✈️</div>
+    <div>
+      <h1>داشبورد أسعار الشارتر
+        <small>الجود للسياحة والسفر · أداة داخلية</small>
+      </h1>
+    </div>
+  </div>
+  <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
+    <div class="pill" id="pill-active">0 وجهة</div>
+    <div class="pill" id="pill-pax">1 مسافر</div>
+    <div class="pill" id="pill-cur">JOD</div>
+  </div>
+</div>
+
+<!-- EXCHANGE RATES -->
+<div class="rates">
+  <label>💱 أسعار الصرف (1 JOD =):</label>
+  <div class="rgrp"><span>🇺🇸</span><input class="rinp" id="r-usd" value="1.408" step="0.001" oninput="renderAll()"><span class="rlbl">USD</span></div>
+  <div class="rdiv"></div>
+  <div class="rgrp"><span>🇸🇦</span><input class="rinp" id="r-sar" value="5.263" step="0.01" oninput="renderAll()"><span class="rlbl">SAR</span></div>
+  <div class="rdiv"></div>
+  <div class="rgrp"><span>🇦🇪</span><input class="rinp" id="r-aed" value="5.170" step="0.01" oninput="renderAll()"><span class="rlbl">AED</span></div>
+  <div class="rdiv"></div>
+  <div class="rgrp"><span>🇪🇺</span><input class="rinp" id="r-eur" value="1.299" step="0.001" oninput="renderAll()"><span class="rlbl">EUR</span></div>
+  <div class="rdiv"></div>
+  <div class="rgrp"><span>🇬🇧</span><input class="rinp" id="r-gbp" value="1.111" step="0.001" oninput="renderAll()"><span class="rlbl">GBP</span></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('edit',this)">✏️ تحرير الأسعار</button>
+  <button class="tab" onclick="switchTab('output',this)">📊 جدول الأسعار</button>
+  <button class="tab" onclick="switchTab('pax',this)">👥 حساب المجموعات</button>
+</div>
+
+<!-- GLOBAL SETTINGS -->
+<div class="gctrl">
+  <div class="gctrl-grid">
+    <div class="sbox">
+      <div class="slbl">💰 ربح للشخص</div>
+      <input class="sinp" id="g-profit" type="number" value="20" min="0" step="5" oninput="renderAll()">
+    </div>
+    <div class="sbox">
+      <div class="slbl">عملة الربح</div>
+      <select class="sinp" id="g-profit-cur" onchange="renderAll()">
+        <option value="JOD">🇯🇴 JOD</option>
+        <option value="USD">🇺🇸 USD</option>
+        <option value="SAR">🇸🇦 SAR</option>
+      </select>
+    </div>
+    <div class="sbox">
+      <div class="slbl">📊 نسبة ربح %</div>
+      <input class="sinp" id="g-pct" type="number" value="0" min="0" max="50" step="1" oninput="renderAll()">
+    </div>
+    <div class="sbox">
+      <div class="slbl">👥 عدد المسافرين</div>
+      <input class="sinp" id="g-pax" type="number" value="1" min="1" max="500" step="1" oninput="renderAll()">
+    </div>
+    <div class="sbox">
+      <div class="slbl">📤 عملة الإخراج</div>
+      <div class="togrow">
+        <button class="tog on-gold" onclick="setOC('JOD',this)">JOD</button>
+        <button class="tog" onclick="setOC('USD',this)">USD</button>
+        <button class="tog" onclick="setOC('SAR',this)">SAR</button>
+        <button class="tog" onclick="setOC('ALL',this)">الكل</button>
+      </div>
+    </div>
+    <div class="sbox">
+      <div class="slbl">🔍 اختر وجهة</div>
+      <select class="sinp" id="g-search" onchange="renderAll()"><option value="">🌍 كل الوجهات</option></select>
+    </div>
+  </div>
+  <div class="formula">
+    <b>📐 المعادلة:</b> السعر النهائي/شخص = (السعر الأصلي بالدينار + ربح) × (1 + نسبة%) &nbsp;·&nbsp; الأسعار الأصلية كلها بالدينار الأردني JOD
+    <br><b>👥 إجمالي مجموعة:</b> سعر الشخص × عدد المسافرين
+  </div>
+  <button class="bigbtn" onclick="renderAll()">⚡ احسب وحدّث كل الأسعار</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- EDIT TAB -->
+  <div id="tab-edit">
+    <div class="adjbar">
+      <div>
+        <div class="adjlbl">⚡ تعديل سريع على جميع الأسعار الأساسية (بالدينار)</div>
+        <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
+          <input class="adjinp" id="adj-val" type="number" placeholder="مقدار" step="1">
+          <button class="adjbtn" onclick="applyAdj(1)">➕ أضف</button>
+          <button class="adjbtn" onclick="applyAdj(-1)">➖ اطرح</button>
+          <button class="adjbtn reset" onclick="resetAll()">↩️ استعادة</button>
+          <span style="font-size:10px;color:var(--muted)">تطبق على الوجهات النشطة فقط</span>
+        </div>
+      </div>
+    </div>
+    <div class="sec-hdr"><h2>✈️ الوجهات السياحية وشركات الطيران</h2></div>
+    <div class="dgrid" id="dest-grid"></div>
+  </div>
+
+  <!-- OUTPUT TABLE TAB -->
+  <div id="tab-output" style="display:none;">
+    <div class="sec-hdr"><h2>📊 جدول الأسعار الكامل</h2></div>
+    <div style="overflow-x:auto;">
+      <table class="out-table">
+        <thead>
+          <tr>
+            <th>الوجهة</th>
+            <th>شركة الطيران</th>
+            <th>المدة / الباقة</th>
+            <th>مواعيد الرحلة</th>
+            <th>السعر الأصلي JOD</th>
+            <th>بعد الربح JOD</th>
+            <th>USD</th>
+            <th>SAR</th>
+            <th>إجمالي × <span id="out-pax">1</span></th>
+          </tr>
+        </thead>
+        <tbody id="out-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PAX TAB -->
+  <div id="tab-pax" style="display:none;">
+    <div class="sec-hdr"><h2>👥 حساب المجموعات</h2></div>
+    <div class="pax-form">
+      <div class="pax-grid">
+        <div class="sbox">
+          <div class="slbl">✈️ الوجهة</div>
+          <select class="sinp" id="px-dest" onchange="onPaxDestChange()">
+            <option value="">اختر...</option>
+          </select>
+        </div>
+        <div class="sbox">
+          <div class="slbl">🛫 شركة الطيران</div>
+          <select class="sinp" id="px-al" onchange="renderPax()">
+            <option value="">اختر...</option>
+          </select>
+        </div>
+        <div class="sbox">
+          <div class="slbl">📦 الباقة</div>
+          <select class="sinp" id="px-pkg" onchange="renderPax()">
+            <option value="">اختر...</option>
+          </select>
+        </div>
+        <div class="sbox">
+          <div class="slbl">🔄 نوع الرحلة</div>
+          <select class="sinp" id="px-type" onchange="renderPax()">
+            <option value="rt">ذهاب وإياب</option>
+            <option value="ow-out">ذهاب فقط (عمان→وجهة)</option>
+            <option value="ow-ret">عودة فقط (وجهة→عمان)</option>
+          </select>
+        </div>
+        <div class="sbox">
+          <div class="slbl">👨‍👩‍👧 بالغون (12+)</div>
+          <input class="sinp" id="px-adults" type="number" value="2" min="1" max="200" oninput="renderPax()">
+        </div>
+        <div class="sbox">
+          <div class="slbl">👶 أطفال (2-11)</div>
+          <input class="sinp" id="px-children" type="number" value="0" min="0" max="100" oninput="renderPax()">
+        </div>
+        <div class="sbox">
+          <div class="slbl">👼 رضع (0-2) مجاناً</div>
+          <input class="sinp" id="px-infants" type="number" value="0" min="0" max="50" oninput="renderPax()">
+        </div>
+      </div>
+      <div id="pax-result"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STICKY BOTTOM BAR -->
+<div class="btmbar">
+  <div class="bb">✈️ وجهات: <b id="bb-dest">0</b></div>
+  <div class="bb">💰 ربح: <b id="bb-profit">0</b> JOD/شخص</div>
+  <div class="bb">📊 نسبة: <b id="bb-pct">0</b>%</div>
+  <div class="bb">👥 <span class="bb-pax" id="bb-pax">1</span></div>
+  <div class="bb">USD: <b id="bb-usd">1.408</b></div>
+  <div class="bb">SAR: <b id="bb-sar">5.263</b></div>
+  <div class="bb">EUR: <b id="bb-eur">1.299</b></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+// DATA — exact copy from main.js flightData, all prices in JOD
+// ════════════════════════════════════════════════════════════════════════
+let FLIGHTS = [
+  {
+    id:'sharm', flag:'🇪🇬', dest:'شرم الشيخ', destEn:'Sharm El-Sheikh', country:'مصر', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[
+          { dur:'4 أيام', days:'ثلاثاء وجمعة', price:189, owOut:168, owRet:129 },
+          { dur:'5 أيام', days:'ثلاثاء وجمعة', price:199, owOut:178, owRet:139 },
+          { dur:'8 أيام', days:'ثلاثاء وجمعة', price:219, owOut:198, owRet:159 }
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'3 أيام', days:'ثلاثاء وجمعة', price:210, owOut:189, owRet:150 },
+          { dur:'4 أيام', days:'ثلاثاء وجمعة', price:220, owOut:199, owRet:160 },
+          { dur:'6-8 أيام', days:'ثلاثاء وجمعة', price:260, owOut:239, owRet:200 }
+        ]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[
+          { dur:'4 أيام', days:'احد وخميس', price:189, owOut:168, owRet:129 },
+          { dur:'5 أيام', days:'احد وخميس', price:199, owOut:178, owRet:139 },
+          { dur:'8 أيام', days:'احد وخميس', price:219, owOut:198, owRet:159 }
+        ]
+      }
+    ]
+  },
+  {
+    id:'istanbul', flag:'🇹🇷', dest:'اسطنبول', destEn:'Istanbul', country:'تركيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[
+          { dur:'3 أيام', days:'احد وثلاثاء وخميس', price:219, owOut:198, owRet:159 },
+          { dur:'4 أيام', days:'احد وثلاثاء وخميس', price:239, owOut:218, owRet:179 },
+          { dur:'6-8 أيام', days:'احد وثلاثاء وخميس', price:249, owOut:228, owRet:189 }
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'3 أيام', days:'يومياً', price:259, owOut:238, owRet:199 },
+          { dur:'4 أيام', days:'يومياً', price:269, owOut:248, owRet:209 },
+          { dur:'6-8 أيام', days:'يومياً', price:279, owOut:258, owRet:219 }
+        ]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[
+          { dur:'3 أيام', days:'سبت واثنين وأربعاء', price:239, owOut:218, owRet:179 },
+          { dur:'4 أيام', days:'سبت واثنين وأربعاء', price:259, owOut:238, owRet:199 },
+          { dur:'6-8 أيام', days:'سبت واثنين وأربعاء', price:269, owOut:248, owRet:209 }
+        ]
+      }
+    ]
+  },
+  {
+    id:'trabzon', flag:'🇹🇷', dest:'طرابزون', destEn:'Trabzon', country:'تركيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[{ dur:'8 أيام', days:'كل سبت', price:269 }]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[{ dur:'غير متاح', days:'غير متاح', price:0 }]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[{ dur:'8 أيام', days:'كل أربعاء', price:309 }]
+      }
+    ]
+  },
+  {
+    id:'batumi', flag:'🇬🇪', dest:'باتومي', destEn:'Batumi', country:'جورجيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[{ dur:'8 أيام', days:'كل خميس', price:259, owOut:244, owRet:209 }]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[{ dur:'غير متاح', days:'غير متاح', price:0 }]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[{ dur:'8 أيام', days:'كل جمعة', price:299, owOut:284, owRet:249 }]
+      }
+    ]
+  },
+  {
+    id:'tbilisi', flag:'🇬🇪', dest:'تبليسي', destEn:'Tbilisi', country:'جورجيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[{ dur:'8 أيام', days:'كل ثلاثاء', price:289, owOut:274, owRet:239 }]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[{ dur:'غير متاح', days:'غير متاح', price:0 }]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[{ dur:'8 أيام', days:'كل ثلاثاء وجمعة', price:329, owOut:314, owRet:279 }]
+      }
+    ]
+  },
+  {
+    id:'cairo', flag:'🇪🇬', dest:'القاهرة', destEn:'Cairo', country:'مصر', active:true,
+    airlines:[
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'رحلات يومية', days:'4 رحلات يومية', price:280,
+            flights:[
+              { route:'عمان → القاهرة', dep:'6:10 صباحاً', price:165 },
+              { route:'عمان → القاهرة', dep:'11:25 ظهراً', price:170 },
+              { route:'القاهرة → عمان', dep:'7:35 صباحاً', price:125 },
+              { route:'القاهرة → عمان', dep:'14:05 ظهراً', price:140 }
+            ]
+          },
+          { dur:'رحلات عقبة', days:'أحد، ثلاثاء، أربعاء', price:150,
+            flights:[
+              { route:'عقبة → القاهرة', dep:'حسب الجدولة', price:90 },
+              { route:'القاهرة → عقبة', dep:'حسب الجدولة', price:70 }
+            ]
+          }
+        ]
+      },
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[{ dur:'غير متاح', days:'غير متاح حالياً', price:0 }]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[
+          { dur:'رحلات أسبوعية', days:'سبت، أحد، ثلاثاء، خميس', price:275,
+            flights:[
+              { route:'عمان → القاهرة', dep:'20:00 مساءً', price:155, days:'سبت، أحد، ثلاثاء، خميس' },
+              { route:'القاهرة → عمان', dep:'23:30 ليلاً', price:130, days:'سبت، أحد، ثلاثاء، خميس' }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id:'jeddah', flag:'🇸🇦', dest:'جدة', destEn:'Jeddah', country:'السعودية', active:true,
+    airlines:[
+      { name:'flynas', nameAr:'طيران ناس', logo:'✈️',
+        packages:[
+          { dur:'رحلات يومية', days:'رحلات يومية', price:265,
+            flights:[
+              { route:'عمان → جدة', dep:'15:00 بعد الظهر', price:155, luggage:'7 كيلو أمتعة' },
+              { route:'جدة → عمان', dep:'12:00 ظهراً', price:120, luggage:'7 كيلو أمتعة' }
+            ]
+          }
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'رحلات يومية', days:'رحلات يومية', price:290,
+            flights:[
+              { route:'عمان → جدة', dep:'حسب الجدولة', price:170 },
+              { route:'جدة → عمان', dep:'حسب الجدولة', price:140 }
+            ]
+          }
+        ]
+      },
+      { name:'Saudia', nameAr:'الخطوط السعودية', logo:'🇸🇦',
+        packages:[
+          { dur:'رحلات أسبوعية', days:'أحد، ثلاثاء، خميس', price:290,
+            flights:[
+              { route:'عمان → جدة', dep:'حسب الجدولة', price:170, days:'أحد، ثلاثاء، خميس' },
+              { route:'جدة → عمان', dep:'حسب الجدولة', price:140, days:'أحد، ثلاثاء، خميس' }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id:'medina-jeddah', flag:'🇸🇦', dest:'المدينة المنورة وجدة', destEn:'Medina and Jeddah', country:'السعودية', active:true,
+    airlines:[
+      { name:'flynas', nameAr:'طيران ناس', logo:'✈️',
+        packages:[
+          { dur:'رحلات المدينة المنورة', days:'ثلاثاء وخميس', price:220,
+            flights:[
+              { route:'عمان → المدينة المنورة', dep:'23:00 ليلاً', arr:'01:00 فجراً', price:110, days:'ثلاثاء، خميس' },
+              { route:'المدينة المنورة → عمان', dep:'21:00 مساءً', arr:'22:35 ليلاً', price:110, days:'ثلاثاء، خميس' }
+            ]
+          },
+          { dur:'رحلات متعددة المدن', days:'حسب الجدولة', price:260,
+            flights:[
+              { route:'عمان → المدينة → جدة → عمان', dep:'حسب الجدولة', price:260, multiCity:true },
+              { route:'عمان → جدة → المدينة → عمان', dep:'حسب الجدولة', price:260, multiCity:true }
+            ]
+          }
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'رحلات المدينة المنورة', days:'سبت، اثنين، أربعاء', price:340,
+            flights:[
+              { route:'عمان → المدينة المنورة', dep:'حسب الجدولة', price:210, days:'سبت، اثنين، أربعاء' },
+              { route:'المدينة المنورة → عمان', dep:'حسب الجدولة', price:130, days:'سبت، اثنين، أربعاء' }
+            ]
+          },
+          { dur:'متعددة المدن الملكية', days:'حسب الجدولة', price:270,
+            flights:[
+              { route:'عمان → المدينة → جدة → عمان', dep:'حسب الجدولة', price:320, multiCity:true },
+              { route:'عمان → جدة → المدينة → عمان', dep:'حسب الجدولة', price:270, multiCity:true }
+            ]
+          }
+        ]
+      },
+      { name:'Saudia', nameAr:'الخطوط السعودية', logo:'🇸🇦',
+        packages:[{ dur:'غير متاح', days:'غير متاح', price:0 }]
+      }
+    ]
+  },
+  {
+    id:'dubai', flag:'🇦🇪', dest:'دبي', destEn:'Dubai', country:'الإمارات العربية المتحدة', active:true,
+    airlines:[
+      { name:'FlyDubai', nameAr:'فلاي دبي', logo:'🇦🇪',
+        packages:[
+          { dur:'رحلات يومية', days:'رحلات يومية', price:240,
+            flights:[
+              { route:'عمان → دبي', dep:'حسب الجدولة', price:150 },
+              { route:'دبي → عمان', dep:'حسب الجدولة', price:140 }
+            ]
+          }
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'رحلات يومية', days:'رحلات يومية', price:290,
+            flights:[
+              { route:'عمان → دبي', dep:'حسب الجدولة', price:170 },
+              { route:'دبي → عمان', dep:'حسب الجدولة', price:150 }
+            ]
+          }
+        ]
+      },
+      { name:'Emirates', nameAr:'طيران الإمارات', logo:'✈️',
+        packages:[
+          { dur:'رحلات يومية', days:'رحلات يومية', price:310,
+            flights:[
+              { route:'عمان → دبي', dep:'حسب الجدولة', price:210 },
+              { route:'دبي → عمان', dep:'حسب الجدولة', price:150 }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const FLIGHTS_ORIG = JSON.parse(JSON.stringify(FLIGHTS));
+
+// STATE
+let outCur = 'JOD', curTab = 'edit';
+const selPkg = {}; // { destId_alIdx: pkgIdx }
+
+const g = id => document.getElementById(id);
+const gf = id => parseFloat(g(id).value) || 0;
+const gi = id => parseInt(g(id).value) || 0;
+
+// ─── RATES ───
+function rates(){ return { JOD:1, USD:gf('r-usd'), SAR:gf('r-sar'), AED:gf('r-aed'), EUR:gf('r-eur'), GBP:gf('r-gbp') }; }
+function jodTo(jod, cur){ const r=rates(); return jod*(r[cur]||1); }
+function fmt(jod, cur='JOD', dec=1){
+  if(!jod||jod===0) return '—';
+  const syms={JOD:'JOD',USD:'$',SAR:'ر.س',AED:'د.إ',EUR:'€',GBP:'£'};
+  return (syms[cur]||cur)+' '+(cur==='JOD'?jod.toFixed(dec):jodTo(jod,cur).toFixed(dec));
+}
+function fmtAll(jod){ return `${fmt(jod,'JOD')} / ${fmt(jod,'USD')} / ${fmt(jod,'SAR',0)}`; }
+function fmtOut(jod){ return outCur==='ALL'?fmtAll(jod):fmt(jod,outCur); }
+
+// ─── PROFIT ───
+function profitJOD(){
+  const v=gf('g-profit'), cur=g('g-profit-cur').value;
+  // r-usd = USD per 1 JOD, so to convert USD→JOD: divide by r-usd
+  return cur==='JOD'?v : (cur==='USD'?v/gf('r-usd') : (cur==='SAR'?v/gf('r-sar'):v));
+}
+function calcFinal(baseJOD){
+  const pct=gf('g-pct')/100;
+  return (baseJOD + profitJOD()) * (1+pct);
+}
+
+// ─── TABS ───
+function switchTab(t, btn){
+  curTab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['edit','output','pax'].forEach(x=>g('tab-'+x).style.display=x===t?'block':'none');
+  if(t==='output') renderOutTable();
+  if(t==='pax') initPaxDropdowns();
+}
+function setOC(c, btn){
+  outCur=c;
+  document.querySelectorAll('.tog').forEach(b=>b.classList.remove('on','on-gold','on-green'));
+  btn.classList.add('on-gold');
+  renderAll();
+}
+
+// ─── SYNC FROM INPUTS ───
+function syncEdits(){
+  FLIGHTS.forEach((d,di)=>{
+    d.airlines.forEach((al,ai)=>{
+      al.packages.forEach((pk,pi)=>{
+        const el=g(`inp-${di}-${ai}-${pi}`);
+        if(el) pk.price=parseFloat(el.value)||pk.price;
+      });
+    });
+  });
+}
+
+// ─── GLOBAL ADJUST ───
+function applyAdj(sign){
+  syncEdits();
+  const delta=(parseFloat(g('adj-val').value)||0)*sign;
+  if(!delta){alert('أدخل مقدار التعديل');return;}
+  FLIGHTS.filter(d=>d.active).forEach(d=>{
+    d.airlines.forEach(al=>{
+      al.packages.forEach(pk=>{
+        if(pk.price>0) pk.price=Math.max(0,Math.round(pk.price+delta));
+        if(pk.owOut) pk.owOut=Math.max(0,Math.round(pk.owOut+delta));
+        if(pk.owRet) pk.owRet=Math.max(0,Math.round(pk.owRet+delta));
+        if(pk.flights) pk.flights.forEach(f=>{if(f.price>0) f.price=Math.max(0,Math.round(f.price+delta));});
+      });
+    });
+  });
+  renderAll();
+}
+function resetAll(){
+  if(!confirm('استعادة جميع الأسعار الأصلية؟')) return;
+  FLIGHTS=JSON.parse(JSON.stringify(FLIGHTS_ORIG));
+  renderAll();
+}
+function toggleDest(id){
+  syncEdits();
+  const d=FLIGHTS.find(x=>x.id===id);
+  if(d) d.active=!d.active;
+  renderAll();
+}
+
+// ─── BUILD GRID ───
+function renderGrid(){
+  syncEdits();
+  const srch=g('g-search').value.trim();
+  const pax=Math.max(1,gi('g-pax'));
+  const flt=FLIGHTS.filter(d=>!srch||d.id===srch);
+
+  g('dest-grid').innerHTML=flt.map(d=>buildCard(d,pax)).join('')||`<div class="no-res">لا توجد نتائج</div>`;
+  updateBottomBar();
+}
+
+function buildCard(d, pax){
+  const di=FLIGHTS.indexOf(d);
+
+  const alHtml=d.airlines.map((al,ai)=>{
+    const pkHtml=al.packages.map((pk,pi)=>{
+      if(pk.price===0) return `<div class="pkg-row">
+        <div><div class="pr-dur">${pk.dur}</div><div class="pr-days">${pk.days}</div></div>
+        <div class="pr-na">غير متاح</div>
+        <div class="pr-na">—</div><div class="pr-na">—</div><div class="pr-na">—</div>
+      </div>`;
+
+      const fin=calcFinal(pk.price);
+      const selKey=`${di}_${ai}`;
+      const isSel=selPkg[selKey]===pi;
+      return `<div class="pkg-row ${isSel?'selected':''}" onclick="selPackage(${di},${ai},${pi})">
+        <div>
+          <div class="pr-dur">${pk.dur}</div>
+          <div class="pr-days">${pk.days}</div>
+          <div style="margin-top:3px">
+            <input type="number" id="inp-${di}-${ai}-${pi}" value="${pk.price}" min="0" step="1"
+              onclick="event.stopPropagation()"
+              oninput="event.stopPropagation();syncEdits();renderAll()"
+              style="width:72px;background:rgba(255,255,255,.07);border:1px solid var(--border2);border-radius:5px;padding:3px 6px;color:var(--gold);font-family:var(--mono);font-size:11px;outline:none;">
+            <span style="font-size:9px;color:var(--muted)">JOD</span>
+          </div>
+        </div>
+        <div class="pr-base">${pk.price} JOD</div>
+        <div class="pr-jod">${fmt(fin,'JOD')}</div>
+        <div class="pr-usd">${fmt(fin,'USD')}</div>
+        <div class="pr-sar">${fmt(fin,'SAR',0)}</div>
+      </div>`;
+    }).join('');
+
+    // one-way prices for first selected pkg
+    const selKey=`${di}_${ai}`;
+    const selPi=selPkg[selKey]!==undefined?selPkg[selKey]:0;
+    const selPk=al.packages[selPi];
+
+    let owHtml='';
+    if(selPk && selPk.price>0 && selPk.owOut){
+      const owOutFin=calcFinal(selPk.owOut), owRetFin=calcFinal(selPk.owRet||0);
+      owHtml=`<div class="ow-box">
+        <div class="ow-title">✈️ أسعار الذهاب فقط (للباقة المختارة):</div>
+        <div class="ow-grid">
+          <div class="ow-item">
+            <div class="ow-route">عمان → ${d.dest}</div>
+            <div class="ow-price">${fmtOut(owOutFin)}</div>
+            <div style="font-size:9px;color:var(--muted)">أصلي: ${selPk.owOut} JOD</div>
+          </div>
+          <div class="ow-item">
+            <div class="ow-route">${d.dest} → عمان</div>
+            <div class="ow-price">${fmtOut(owRetFin)}</div>
+            <div style="font-size:9px;color:var(--muted)">أصلي: ${selPk.owRet||0} JOD</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // Detailed flights box
+    let flHtml='';
+    if(selPk && selPk.flights && selPk.flights.length>0){
+      flHtml=`<div class="fl-box">
+        <div class="fl-title">🗓️ جدول الرحلات (${selPk.dur}):</div>
+        ${selPk.flights.map(f=>{
+          const fp=calcFinal(f.price);
+          return `<div class="fl-row">
+            <div class="fl-left">
+              <div class="fl-route">${f.route}${f.multiCity?'<span style="font-size:9px;color:var(--teal);margin-right:5px">متعددة المدن</span>':''}</div>
+              ${!f.multiCity?`<div class="fl-time">🕐 ${f.dep}${f.arr?' · وصول: '+f.arr:''}</div>`:''}
+              ${f.luggage?`<div class="fl-luggage">🧳 ${f.luggage}</div>`:''}
+              ${f.days?`<div class="fl-days-sm">📅 ${f.days}</div>`:''}
+            </div>
+            <div>
+              <div class="fl-price">${fmtOut(fp)}</div>
+              <div style="font-size:9px;color:var(--muted);font-family:var(--mono)">أصلي: ${f.price} JOD</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+
+    // Calc result for selected pkg
+    let calcHtml='';
+    if(selPk && selPk.price>0){
+      const fin=calcFinal(selPk.price);
+      const pax=Math.max(1,gi('g-pax'));
+      const pctV=gf('g-pct');
+      const profV=profitJOD();
+      calcHtml=`<div class="calc-box">
+        <div class="calc-title">
+          <span>💰 السعر النهائي — ${selPk.dur}</span>
+          <span style="font-size:9px;color:var(--muted)">ذهاب وإياب / شخص</span>
+        </div>
+        <div class="calc-grid">
+          <div class="cbox jod"><div class="cbox-lbl">🇯🇴 JOD</div><div class="cbox-val">${fin.toFixed(1)}</div><div class="cbox-sub">أصلي: ${selPk.price}</div></div>
+          <div class="cbox usd"><div class="cbox-lbl">🇺🇸 USD</div><div class="cbox-val">${jodTo(fin,'USD').toFixed(1)}</div><div class="cbox-sub">صرف: ${gf('r-usd')}</div></div>
+          <div class="cbox sar"><div class="cbox-lbl">🇸🇦 SAR</div><div class="cbox-val">${jodTo(fin,'SAR').toFixed(0)}</div><div class="cbox-sub">صرف: ${gf('r-sar')}</div></div>
+        </div>
+        ${pax>1?'<div class="pax-row"><span class="pax-lbl">👥 إجمالي × '+pax+' مسافر</span><span class="pax-val">'+fmtOut(fin*pax)+'</span></div>':''}
+        <div class="bd-note">
+          <b>التفاصيل:</b> ${selPk.price} JOD أصلي + ${profV.toFixed(1)} JOD ربح${pctV>0?' + '+pctV+'% نسبة':''} = <b>${fin.toFixed(1)} JOD</b>/شخص
+        </div>
+        <button class="wa-btn" onclick="sendWA(${di},${ai},${selPi})">💬 إرسال عبر واتساب</button>
+      </div>`;
+    }
+
+    return `<div class="al-sec">
+      <div class="al-hdr">
+        <span class="al-logo">${al.logo}</span>
+        <span class="al-name">${al.nameAr}</span>
+        <span class="al-tag">${al.name}</span>
+      </div>
+      <div class="col-heads">
+        <span style="text-align:right">المدة / الباقة</span>
+        <span>السعر الأصلي</span>
+        <span>بعد الربح JOD</span>
+        <span>USD</span>
+        <span>SAR</span>
+      </div>
+      ${pkHtml}
+      ${owHtml}
+      ${flHtml}
+      ${calcHtml}
+    </div>`;
+  }).join('');
+
+  // Best prices for footer
+  const prices=d.airlines.flatMap(al=>al.packages.filter(p=>p.price>0).map(p=>calcFinal(p.price)));
+  const minP=prices.length?Math.min(...prices):0;
+
+  return `<div class="dcard ${d.active?'':'inactive'}">
+    <div class="dc-head">
+      <span class="dc-flag">${d.flag}</span>
+      <div>
+        <div class="dc-name">${d.dest}</div>
+        <div class="dc-en">${d.destEn}</div>
+        <div class="dc-country">${d.country}</div>
+      </div>
+      <div class="dc-badges">
+        <button class="stog ${d.active?'on':'off'}" onclick="toggleDest('${d.id}')">
+          ${d.active?'✅ نشط':'❌ مخفي'}
+        </button>
+      </div>
+    </div>
+    <div class="dc-body">${alHtml}</div>
+    <div class="dc-foot">
+      <div class="foot-prices">
+        ${minP?'<div class="fp"><span class="fl">أفضل سعر</span><span class="fv jod">'+minP.toFixed(1)+' JOD</span></div><div class="fp"><span class="fl">≈ USD</span><span class="fv usd">$'+jodTo(minP,'USD').toFixed(1)+'</span></div><div class="fp"><span class="fl">≈ SAR</span><span class="fv sar">'+jodTo(minP,'SAR').toFixed(0)+' ر.س</span></div>':'<span style="font-size:11px;color:var(--red)">غير متاح</span>'}
+      </div>
+    </div>
+  </div>`;
+}
+
+function selPackage(di,ai,pi){
+  const key=`${di}_${ai}`;
+  selPkg[key]=pi;
+  renderAll();
+}
+
+// ─── OUTPUT TABLE ───
+function renderOutTable(){
+  syncEdits();
+  const pax=Math.max(1,gi('g-pax'));
+  g('out-pax').textContent=pax;
+  let rows='';
+  FLIGHTS.filter(d=>d.active).forEach(d=>{
+    d.airlines.forEach(al=>{
+      al.packages.forEach(pk=>{
+        const na=pk.price===0;
+        const fin=na?0:calcFinal(pk.price);
+        rows+=`<tr>
+          <td><div class="td-dest">${d.flag} ${d.dest}</div><div style="font-size:9px;color:var(--muted)">${d.destEn}</div></td>
+          <td><div class="td-al">${al.nameAr}</div><div style="font-size:9px;color:var(--muted)">${al.name}</div></td>
+          <td><div class="td-pkg">${pk.dur}</div></td>
+          <td><div class="td-days">${pk.days}</div></td>
+          <td>${na?'<span class="na-cell">غير متاح</span>':`<span class="td-jod">${pk.price}</span>`}</td>
+          <td>${na?'—':`<span class="td-jod">${fin.toFixed(1)}</span>`}</td>
+          <td>${na?'—':`<span class="td-usd">$${jodTo(fin,'USD').toFixed(1)}</span>`}</td>
+          <td>${na?'—':`<span class="td-sar">${jodTo(fin,'SAR').toFixed(0)}</span>`}</td>
+          <td>${na?'—':`<span class="td-total">${fmtOut(fin*pax)}</span>`}</td>
+        </tr>`;
+      });
+    });
+  });
+  g('out-tbody').innerHTML=rows||'<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--muted)">لا توجد وجهات نشطة</td></tr>';
+}
+
+// ─── PAX DROPDOWNS ───
+function initPaxDropdowns(){
+  syncEdits();
+  const ds=g('px-dest');
+  ds.innerHTML='<option value="">اختر وجهة...</option>'+
+    FLIGHTS.filter(d=>d.active).map(d=>`<option value="${d.id}">${d.flag} ${d.dest}</option>`).join('');
+  renderPax();
+}
+function onPaxDestChange(){
+  syncEdits();
+  const d=FLIGHTS.find(x=>x.id===g('px-dest').value);
+  const alSel=g('px-al');
+  alSel.innerHTML='<option value="">اختر شركة...</option>'+
+    (d?d.airlines.map((al,i)=>`<option value="${i}">${al.logo} ${al.nameAr}</option>`).join(''):'');
+  g('px-pkg').innerHTML='<option value="">اختر باقة...</option>';
+  renderPax();
+}
+function onPaxAlChange(){
+  syncEdits();
+  const d=FLIGHTS.find(x=>x.id===g('px-dest').value);
+  const ai=parseInt(g('px-al').value);
+  const al=d&&!isNaN(ai)?d.airlines[ai]:null;
+  const pkSel=g('px-pkg');
+  pkSel.innerHTML='<option value="">اختر باقة...</option>'+
+    (al?al.packages.map(function(pk,i){ return pk.price>0?'<option value="'+i+'">'+pk.dur+' — '+pk.price+' JOD</option>':'<option value="'+i+'" disabled>'+pk.dur+' — غير متاح</option>'; }).join(''):'');
+  renderPax();
+}
+// wire up changes
+document.addEventListener('DOMContentLoaded',()=>{
+  g('px-al')&&(g('px-al').onchange=()=>{onPaxAlChange();renderPax();});
+});
+
+function renderPax(){
+  syncEdits();
+  const d=FLIGHTS.find(x=>x.id===g('px-dest')?.value);
+  const ai=parseInt(g('px-al')?.value);
+  const pi=parseInt(g('px-pkg')?.value);
+  const type=g('px-type')?.value||'rt';
+  const adults=Math.max(1,gi('px-adults'));
+  const children=gi('px-children');
+  const infants=gi('px-infants');
+  const paxRes=g('pax-result');
+  if(!paxRes) return;
+
+  if(!d||isNaN(ai)||isNaN(pi)){
+    paxRes.innerHTML='<div style="color:var(--muted);padding:20px;text-align:center">اختر وجهة وشركة طيران وباقة</div>';
+    return;
+  }
+  const al=d.airlines[ai];
+  const pk=al?.packages[pi];
+  if(!pk||pk.price===0){paxRes.innerHTML='<div style="color:var(--red);padding:20px;text-align:center">هذه الباقة غير متاحة</div>';return;}
+
+  let basePrice=pk.price;
+  if(type==='ow-out' && pk.owOut) basePrice=pk.owOut;
+  else if(type==='ow-ret' && pk.owRet) basePrice=pk.owRet;
+
+  const perAdult=calcFinal(basePrice);
+  const perChild=perAdult*0.5;
+  const adultTotal=perAdult*adults;
+  const childTotal=perChild*children;
+  const grand=adultTotal+childTotal;
+
+  paxRes.innerHTML=`<div class="pax-result-box">
+    <div class="pax-res-hdr">${d.flag} ${d.dest} · ${al.nameAr} · ${pk.dur}</div>
+    <div class="pax-res-row"><span class="prl">💺 سعر البالغ/شخص</span><span class="prv" style="color:var(--gold)">${fmtAll(perAdult)}</span></div>
+    <div class="pax-res-row"><span class="prl">👶 سعر الطفل/شخص (50%)</span><span class="prv" style="color:var(--purple)">${fmtAll(perChild)}</span></div>
+    <div class="pax-res-row"><span class="prl">👨‍👩‍👧 بالغون × ${adults}</span><span class="prv" style="color:var(--gold)">${fmtAll(adultTotal)}</span></div>
+    ${children>0?'<div class="pax-res-row"><span class="prl">👶 أطفال × '+children+'</span><span class="prv" style="color:var(--purple)">'+fmtAll(childTotal)+'</span></div>':''}
+    ${infants>0?'<div class="pax-res-row"><span class="prl">👼 رضع × '+infants+'</span><span class="prv" style="color:var(--green)">مجاناً</span></div>':''}
+    <div class="pax-grand">
+      <div>
+        <div class="grand-lbl">الإجمالي الكامل (${adults+children} مسافر)</div>
+        <div class="grand-val">${grand.toFixed(1)} JOD</div>
+        <div class="grand-sub">$${jodTo(grand,'USD').toFixed(1)}</div>
+        <div class="grand-sar">${jodTo(grand,'SAR').toFixed(0)} ر.س</div>
+      </div>
+      <button class="wa-btn" style="width:auto;padding:8px 16px;" onclick="sendPaxWA()">💬 واتساب</button>
+    </div>
+  </div>`;
+}
+
+function sendWA(di,ai,pi){
+  syncEdits();
+  const d=FLIGHTS[di], al=d.airlines[ai], pk=al.packages[pi];
+  const fin=calcFinal(pk.price);
+  const pax=Math.max(1,gi('g-pax'));
+  const msg=encodeURIComponent(
+    `✈️ عرض سعر — الجود للسياحة والسفر\n\n`+
+    `🌍 الوجهة: ${d.dest} (${d.destEn})\n`+
+    `✈️ شركة الطيران: ${al.nameAr} (${al.name})\n`+
+    `📦 الباقة: ${pk.dur} · ${pk.days}\n\n`+
+    `💰 السعر/شخص: ${fin.toFixed(1)} JOD / $${jodTo(fin,'USD').toFixed(1)} / ${jodTo(fin,'SAR').toFixed(0)} ر.س\n`+
+    (pax>1?`👥 إجمالي ${pax} مسافرين: ${(fin*pax).toFixed(1)} JOD\n`:'')+
+    `\n📞 للحجز: +962 777 066 005\nالجود للسياحة والسفر`
+  );
+  window.open('https://wa.me/962777066005?text='+msg,'_blank');
+}
+
+function sendPaxWA(){
+  const d=FLIGHTS.find(x=>x.id===g('px-dest')?.value);
+  const ai=parseInt(g('px-al')?.value);
+  const pi=parseInt(g('px-pkg')?.value);
+  const type=g('px-type')?.value||'rt';
+  const adults=Math.max(1,gi('px-adults'));
+  const children=gi('px-children');
+  const al=d?.airlines[ai];
+  const pk=al?.packages[pi];
+  if(!d||!al||!pk||pk.price===0) return;
+  let basePrice=pk.price;
+  if(type==='ow-out'&&pk.owOut) basePrice=pk.owOut;
+  else if(type==='ow-ret'&&pk.owRet) basePrice=pk.owRet;
+  const perAdult=calcFinal(basePrice);
+  const grand=perAdult*adults+(perAdult*0.5)*children;
+  const typeAr=type==='rt'?'ذهاب وإياب':type==='ow-out'?'ذهاب فقط':'عودة فقط';
+  const msg=encodeURIComponent(
+    `✈️ طلب حجز مجموعة — الجود للسياحة والسفر\n\n`+
+    `🌍 ${d.dest} · ${al.nameAr}\n`+
+    `📦 ${pk.dur} · ${typeAr}\n`+
+    `👥 ${adults} بالغ + ${children} طفل + ${gi('px-infants')} رضيع\n\n`+
+    `💰 سعر البالغ: ${perAdult.toFixed(1)} JOD\n`+
+    `👶 سعر الطفل: ${(perAdult*0.5).toFixed(1)} JOD\n`+
+    `🏷️ الإجمالي: ${grand.toFixed(1)} JOD / $${jodTo(grand,'USD').toFixed(1)} / ${jodTo(grand,'SAR').toFixed(0)} ر.س\n\n`+
+    `📞 +962 777 066 005 — الجود للسياحة والسفر`
+  );
+  window.open('https://wa.me/962777066005?text='+msg,'_blank');
+}
+
+// ─── BOTTOM BAR ───
+function updateBottomBar(){
+  const act=FLIGHTS.filter(d=>d.active).length;
+  const pax=Math.max(1,gi('g-pax'));
+  g('bb-dest').textContent=act;
+  g('bb-profit').textContent=profitJOD().toFixed(1);
+  g('bb-pct').textContent=gf('g-pct');
+  g('bb-pax').textContent=pax+' مسافر';
+  g('bb-usd').textContent=gf('r-usd').toFixed(3);
+  g('bb-sar').textContent=gf('r-sar').toFixed(3);
+  g('bb-eur').textContent=gf('r-eur').toFixed(3);
+  g('pill-active').textContent=act+' وجهة';
+  g('pill-pax').textContent=pax+' مسافر';
+  g('pill-cur').textContent=outCur==='ALL'?'JOD+USD+SAR':outCur;
+}
+
+// ─── POPULATE SEARCH DROPDOWN ───
+function populateSearchDropdown(){
+  const sel=g('g-search');
+  if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">🌍 كل الوجهات</option>'+
+    FLIGHTS.map(d=>`<option value="${d.id}">${d.flag} ${d.dest} — ${d.destEn}</option>`).join('');
+  if(cur) sel.value=cur;
+}
+
+// ─── POPULATE SEARCH DROPDOWN ───
+function populateSearchDropdown(){
+  const sel=g('g-search');
+  if(!sel||sel.tagName!=='SELECT') return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">🌍 كل الوجهات</option>'+
+    FLIGHTS.map(d=>'<option value="'+d.id+'">'+d.flag+' '+d.dest+' — '+d.destEn+'</option>').join('');
+  if(cur) sel.value=cur;
+}
+
+// ─── RENDER ALL ───
+function renderAll(){
+  populateSearchDropdown();
+  if(curTab==='edit') renderGrid();
+  else if(curTab==='output') renderOutTable();
+  else if(curTab==='pax') renderPax();
+  updateBottomBar();
+}
+
+// INIT
+renderAll();
+</script>
+</body>
+</html>

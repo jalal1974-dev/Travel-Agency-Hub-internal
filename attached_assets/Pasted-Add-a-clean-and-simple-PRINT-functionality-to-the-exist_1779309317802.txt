@@ -1,0 +1,119 @@
+Add a clean and simple PRINT functionality to the existing HTML dashboards WITHOUT redesigning or changing the current layout.
+
+GitHub Repository:
+Travel Agency Hub Internal Repository
+
+IMPORTANT:
+
+Keep all existing HTML pages exactly as they are.
+Do NOT redesign anything.
+Do NOT rebuild layouts.
+Do NOT modify the current styling except for print optimization.
+The current pages already look correct.
+
+MAIN REQUIREMENT:
+I only want PRINT functionality using the browser’s native print system.
+
+The current browser:
+Print → Save as PDF
+already works well.
+
+I only need you to add:
+
+Print buttons
+Print logic
+Print styling
+Section-based printing
+
+PRINT BUTTONS REQUIRED:
+
+Destination Print Button
+Add a button on every destination/dashboard page:
+“Print Destination”
+
+When clicked:
+
+Print the current destination page only
+Open browser print preview
+Allow employee to Save as PDF manually
+Hotel/Package Print Button
+Every hotel/package/program card must include:
+“Print Package”
+
+When clicked:
+
+Print ONLY that specific package/hotel/program
+Create itinerary-style printable output
+Open browser print preview directly
+Georgia Programs Requirement
+Georgia dashboard contains expandable/openable programs.
+
+Fix required:
+
+Employee opens a program first
+Print button must print ONLY the currently opened/expanded program
+Do NOT print collapsed content
+
+PRINT IMPLEMENTATION:
+Use:
+
+window.print()
+CSS @media print
+Print-only styles
+Section-targeted printing logic
+
+DO NOT use:
+
+PDF libraries
+Screenshot exporting
+PPTX exporting
+Complex generators
+
+PRINT STYLE REQUIREMENTS:
+
+Preserve original HTML appearance
+Preserve hotel images
+Preserve package layout
+Preserve Arabic text correctly
+Preserve tables and formatting
+Avoid overlapping text
+Avoid broken layouts
+
+OPTIONAL PRINT CLEANUP:
+If possible during print mode only:
+Hide:
+
+Profit margins
+Ticket cost settings
+Internal calculations
+Transportation costs
+Admin settings
+
+But:
+DO NOT break the layout if hiding causes issues.
+
+PRICE VISIBILITY FIX:
+Current issue:
+“JOD” overlaps price numbers.
+
+Fix required:
+
+Add spacing between currency and price
+OR
+Replace “JOD” with “J”
+OR
+Reduce currency width slightly
+
+Goal:
+Prices must always remain fully readable in print preview and saved PDFs.
+
+BRANDING:
+Printed pages should still include:
+
+Company logo
+الجود للسياحة والسفر
+Company contact information
+
+IMPORTANT:
+The final result should feel exactly like:
+Employee opens page → clicks Print → browser print preview opens → employee saves as PDF manually.

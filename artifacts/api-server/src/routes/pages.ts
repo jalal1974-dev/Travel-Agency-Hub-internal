@@ -27,7 +27,7 @@ const HIDDEN_SELECTORS = `
   .ctrl-label, .ctrl-input, .divider, .calc-btn,
   .no-print, .admin-note, .note-internal,
   [data-print="hide"], .controls-inner .currency-toggle,
-  .aljude-export-toolbar
+  .aljude-export-toolbar, .aljude-georgia-toolbar, .aljude-page-print-btn
 `.trim();
 
 function buildPageInject(logoSrc: string): string {
@@ -125,6 +125,53 @@ function buildPageInject(logoSrc: string): string {
 .aljude-georgia-btn-pptx { background: linear-gradient(135deg, #ea580c, #c2410c); color: white; }
 .aljude-georgia-btn-pdf  { background: linear-gradient(135deg, #dc2626, #991b1b); color: white; }
 
+/* ── Page-level print button ── */
+.aljude-page-print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: 'Cairo', Tajawal, Arial, sans-serif;
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  color: white;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
+  line-height: 1.3;
+}
+.aljude-page-print-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.aljude-page-print-btn:active { opacity: 0.7; transform: translateY(0); }
+
+/* ── Per-card & Georgia print button ── */
+.aljude-btn-print, .aljude-georgia-btn-print {
+  background: linear-gradient(135deg, #1e3a5f, #2563eb);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: 'Cairo', Tajawal, Arial, sans-serif;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
+  line-height: 1.3;
+}
+.aljude-georgia-btn-print {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.aljude-btn-print:hover, .aljude-georgia-btn-print:hover { opacity: 0.85; transform: translateY(-1px); }
+.aljude-btn-print:active, .aljude-georgia-btn-print:active { opacity: 0.7; transform: translateY(0); }
+
 /* ── JOD price spacing fix — prevents currency from overlapping numbers ── */
 .p-full, .p-hotel, .child-box-price, .price-val, .price-num,
 .pkg-price, .final-price, .total-price, .p-price, .p-val,
@@ -179,6 +226,59 @@ function buildPageInject(logoSrc: string): string {
     s.onerror = function() { alert('تعذّر تحميل مكتبة PPTX. تحقق من الاتصال بالإنترنت.'); };
     document.head.appendChild(s);
   }
+
+  /* ── Collect all page styles for print windows ── */
+  function collectPageStyles() {
+    var styles = Array.from(document.querySelectorAll('style')).map(function(s) { return s.outerHTML; }).join('\n');
+    var links = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(function(l) { return l.outerHTML; }).join('\n');
+    return links + '\n' + styles;
+  }
+
+  /* ── Open a print window with content ── */
+  function openPrintWindow(bodyContent, extraStyle, bgColor) {
+    var bg = bgColor || '#fff';
+    var html = '<!DOCTYPE html><html dir="rtl"><head>' +
+      '<meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+      collectPageStyles() +
+      '<style>body{margin:1.5cm;background:' + bg + ';direction:rtl;}' +
+      '.aljude-logo-bar{display:flex!important;margin-bottom:16px;background:#fff;border-bottom:2px solid #1e3a5f;}' +
+      '.aljude-export-toolbar,.aljude-print-toolbar,.aljude-georgia-toolbar,.aljude-page-print-btn{display:none!important;}' +
+      (extraStyle || '') + '</style>' +
+      '</head><body>' + bodyContent + '</body></html>';
+    var win = window.open('', '_blank', 'width=960,height=720');
+    if (!win) { alert('يرجى السماح بالنوافذ المنبثقة ثم المحاولة مجددًا'); return; }
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+    win.addEventListener('load', function() { setTimeout(function() { win.print(); }, 500); });
+  }
+
+  /* ── Print a single card ── */
+  window.aljudePrintCard = function(btn) {
+    var card = btn.closest('.card') || btn.closest('.hotel-card') || btn.closest('.pkg-card') || btn.closest('.dcard') || btn.closest('[data-export-card]');
+    if (!card) { alert('لم يتم العثور على البطاقة'); return; }
+    var clone = card.cloneNode(true);
+    clone.querySelectorAll('.aljude-export-toolbar, .aljude-georgia-toolbar').forEach(function(el) { el.remove(); });
+    var logoBar = document.querySelector('.aljude-logo-bar');
+    var logoHtml = logoBar ? logoBar.cloneNode(true).outerHTML : '';
+    openPrintWindow(logoHtml + clone.outerHTML, '.card,.hotel-card,.pkg-card,.dcard{break-inside:avoid;page-break-inside:avoid;}', '#fff');
+  };
+
+  /* ── Print Georgia detail panel ── */
+  window.aljudePrintGeorgia = function(btn) {
+    var panel = document.getElementById('detailPanel');
+    if (!panel || panel.style.display === 'none' || !panel.innerHTML.trim()) {
+      alert('يرجى فتح برنامج أولاً ثم الطباعة');
+      return;
+    }
+    var clone = panel.cloneNode(true);
+    clone.querySelectorAll('.aljude-export-toolbar, .aljude-georgia-toolbar').forEach(function(el) { el.remove(); });
+    clone.style.display = 'block';
+    var logoBar = document.querySelector('.aljude-logo-bar');
+    var logoHtml = logoBar ? logoBar.cloneNode(true).outerHTML : '';
+    openPrintWindow(logoHtml + clone.outerHTML, '#detailPanel{display:block!important;} .detail-panel{display:block!important;}', '#0f172a');
+  };
 
   /* ── Screenshot a card element ── */
   window.aljudeScreenshotCard = function(btn, label) {
@@ -413,6 +513,7 @@ function buildPageInject(logoSrc: string): string {
       var toolbar = document.createElement('div');
       toolbar.className = 'aljude-export-toolbar';
       toolbar.innerHTML =
+        '<button class="aljude-btn-print" onclick="aljudePrintCard(this)">🖨️ طباعة الباقة</button>' +
         '<button class="aljude-btn-shot" onclick="aljudeScreenshotCard(this, \\'' + label + '\\')">📷 صورة</button>' +
         '<button class="aljude-btn-pptx" onclick="aljudePptxCard(this, \\'' + label + '\\')">📊 PPTX</button>';
       card.appendChild(toolbar);
@@ -429,6 +530,7 @@ function buildPageInject(logoSrc: string): string {
     toolbar.className = 'aljude-georgia-toolbar';
     toolbar.innerHTML =
       '<span style="color:rgba(255,255,255,0.5);font-size:11px;font-family:Cairo,Arial,sans-serif;">تصدير هذا البرنامج:</span>' +
+      '<button class="aljude-georgia-btn-print" onclick="aljudePrintGeorgia(this)">🖨️ طباعة البرنامج</button>' +
       '<button class="aljude-georgia-btn-shot" onclick="aljudeScreenshotGeorgia(this)">📷 صورة البرنامج</button>' +
       '<button class="aljude-georgia-btn-pptx" onclick="aljudePptxGeorgia(this)">📊 PPTX البرنامج</button>';
     panel.appendChild(toolbar);
@@ -468,7 +570,10 @@ function buildPageInject(logoSrc: string): string {
 <!-- AL JUDE logo banner -->
 <div class="aljude-logo-bar" style="display:flex;">
   ${logoHtml}
-  <span class="powered">للاستخدام الداخلي فقط — الجود للسياحة والسفر</span>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="aljude-page-print-btn" onclick="window.print()">🖨️ طباعة الوجهة</button>
+    <span class="powered">للاستخدام الداخلي فقط — الجود للسياحة والسفر</span>
+  </div>
 </div>`;
 }
 

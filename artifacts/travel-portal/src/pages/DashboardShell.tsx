@@ -22,6 +22,7 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
   const [, navigate] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [printing, setPrinting] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const queryClient = useQueryClient();
 
@@ -68,10 +69,81 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
     document.body.removeChild(a);
   }, [currentPage]);
 
-  const handlePdfDownload = useCallback(() => {
+  const handlePdfDownload = useCallback(async () => {
     if (!currentPage) return;
-    const url = `/api/pages/${currentPage.slug}?print=1`;
-    window.open(url, "_blank");
+    setPdfLoading(true);
+
+    const HIDE_CSS = `
+      .settings,.settings-grid,.controls-bar,.controls-inner,.formula,
+      .breakdown,.bar,
+      .s-box:has(#ticket),.s-box:has(#transport),.s-box:has(#profit),
+      .s-box:has(#pct),.s-box:has(#rate),
+      .ctrl-label,.ctrl-input,.divider,.calc-btn,
+      .no-print,.admin-note,.note-internal,
+      [data-print="hide"],.controls-inner .currency-toggle { display:none!important; }
+    `;
+
+    let hiddenFrame: HTMLIFrameElement | null = null;
+    try {
+      const html = await fetch(`/api/pages/${currentPage.slug}`).then((r) => r.text());
+
+      hiddenFrame = document.createElement("iframe");
+      hiddenFrame.style.cssText =
+        "position:fixed;left:-9999px;top:-9999px;width:1200px;height:900px;visibility:hidden;border:none;";
+      document.body.appendChild(hiddenFrame);
+
+      await new Promise<void>((resolve) => {
+        hiddenFrame!.onload = () => resolve();
+        hiddenFrame!.srcdoc = html;
+      });
+
+      const iframeDoc = hiddenFrame.contentDocument!;
+
+      const hideEl = iframeDoc.createElement("style");
+      hideEl.textContent = HIDE_CSS;
+      iframeDoc.head.appendChild(hideEl);
+
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+
+      const body = iframeDoc.body;
+      const canvas = await html2canvas(body, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 1.5,
+        windowWidth: 1200,
+        windowHeight: body.scrollHeight,
+        scrollX: 0,
+        scrollY: 0,
+        width: body.scrollWidth,
+        height: body.scrollHeight,
+      });
+
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const imgData = canvas.toDataURL("image/jpeg", 0.93);
+      const imgTotalH = (canvas.height * pageW) / canvas.width;
+
+      let remainingH = imgTotalH;
+      let pageIdx = 0;
+      while (remainingH > 0) {
+        if (pageIdx > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, -(pageIdx * pageH), pageW, imgTotalH);
+        remainingH -= pageH;
+        pageIdx++;
+      }
+
+      pdf.save(`${currentPage.titleAr} - الجود للسياحة والسفر.pdf`);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      alert("تعذّر إنشاء ملف PDF. يرجى المحاولة مرة أخرى.");
+    } finally {
+      if (hiddenFrame) document.body.removeChild(hiddenFrame);
+      setPdfLoading(false);
+    }
   }, [currentPage]);
 
   const handleWhatsApp = useCallback(() => {
@@ -320,28 +392,40 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
             {/* PDF download */}
             <button
               onClick={handlePdfDownload}
-              disabled={!currentPage}
+              disabled={pdfLoading || !currentPage}
               className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
-                background: !currentPage
+                background: pdfLoading || !currentPage
                   ? "rgba(220,38,38,0.2)"
                   : "linear-gradient(135deg, #dc2626, #b91c1c)",
                 color: "white",
                 fontFamily: "Cairo, Tajawal, Arial, sans-serif",
                 border: "1px solid rgba(239,68,68,0.3)",
-                boxShadow: !currentPage ? "none" : "0 2px 10px rgba(220,38,38,0.3)",
-                cursor: !currentPage ? "not-allowed" : "pointer",
-                opacity: !currentPage ? 0.6 : 1,
+                boxShadow: pdfLoading || !currentPage ? "none" : "0 2px 10px rgba(220,38,38,0.3)",
+                cursor: pdfLoading || !currentPage ? "not-allowed" : "pointer",
+                opacity: pdfLoading || !currentPage ? 0.7 : 1,
+                minWidth: "120px",
               }}
-              title="تحميل كملف PDF — يفتح نافذة الطباعة لحفظ الملف"
+              title="تحميل كملف PDF — يتم إنشاؤه وحفظه تلقائياً"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14,2 14,8 20,8"/>
-                <line x1="12" y1="18" x2="12" y2="12"/>
-                <polyline points="9,15 12,18 15,15"/>
-              </svg>
-              <span>تحميل PDF</span>
+              {pdfLoading ? (
+                <>
+                  <svg className="animate-spin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                  </svg>
+                  <span>جاري الإنشاء...</span>
+                </>
+              ) : (
+                <>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <line x1="12" y1="18" x2="12" y2="12"/>
+                    <polyline points="9,15 12,18 15,15"/>
+                  </svg>
+                  <span>تحميل PDF</span>
+                </>
+              )}
             </button>
 
             {/* Word download */}

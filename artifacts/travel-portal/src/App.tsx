@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import LoginPage from "@/pages/LoginPage";
 import DashboardShell from "@/pages/DashboardShell";
+import ChangePasswordPage from "@/pages/ChangePasswordPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,6 +56,7 @@ function AppRoutes() {
 
   return (
     <Switch>
+      <Route path="/change-password" component={() => <ChangePasswordPage user={user} />} />
       <Route path="/" component={() => <DashboardShell user={user} onLogout={() => { queryClient.invalidateQueries({ queryKey: ["me"] }); }} />} />
       <Route path="/:page" component={({ params }) => <DashboardShell user={user} activePage={params.page} onLogout={() => { queryClient.invalidateQueries({ queryKey: ["me"] }); }} />} />
       <Route component={NotFound} />

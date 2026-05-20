@@ -14,10 +14,14 @@ Internal employee web system for AL JUDE Travel & Tourism. Employees log in to a
 
 ## Default Accounts
 
-| Username   | Password   | Role     |
-|------------|------------|----------|
-| admin      | admin123   | مدير (Admin)     |
-| employee   | emp123     | موظف (Employee)  |
+| Username   | Password    | Role     |
+|------------|-------------|----------|
+| admin      | 123456789   | مدير (Admin)     |
+| employee   | 123456789   | موظف (Employee)  |
+
+Passwords can be changed from inside the portal:
+- Any employee → sidebar → "🔑 تغيير كلمة المرور" (change own password)
+- Admin only → same page → "إعادة تعيين كلمة مرور موظف" (reset any user's password)
 
 ## Stack
 

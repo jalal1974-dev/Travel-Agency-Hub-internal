@@ -165,7 +165,7 @@ const PAGE_MAP = new Map(PAGES.map((p) => [p.slug, p]));
 const router = Router();
 
 function requireAuth(req: Request, res: Response, next: NextFunction) {
-  const session = req.session as Record<string, unknown>;
+  const session = (req.session as unknown) as Record<string, unknown>;
   if (!session.userId) {
     res.status(401).json({ error: "Not authenticated" });
     return;
@@ -192,7 +192,7 @@ router.get("/pages", requireAuth, (_req, res) => {
 
 // ─── Serve dashboard page (screen + print) ────────────────────────────────────
 router.get("/pages/:slug", requireAuth, async (req, res) => {
-  const { slug } = req.params;
+  const slug = String(req.params["slug"]);
   const page = PAGE_MAP.get(slug);
   if (!page) { res.status(404).send("Page not found"); return; }
 
@@ -219,7 +219,7 @@ router.get("/pages/:slug", requireAuth, async (req, res) => {
 
 // ─── Word document export ─────────────────────────────────────────────────────
 router.get("/pages/:slug/word", requireAuth, async (req, res) => {
-  const { slug } = req.params;
+  const slug = String(req.params["slug"]);
   const page = PAGE_MAP.get(slug);
   if (!page) { res.status(404).send("Page not found"); return; }
 

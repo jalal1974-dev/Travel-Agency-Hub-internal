@@ -3,6 +3,8 @@ import { useLocation } from "wouter";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLogout, useListPages } from "@workspace/api-client-react";
 
+const COMPANY_PHONE = ""; // Optional: pre-fill a WhatsApp number e.g. "966500000000"
+
 interface User {
   id: number;
   username: string;
@@ -297,6 +299,29 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
     }
   }, [currentPage]);
 
+  const handleWhatsApp = useCallback(() => {
+    if (!currentPage) return;
+    const msg = [
+      `✈️ عرض سياحي خاص — ${currentPage.titleAr}`,
+      ``,
+      `نقدم لكم أفضل عروض السفر إلى *${currentPage.titleAr}* (${currentPage.title})`,
+      ``,
+      `🏨 تشمل العروض: فنادق متنوعة، برامج سياحية، وباقات عائلية`,
+      `💰 أسعار تنافسية وخدمة متميزة`,
+      ``,
+      `للاستفسار والحجز يرجى التواصل معنا`,
+      ``,
+      `شركة الجود للسياحة والسفر`,
+      `AL JUDE Travel & Tourism`,
+    ].join("\n");
+
+    const encoded = encodeURIComponent(msg);
+    const url = COMPANY_PHONE
+      ? `https://wa.me/${COMPANY_PHONE}?text=${encoded}`
+      : `https://wa.me/?text=${encoded}`;
+    window.open(url, "_blank");
+  }, [currentPage]);
+
   const iframeSrc = currentPage ? `/api/pages/${currentPage.slug}` : "";
 
   return (
@@ -403,6 +428,24 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
               </p>
             </div>
           </div>
+          <button
+            onClick={() => navigate("/change-password")}
+            className="w-full py-2 rounded-xl text-sm transition-all mb-2"
+            style={{
+              background: "rgba(124,58,237,0.1)",
+              border: "1px solid rgba(124,58,237,0.2)",
+              color: "rgba(167,139,250,0.9)",
+              fontFamily: "Cairo, Tajawal, Arial, sans-serif",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(124,58,237,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(124,58,237,0.1)";
+            }}
+          >
+            🔑 تغيير كلمة المرور
+          </button>
           <button
             onClick={() => logoutMutation.mutate()}
             className="w-full py-2 rounded-xl text-sm transition-all"
@@ -561,6 +604,31 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 12l1.5 6 1.5-4.5 1.5 4.5L14 12" stroke="white" strokeWidth="1.5" fill="none"/>
               </svg>
               تحميل Word
+            </button>
+
+            {/* WhatsApp share */}
+            <button
+              onClick={handleWhatsApp}
+              disabled={!currentPage}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all"
+              style={{
+                background: !currentPage
+                  ? "rgba(37,211,102,0.15)"
+                  : "linear-gradient(135deg, #25d366, #128c7e)",
+                color: "white",
+                fontFamily: "Cairo, Tajawal, Arial, sans-serif",
+                border: "1px solid rgba(37,211,102,0.35)",
+                boxShadow: !currentPage ? "none" : "0 2px 10px rgba(37,211,102,0.25)",
+                cursor: !currentPage ? "not-allowed" : "pointer",
+                opacity: !currentPage ? 0.5 : 1,
+              }}
+              title="مشاركة العرض عبر واتساب مع رسالة جاهزة"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.527 5.845L.057 23.885l6.19-1.623A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.875 9.875 0 0 1-5.034-1.378l-.361-.214-3.735.979.997-3.648-.235-.374A9.86 9.86 0 0 1 2.118 12C2.118 6.535 6.535 2.118 12 2.118S21.882 6.535 21.882 12 17.465 21.882 12 21.882z"/>
+              </svg>
+              واتساب
             </button>
 
             {/* Security badge */}

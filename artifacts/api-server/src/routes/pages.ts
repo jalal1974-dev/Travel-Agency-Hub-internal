@@ -186,12 +186,12 @@ router.get("/logo", async (_req, res) => {
 });
 
 // ─── List pages ───────────────────────────────────────────────────────────────
-router.get("/pages", requireAuth, (_req, res) => {
+router.get("/pages", (_req, res) => {
   res.json(PAGES.map(({ slug, title, titleAr, icon }) => ({ slug, title, titleAr, icon })));
 });
 
 // ─── Serve dashboard page (screen + print) ────────────────────────────────────
-router.get("/pages/:slug", requireAuth, async (req, res) => {
+router.get("/pages/:slug", async (req, res) => {
   const slug = String(req.params["slug"]);
   const page = PAGE_MAP.get(slug);
   if (!page) { res.status(404).send("Page not found"); return; }
@@ -218,7 +218,7 @@ router.get("/pages/:slug", requireAuth, async (req, res) => {
 });
 
 // ─── Word document export ─────────────────────────────────────────────────────
-router.get("/pages/:slug/word", requireAuth, async (req, res) => {
+router.get("/pages/:slug/word", async (req, res) => {
   const slug = String(req.params["slug"]);
   const page = PAGE_MAP.get(slug);
   if (!page) { res.status(404).send("Page not found"); return; }

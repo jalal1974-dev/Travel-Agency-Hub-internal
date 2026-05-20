@@ -56,10 +56,25 @@ export default function DashboardShell({ user, activePage, onLogout }: Dashboard
     setTimeout(() => setPrinting(false), 2000);
   }, []);
 
-  const handleWordDownload = useCallback(() => {
+  const handleWordDownload = useCallback(async () => {
     if (!currentPage) return;
-    // Opens the word export URL — browser will download the .doc file automatically
-    window.location.href = `/api/pages/${currentPage.slug}/word`;
+    try {
+      const res = await fetch(`/api/pages/${currentPage.slug}/word`, {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Not authenticated or server error");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${currentPage.title} - الجود للسياحة والسفر.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Word download failed:", err);
+    }
   }, [currentPage]);
 
   const iframeSrc = currentPage ? `/api/pages/${currentPage.slug}` : "";
